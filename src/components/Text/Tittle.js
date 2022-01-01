@@ -11,7 +11,8 @@ const Tittle = (props) => {
 }
 
 const Typography1 = styled.h1`
-    color : ${props => props.color ? `var(${props.color})` : 'var(--font-dark-color)'}
+    color : ${props => props.color ? `var(${props.color})` : 'var(--font-dark-color)'};
+    font-weight : 300;
 `;
 
 export default Tittle;

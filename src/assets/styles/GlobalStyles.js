@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
         line-height: 150%;
         letter-spacing: 0.15px;
         text-decoration: none;
-        font-family: 'Nunito Sans', sans-serif;
+        font-family: 'Roboto', sans-serif;
     }
 
     body {

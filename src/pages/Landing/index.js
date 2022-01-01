@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Appbar from '../../components/Appbar';
+import HeroSection from '../../components/Section/HeroSection';
 
 function ScrollTop(props) {
   const { children, window } = props;
@@ -60,9 +61,7 @@ ScrollTop.propTypes = {
 export default function LandingPage(props) {
   return (
     <>
-      <Container>
-       
-      </Container>
+      <HeroSection/>
       <ScrollTop {...props}>
         <Fab color="secondary" size="small" aria-label="scroll back to top">
           <KeyboardArrowUpIcon />
