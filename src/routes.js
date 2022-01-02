@@ -1,5 +1,7 @@
 import LandingPage from "./pages/Landing";
 import Login from "./pages/Auth/Login";
+import Signup from "./pages/Auth/Signup";
+// import SignUp from "./"
 
 const routes = [
     {
@@ -29,7 +31,7 @@ const routes = [
     {
         path : "/signup",
         layout : "auth",
-        component : LandingPage,
+        component : Signup,
         basePath: true
     }
 ];

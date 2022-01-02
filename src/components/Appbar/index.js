@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container } from "@mui/material";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -11,11 +11,12 @@ import {
 import HeaderLogin from "../Header/HeaderLogin";
 
 const AppbarCustom = (props) => {
+  const {signinClicked} = props;
   const location = useLocation();
 
-  const {pathname} = location;
+  const { pathname } = location;
 
-  if (pathname === "/signin" || pathname === "signup") {
+  if (pathname === "/signin" || pathname === "/signup") {
     return <HeaderLogin />;
   }
 
@@ -31,11 +32,7 @@ const AppbarCustom = (props) => {
         <Link className="link" to="/course">
           Course
         </Link>
-        <Button variant="outlined">
-          <Link className="signin" to="/signin">
-            SIGN IN
-          </Link>
-        </Button>
+        <Button onClick={signinClicked} variant="outlined">SIGN IN</Button>
       </Container>
     </AppBarStyled>
   );

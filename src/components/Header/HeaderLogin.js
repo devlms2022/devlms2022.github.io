@@ -22,7 +22,7 @@ const HeaderLogin = (props) => {
 };
 
 const BoxStyled = styled(Box)`
-  padding: 20px;
+  padding: 5px;
 `;
 
 export default HeaderLogin;
