@@ -1,11 +1,12 @@
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Zoom from '@mui/material/Zoom';
-import PropTypes from 'prop-types';
-import * as React from 'react';
-import HeroSection from '../../components/Section/HeroSection';
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Box from "@mui/material/Box";
+import Fab from "@mui/material/Fab";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
+import Zoom from "@mui/material/Zoom";
+import PropTypes from "prop-types";
+import * as React from "react";
+import AboutSection from "../../components/Section/AboutSection";
+import HeroSection from "../../components/Section/HeroSection";
 
 function ScrollTop(props) {
   const { children, window } = props;
@@ -20,13 +21,13 @@ function ScrollTop(props) {
 
   const handleClick = (event) => {
     const anchor = (event.target.ownerDocument || document).querySelector(
-      '#back-to-top-anchor',
+      "#back-to-top-anchor"
     );
 
     if (anchor) {
       anchor.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
+        behavior: "smooth",
+        block: "center",
       });
     }
   };
@@ -36,7 +37,7 @@ function ScrollTop(props) {
       <Box
         onClick={handleClick}
         role="presentation"
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        sx={{ position: "fixed", bottom: 16, right: 16 }}
       >
         {children}
       </Box>
@@ -56,7 +57,8 @@ ScrollTop.propTypes = {
 export default function LandingPage(props) {
   return (
     <>
-      <HeroSection/>
+      <HeroSection />
+      <AboutSection />
       <ScrollTop {...props}>
         <Fab color="secondary" size="small" aria-label="scroll back to top">
           <KeyboardArrowUpIcon />
