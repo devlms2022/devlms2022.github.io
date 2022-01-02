@@ -16,7 +16,7 @@ const AppbarCustom = (props) => {
 
   const { pathname } = location;
 
-  if (pathname === "/signin" || pathname === "signup") {
+  if (pathname === "/signin" || pathname === "/signup") {
     return <HeaderLogin />;
   }
 
