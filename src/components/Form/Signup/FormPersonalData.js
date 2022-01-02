@@ -9,8 +9,8 @@ const FormPersonalData = (props) => {
     <WrapContent>
       <Input
         className="form-control"
-        label="Burger Service Number"
-        name="burger_serv_num"
+        label="Burger Service Nummer"
+        name="burger_service_nummer"
         type="number"
         onChange={onChange}
       />
@@ -37,8 +37,9 @@ const FormPersonalData = (props) => {
             <Select
               onChange={onChange}
               autoWidth
-              name="gener"
-              label="Gener"
+              name="gender"
+              label="Gender"
+              defaultValue=""
             >
               <MenuItem value="male">Male</MenuItem>
               <MenuItem value="female">Female</MenuItem>

@@ -1,22 +1,24 @@
+import React, { Component } from "react";
 import { Grid, Step, StepLabel, Stepper } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { Component } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import StudentsImg from "../../assets/images/students.png";
 import TeacherImg from "../../assets/images/teachers.png";
 import Button from "../../components/Button/Button";
 import {
-  FormTeachPersonalData,
   FormEmailPasss,
-  FormTeachUploadDoc,
-  FormStudentPersonalData,
-  FormStudentUploadDoc,
   FormPersonalData,
+  FormStudentUploadDoc,
+  FormTeachUploadDoc,
 } from "../../components/Form/Signup";
 import Title from "../../components/Text/Tittle";
+import Swal from "sweetalert2";
+import { Redirect } from "react-router-dom";
 
 const RegistStep0 = (props) => {
   const { handleClicked } = props;
+
   return (
     <Grid spacing={2} container>
       <Grid item className="col" sm={6}>
@@ -45,8 +47,63 @@ export class Signup extends Component {
     this.state = {
       registerType: 0,
       stepActive: 0,
+      isRedirect: false,
+      data: {
+        role_id: 0,
+        burger_service_nummer: "",
+        family_name: "",
+        front_name: "",
+        gender: "",
+        birthday: "",
+        address: "",
+        postal_code: "",
+        reg_code_branch: "",
+        email: "",
+        password: "",
+        repassword: "",
+        proof_teacher_grade: undefined,
+        grades: undefined,
+        identity_card: undefined,
+      },
+      proof_teacher_grade: undefined,
+      grades: undefined,
+      identity_card: undefined,
+      steps: [
+        "Type Of Register",
+        "Personal Data",
+        "Upload Identity",
+        "Email & Password",
+      ],
     };
   }
+
+  handleChangeFile = (event) => {
+    const { name, files } = event.target;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        this.setState({
+          [name]: reader.result,
+          data: {
+            ...this.state.data,
+            [name]: files[0],
+          },
+        });
+      }
+    };
+    reader.readAsDataURL(files[0]);
+  };
+
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({
+      data: {
+        ...this.state.data,
+        [name]: value,
+      },
+    });
+  };
 
   handleChangeOption = (event) => {
     const { name } = event.target;
@@ -54,13 +111,61 @@ export class Signup extends Component {
     this.setState({
       registerType,
       stepActive: this.state.stepActive + 1,
+      data: {
+        ...this.state.data,
+        role_id: registerType,
+      },
     });
   };
 
   handleNext = () => {
-    this.setState({
-      stepActive: this.state.stepActive + 1,
+    const { stepActive, steps } = this.state;
+    if (stepActive + 1 === steps.length) {
+      this.handleSubmit();
+    } else {
+      this.setState({
+        stepActive: stepActive + 1,
+      });
+    }
+  };
+
+  handleSubmit = async () => {
+    const { REACT_APP_API_URL } = process.env;
+    const { data } = this.state;
+    const formdata = new FormData();
+    Object.entries(data).forEach((item) => {
+      const attr = item[0];
+      const value = item[1];
+      if (value) {
+        formdata.append(attr, value);
+      }
     });
+    try {
+      const response = await axios({
+        url: `${REACT_APP_API_URL}/register`,
+        method: "POST",
+        data: formdata,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status === 200 && response.data.code === 200) {
+        Swal.fire({
+          title: "Success!",
+          text: "Your account has been created, Please check your email regularly for further confirmation!",
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then((confirm) => {
+          if (confirm.isConfirmed) {
+            this.setState({ isRedirect: true });
+          }
+        });
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   handlePrev = () => {
@@ -70,13 +175,27 @@ export class Signup extends Component {
   };
 
   render() {
-    const { stepActive, registerType } = this.state;
-    const steps = [
-      "Type Of Register",
-      "Personal Data",
-      "Upload Identity",
-      "Email & Password",
-    ];
+    const {
+      stepActive,
+      registerType,
+      data,
+      proof_teacher_grade,
+      grades,
+      identity_card,
+      steps,
+      isRedirect,
+    } = this.state;
+
+    console.log(this.state);
+    if (isRedirect) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/",
+          }}
+        />
+      );
+    }
 
     return (
       <Container>
@@ -100,11 +219,26 @@ export class Signup extends Component {
           {stepActive === 0 && (
             <RegistStep0 handleClicked={this.handleChangeOption} />
           )}
-          {stepActive === 1 && <FormPersonalData />}
+          {stepActive === 1 && (
+            <FormPersonalData onChange={this.handleChange} />
+          )}
 
-          {stepActive === 2 && registerType === 2 && <FormTeachUploadDoc />}
-          {stepActive === 2 && registerType === 3 && <FormStudentUploadDoc />}
-          {stepActive === 3 && <FormEmailPasss />}
+          {stepActive === 2 && registerType === 2 && (
+            <FormTeachUploadDoc
+              proofTeacherGrade={proof_teacher_grade}
+              onChange={this.handleChange}
+              onChangeFile={this.handleChangeFile}
+            />
+          )}
+          {stepActive === 2 && registerType === 3 && (
+            <FormStudentUploadDoc
+              grades={grades}
+              identityCard={identity_card}
+              onChange={this.handleChange}
+              onChangeFile={this.handleChangeFile}
+            />
+          )}
+          {stepActive === 3 && <FormEmailPasss onChange={this.handleChange} />}
 
           {stepActive > 0 && (
             <Grid spacing={2} className="wrap-button" container>

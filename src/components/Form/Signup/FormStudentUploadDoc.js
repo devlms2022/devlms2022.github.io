@@ -1,31 +1,28 @@
-import { Grid, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import React from "react";
-import Button from "../../Button/Button";
-import Input from "../Input";
-import { Styling as WrapContent } from "./index";
-import UploadIcon from "../../../assets/icons/upload_icon.png";
 import styled from "styled-components";
+import UploadIcon from "../../../assets/icons/upload_icon.png";
+import { Styling as WrapContent } from "./index";
 
 const FormStudentUploadDoc = (props) => {
-  const {onChangeFile} = props;
+  const { onChangeFile, grades, identityCard } = props;
   return (
     <WrapContent>
       <InputFileWrapper>
         <div className="item">
           <label>Passport / Identity Card</label>
           <Paper elevation={2} className="paper">
-            <img src={UploadIcon} alt="upload-icon" />
+            <img src={identityCard ? identityCard : UploadIcon} alt="upload-icon" />
             <input
-              id="myInput"
+              id="identity_card"
               style={{ display: "none" }}
               type={"file"}
-              name="proof_teacher_grade"
+              name="identity_card"
               onChange={onChangeFile}
-              // onChange={this.fileSelectedHandler}
             />
             <label
-              htmlFor="myInput"
-              id="file-proof_teacher_grade"
+              htmlFor="identity_card"
+              id="file-identity_card"
               className="button-input"
             >
               Select File
@@ -35,20 +32,19 @@ const FormStudentUploadDoc = (props) => {
         <div className="item">
           <label>Grade(s)</label>
           <Paper elevation={2} className="paper">
-            <img src={UploadIcon} alt="upload-icon" />
+            <img
+              src={grades ? grades : UploadIcon}
+              alt="upload-icon"
+            />
             <input
-              id="myInput"
+              id="grades"
               style={{ display: "none" }}
               type={"file"}
-              name="proof_teacher_grade"
+              name="grades"
               onChange={onChangeFile}
               // onChange={this.fileSelectedHandler}
             />
-            <label
-              htmlFor="myInput"
-              id="file-proof_teacher_grade"
-              className="button-input"
-            >
+            <label htmlFor="grades" id="file-grades" className="button-input">
               Select File
             </label>
           </Paper>
@@ -78,6 +74,11 @@ const InputFileWrapper = styled.div`
     margin: 10px 0px;
     flex-direction: column;
     justify-content: space-between;
+
+    img {
+      max-width: 250px;
+      max-height: 250px;
+    }
 
     /* background: red; */
   }
