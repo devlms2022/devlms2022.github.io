@@ -7,6 +7,7 @@ const cors = require("cors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const parser = require("body-parser");
+const multer = require("multer");
 
 const app = express();
 const mdl = require("./core/middleware");
@@ -17,9 +18,6 @@ const routers = require("./routes");
 const log = require("./configs/logger");
 
 app.listen(port, async () => {
-  app.use(mdl.writeReq);
-  app.use(cors(corsOptions));
-
   try {
     await db.authenticate();
     log.debug("Database Connected");
@@ -27,10 +25,15 @@ app.listen(port, async () => {
     log.debug(`Connection Database Failed : ${err}`);
   }
 
+
+  app.use(mdl.writeReq);
+  app.use(cors());
+
   app.disable("x-powered-by");
   app.use(cookieParser());
-  app.use(express.json());
-  // app.use(parser.json());
+
+
+  app.use(parser.json());
   app.use(
     parser.urlencoded({
       extended: true,

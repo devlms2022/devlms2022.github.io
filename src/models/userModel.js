@@ -17,7 +17,7 @@ const UsersModel = db.define('users',{
         type : DataTypes.STRING,
         allowNull : false,
     },
-    first_name : {
+    front_name : {
         type : DataTypes.STRING,
         allowNull : false,
     },
@@ -33,6 +33,42 @@ const UsersModel = db.define('users',{
         type : DataTypes.STRING,
         allowNull : true,
     },
+    burger_service_nummer : {
+        type : DataTypes.STRING,
+        allowNull : false
+    },
+    address : {
+        type : DataTypes.TEXT,
+        allowNull : false
+    },
+    postal_code : {
+        type : DataTypes.STRING,
+        allowNull : true
+    },
+    identity_card: {
+        type : DataTypes.STRING,
+        allowNull : true
+    },
+    grades : {
+        type : DataTypes.STRING,
+        allowNull : true
+    },
+    birthday : {
+        type : DataTypes.DATE,
+        allowNull : true
+    },
+    proof_teacher_grade : {
+        type : DataTypes.CHAR,
+        allowNull : true
+    },
+    reg_code_branch : {
+        type : DataTypes.CHAR,
+        allowNull : true
+    },
+    gender : {
+        type : DataTypes.CHAR,
+        allowNull : false
+    }
 },{
     freezeTableName : true,
     modelName: "users",

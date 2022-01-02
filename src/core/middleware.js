@@ -4,6 +4,9 @@
 
  const log = require('../configs/logger');
  const jwt = require('jsonwebtoken');
+ const multer = require('multer');
+ const moment = require('moment');
+ const Util = require('./utilities');
 
  const writeReq = async (req, res, next) => {
      const {
@@ -32,10 +35,28 @@
         next();
     })
  };
+
+ const uploads = (pathname) => {
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+          cb(null, "public/uploads/"+pathname);
+        },
+        filename: function (req, file, cb) {
+            const split =  file.originalname.replace(/\s/g, '').split('.');
+            const filename = split[0];
+            const extentsion = split[1];
+          cb(null, Util.makeid(18)+moment().format('DD-MM-YY')+"."+extentsion);
+        },
+      });
+      
+      const upload = multer({ storage });
+      return upload;
+ }
  
  module.exports = {
      writeReq,
-     verifyToken
+     verifyToken,
+     uploads
  }
  /**
   * Middleware

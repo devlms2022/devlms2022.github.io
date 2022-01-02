@@ -30,6 +30,7 @@
     "fastest-validator": "^1.12.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
+    "multer": "^1.4.4",
     "passport-http": "^0.3.0",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",

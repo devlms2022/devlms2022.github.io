@@ -9,8 +9,15 @@ const {
   insert,
   logout,
 } = require("../controllers/usersController");
-const { verifyToken } = require("../core/middleware");
+const { verifyToken, uploads } = require("../core/middleware");
 const refreshToken = require("../controllers/refreshToken");
+const multer = require("multer");
+
+// const upload = multer({ dest: 'uploads/' })
+
+
+
+const upload = uploads('registrasi');
 
 const router = new Router();
 
@@ -20,7 +27,15 @@ router.get("/ping", (req, res) => {
 
 router.get("/user/", verifyToken, getAll);
 
-router.post("/register", insert);
+router.post(
+  "/register",
+  upload.fields([
+    { name: "proof_teacher_grade", maxCount: 1 },
+    { name: "identity_card", maxCount: 1 },
+    { name: "grades", maxCount: 1 },
+  ]),
+  insert
+);
 router.post("/auth", auth);
 router.delete("/logout", logout);
 

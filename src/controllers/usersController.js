@@ -1,7 +1,9 @@
 const UsersModel = require("../models/userModel");
 const response = require("../core/response");
 const bcrypt = require("bcrypt");
+const multer = require('multer');
 const jwt = require("jsonwebtoken");
+
 class Users {
   getAll = async (req, res, next) => {
     try {
@@ -61,6 +63,10 @@ class Users {
           response.code = 200;
           response.message = "Success";
           response.data = {
+            data: {
+              id,
+              email,
+            },
             token: accessToken,
           };
         }
@@ -80,8 +86,12 @@ class Users {
   insert = async (req, res, next) => {
     const modelAttr = UsersModel.rawAttributes;
     const inputs = {};
+    // console.log("file",req.files);
+    // console.log("body",req.body);
+    
     Object.values(modelAttr).forEach((val) => {
       if (val.field != "id") {
+        
         if (req.body[val.field] != null) {
           inputs[val.fieldName] = req.body[val.field];
         } else {
@@ -89,6 +99,13 @@ class Users {
         }
       }
     });
+
+    if(req.files) {
+      Object.values(req.files).forEach(([item]) => {
+        inputs[item.fieldname] = item.filename;
+      });
+    }
+
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(inputs.password, salt);
     inputs.password = hashPassword;
@@ -110,24 +127,27 @@ class Users {
 
   update = async (req, res, next) => {};
 
-  logout = async(req, res) => {
+  logout = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
-    if(!refreshToken) return res.sendStatus(204);
+    if (!refreshToken) return res.sendStatus(204);
     const user = await UsersModel.findOne({
-        where:{
-            refresh_token: refreshToken
-        }
+      where: {
+        refresh_token: refreshToken,
+      },
     });
-    if(!user) return res.sendStatus(204);
+    if (!user) return res.sendStatus(204);
     const userId = user.id;
-    await UsersModel.update({refresh_token: null},{
-        where:{
-            id: userId
-        }
-    });
-    res.clearCookie('refreshToken');
+    await UsersModel.update(
+      { refresh_token: null },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    );
+    res.clearCookie("refreshToken");
     return res.sendStatus(200);
-}
+  };
 }
 
 module.exports = new Users();
