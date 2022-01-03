@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Grid, Step, StepLabel, Stepper } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
+import SimpleReactValidator from "simple-react-validator";
 import styled from "styled-components";
 import StudentsImg from "../../assets/images/students.png";
 import TeacherImg from "../../assets/images/teachers.png";
@@ -14,7 +16,7 @@ import {
 } from "../../components/Form/Signup";
 import Title from "../../components/Text/Tittle";
 import Swal from "sweetalert2";
-import { Redirect } from "react-router-dom";
+import utilities from "../../utils/utilities";
 
 const RegistStep0 = (props) => {
   const { handleClicked } = props;
@@ -75,6 +77,19 @@ export class Signup extends Component {
         "Email & Password",
       ],
     };
+
+    this.validator = new SimpleReactValidator({
+      autoFoceAupdate: true,
+      messages: utilities.messageValidator,
+    });
+    this.validator2 = new SimpleReactValidator({
+      autoFoceAupdate: true,
+      messages: utilities.messageValidator,
+    });
+    this.validator3 = new SimpleReactValidator({
+      autoFoceAupdate: true,
+      messages: utilities.messageValidator,
+    });
   }
 
   handleChangeFile = (event) => {
@@ -120,12 +135,21 @@ export class Signup extends Component {
 
   handleNext = () => {
     const { stepActive, steps } = this.state;
-    if (stepActive + 1 === steps.length) {
-      this.handleSubmit();
-    } else {
-      this.setState({
-        stepActive: stepActive + 1,
-      });
+    if (stepActive === 1) {
+      console.log(this.validator.allValid());
+      if (this.validator.allValid()) {
+        this.validator.purgeFields();
+        this.validator.hideMessages();
+
+        if (stepActive + 1 === steps.length) {
+          this.handleSubmit();
+        } else {
+          this.setState({
+            stepActive: stepActive + 1,
+          });
+        }
+      }
+      this.validator.showMessages();
     }
   };
 
@@ -186,7 +210,6 @@ export class Signup extends Component {
       isRedirect,
     } = this.state;
 
-    console.log(this.state);
     if (isRedirect) {
       return (
         <Redirect
@@ -220,11 +243,16 @@ export class Signup extends Component {
             <RegistStep0 handleClicked={this.handleChangeOption} />
           )}
           {stepActive === 1 && (
-            <FormPersonalData onChange={this.handleChange} />
+            <FormPersonalData
+              data={data}
+              validator={this.validator}
+              onChange={this.handleChange}
+            />
           )}
 
           {stepActive === 2 && registerType === 2 && (
             <FormTeachUploadDoc
+              validator={this.validator2}
               proofTeacherGrade={proof_teacher_grade}
               onChange={this.handleChange}
               onChangeFile={this.handleChangeFile}
@@ -232,13 +260,19 @@ export class Signup extends Component {
           )}
           {stepActive === 2 && registerType === 3 && (
             <FormStudentUploadDoc
+              validator={this.validator2}
               grades={grades}
               identityCard={identity_card}
               onChange={this.handleChange}
               onChangeFile={this.handleChangeFile}
             />
           )}
-          {stepActive === 3 && <FormEmailPasss onChange={this.handleChange} />}
+          {stepActive === 3 && (
+            <FormEmailPasss
+              validator={this.validator3}
+              onChange={this.handleChange}
+            />
+          )}
 
           {stepActive > 0 && (
             <Grid spacing={2} className="wrap-button" container>

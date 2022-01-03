@@ -9,7 +9,6 @@ const Input = (props) => {
     )
 };
 
-
 const InputStyled = styled(TextField)`
     /* min-width : 320px; */
     width: ${props => (props.width ? props.width : '200px')};

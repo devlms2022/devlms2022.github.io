@@ -14,7 +14,7 @@ import Tittle from "../Text/Tittle";
 import Input from "./Input";
 
 const FormSign = (props) => {
-  const { onChange, onSignin, onSignup, alertShown } = props;
+  const { onChange, onSignin, onSignup, alertShown, validator } = props;
 
   return (
     <Wraplogin>
@@ -26,9 +26,12 @@ const FormSign = (props) => {
         }}
       >
         <Tittle className="title" text="Sign In" />
-
-        {alertShown && <Alert severity="success" onClose={() => {}}>Successfull Login!</Alert>}
-
+        {alertShown && (
+          <Alert severity="success" onClose={() => {}}>
+            Successfull Login!
+          </Alert>
+        )}
+        
         <Input
           onChange={onChange}
           name="email"
@@ -52,15 +55,11 @@ const FormSign = (props) => {
           text="Sign In"
         />
         <Button
-          // onClick={onSignup}
-        
           variant="outlined"
           className="btn"
           text="Sign Up"
           link="/signup"
-        >
-         
-        </Button>
+        ></Button>
       </Box>
     </Wraplogin>
   );
@@ -72,7 +71,6 @@ const Wraplogin = styled.div`
   flex-grow: 1;
   justify-content: center;
   padding-bottom: 70px;
-
   .title {
     margin-bottom: 50px;
     width: 100%;

@@ -37,9 +37,9 @@ const AppbarCustom = (props) => {
     </AppBarStyled>
   );
 };
-
+  
 const AppBarStyled = styled.div`
-  background-color: var(--background-light-color);
+  background-color: var(--white-color);
   display: flex;
   flex-direction: row;
   padding: 35px;

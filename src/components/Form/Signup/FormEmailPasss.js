@@ -27,6 +27,7 @@ const FormEmailPass = (props) => {
             onChange={onChange}
             className="form-control"
             label="Retype Password"
+            type="password"
             name="repassword"
           />
         </Grid>
