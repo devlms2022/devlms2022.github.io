@@ -7,13 +7,14 @@ import UploadIcon from "../../../assets/icons/upload_icon.png";
 import styled from "styled-components";
 
 const FormTeachUploadDoc = (props) => {
-  const {onChangeFile, onChange} = props;
+
+  const {onChangeFile, onChange, proofTeacherGrade} = props;
   return (
     <WrapContent>
       <InputFileWrapper>
         <label>Proof Of Teacher Grade</label>
         <Paper elevation={2} className="paper">
-          <img src={UploadIcon} alt="upload-icon" />
+          <img src={proofTeacherGrade ? proofTeacherGrade : UploadIcon} alt="upload-icon" />
           <input
             id="myInput"
             style={{ display: "none" }}
@@ -62,6 +63,10 @@ const InputFileWrapper = styled.div`
     flex-direction: column;
    
     justify-content: space-between;
+
+    img {
+      max-width : 250px;
+    }
     
     /* background: red; */
   }
