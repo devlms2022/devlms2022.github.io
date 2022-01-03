@@ -25,13 +25,11 @@ app.listen(port, async () => {
     log.debug(`Connection Database Failed : ${err}`);
   }
 
-
   app.use(mdl.writeReq);
   app.use(cors());
 
   app.disable("x-powered-by");
   app.use(cookieParser());
-
 
   app.use(parser.json());
   app.use(
