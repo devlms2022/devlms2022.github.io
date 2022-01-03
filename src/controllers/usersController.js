@@ -1,8 +1,9 @@
 const UsersModel = require("../models/userModel");
 const response = require("../core/response");
 const bcrypt = require("bcrypt");
-const multer = require('multer');
+const multer = require("multer");
 const jwt = require("jsonwebtoken");
+const mailer = require("../core/mailer");
 
 class Users {
   getAll = async (req, res, next) => {
@@ -88,10 +89,9 @@ class Users {
     const inputs = {};
     // console.log("file",req.files);
     // console.log("body",req.body);
-    
+
     Object.values(modelAttr).forEach((val) => {
       if (val.field != "id") {
-        
         if (req.body[val.field] != null) {
           inputs[val.fieldName] = req.body[val.field];
         } else {
@@ -100,7 +100,7 @@ class Users {
       }
     });
 
-    if(req.files) {
+    if (req.files) {
       Object.values(req.files).forEach(([item]) => {
         inputs[item.fieldname] = item.filename;
       });
@@ -115,6 +115,10 @@ class Users {
       response.message = "Account has been created!";
       delete inputs["password"];
       response.data = inputs;
+      mailer.sendWaiting({
+        emailTo: inputs.email,
+        front_name: inputs.front_name,
+      });
       res.send(response.getResponse());
     } catch (error) {
       response.code = 500;

@@ -11,12 +11,6 @@ const {
 } = require("../controllers/usersController");
 const { verifyToken, uploads } = require("../core/middleware");
 const refreshToken = require("../controllers/refreshToken");
-const multer = require("multer");
-
-// const upload = multer({ dest: 'uploads/' })
-
-
-
 const upload = uploads('registrasi');
 
 const router = new Router();

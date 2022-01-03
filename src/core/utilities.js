@@ -4,6 +4,7 @@
  */
 
 const moment = require("moment");
+const nodemailer = require('nodemailer');
 
 class Utilities {
   today(format = "YYYY-MM-DD") {
@@ -26,6 +27,8 @@ class Utilities {
     }
     return result;
   }
+
+ 
 }
 
 module.exports = new Utilities();
