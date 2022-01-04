@@ -135,22 +135,22 @@ export class Signup extends Component {
 
   handleNext = () => {
     const { stepActive, steps } = this.state;
-    if (stepActive === 1) {
-      console.log(this.validator.allValid());
-      if (this.validator.allValid()) {
-        this.validator.purgeFields();
-        this.validator.hideMessages();
-
-        if (stepActive + 1 === steps.length) {
-          this.handleSubmit();
-        } else {
-          this.setState({
-            stepActive: stepActive + 1,
-          });
-        }
-      }
-      this.validator.showMessages();
+    if (stepActive + 1 === steps.length) {
+      this.handleSubmit();
+    } else {
+      this.setState({
+        stepActive: stepActive + 1,
+      });
     }
+    // if (stepActive === 1) {
+    //   console.log(this.validator.allValid());
+    //   if (this.validator.allValid()) {
+    //     this.validator.purgeFields();
+    //     this.validator.hideMessages();
+
+    //   }
+    //   this.validator.showMessages();
+    // }
   };
 
   handleSubmit = async () => {
