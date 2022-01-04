@@ -2,6 +2,7 @@ import { Box, Container, Grid, Modal } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
+import SimpleReactValidator from "simple-react-validator";
 import styled from "styled-components";
 // import ImageLogin from "../../assets/images/loginimage.png";
 import ImageLogin from "./assets/images/loginimage.png";
@@ -17,6 +18,9 @@ function App(props) {
   const [password, setPassword] = useState("");
   const [alertShown, setShownAlert] = useState(false);
   const [isLoading, setIsloading] = useState(false);
+  const [validation, setValidation] = useState(false);
+
+  const validator = new SimpleReactValidator();
 
   const changHandler = (event) => {
     const { name, value } = event.target;
@@ -28,31 +32,42 @@ function App(props) {
     }
   };
 
+  const [errors, setErrors] = useState({});
+
   const SignupHandler = async () => {
     const history = useHistory();
     history.push("/signup");
   };
 
   const submitHandler = async () => {
-    const { REACT_APP_API_URL } = process.env;
-    setIsloading(true);
-    try {
-      const response = await axios.post(`${REACT_APP_API_URL}/auth`, {
-        email,
-        password,
-      });
-      if (response.status === 200 && response.data.success) {
-        TokenService.setUser(response.data.data);
-        setShownAlert(true);
+    if (validation) {
+      const { REACT_APP_API_URL } = process.env;
+      setIsloading(true);
+      try {
+        const response = await axios.post(`${REACT_APP_API_URL}/auth`, {
+          email,
+          password,
+        });
+        if (response.status === 200 && response.data.success) {
+          TokenService.setUser(response.data.data);
+          setShownAlert(true);
+          setIsloading(false);
+          setTimeout(() => {
+            setModalShown(false);
+          }, 3000);
+        }
+      } catch (error) {
         setIsloading(false);
-        setTimeout(() => {
-          setModalShown(false);
-        }, 3000);
+        console.log(error);
       }
-    } catch (error) {
-      setIsloading(false);
-      console.log(error);
     }
+  };
+
+  let navigate = useHistory();
+
+  const onOpenSignUp = () => {
+    setModalShown(false);
+    navigate.push("/signup");
   };
 
   return (
@@ -79,7 +94,7 @@ function App(props) {
         aria-describedby="modal-modal-description"
       >
         <BoxStyled>
-          <HeaderLogin />
+          <HeaderLogin onClick={() => setModalShown(false)} />
           <Grid container spacing={2}>
             <Grid item sm={7}>
               <Box className="warplogo">
@@ -88,9 +103,14 @@ function App(props) {
             </Grid>
             <Grid item sm={5}>
               <FormSign
+                validation={(isValid) => setValidation(isValid)}
                 onSignin={submitHandler}
                 onChange={changHandler}
                 alertShown={alertShown}
+                validator={validator}
+                data={{ email, password }}
+                onSignup={(param) => setModalShown(!param)}
+                onOpenSignUp={onOpenSignUp}
               />
             </Grid>
           </Grid>

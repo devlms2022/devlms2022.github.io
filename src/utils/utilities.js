@@ -3,11 +3,21 @@ class Utilities {
     var characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     var charactersLength = characters.length;
-    let result = '';
+    let result = "";
     for (var i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+  }
+
+  objectLength(obj) {
+    var size = 0,
+      key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+    }
+
+    return size;
   }
 
   //custom message SimpleReactValidator

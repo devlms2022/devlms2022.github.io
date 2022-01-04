@@ -220,6 +220,15 @@ export class Signup extends Component {
         });
       }
     }
+    // if (stepActive === 1) {
+    //   console.log(this.validator.allValid());
+    //   if (this.validator.allValid()) {
+    //     this.validator.purgeFields();
+    //     this.validator.hideMessages();
+
+    //   }
+    //   this.validator.showMessages();
+    // }
   };
 
   handleSubmit = async () => {
