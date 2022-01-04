@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 const FormTeachUploadDoc = (props) => {
 
-  const {onChangeFile, onChange, proofTeacherGrade} = props;
+  const {onChangeFile, onChange, errors, proofTeacherGrade} = props;
   return (
     <WrapContent>
       <InputFileWrapper>
@@ -41,6 +41,7 @@ const FormTeachUploadDoc = (props) => {
             label="Registrion Code Of Branch"
             name="reg_code_branch"
             onChange={onChange}
+            error={errors.reg_code_branch ? true : false}
           />
         </Grid>
       </Grid>

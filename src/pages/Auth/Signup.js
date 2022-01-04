@@ -76,10 +76,11 @@ export class Signup extends Component {
         "Upload Identity",
         "Email & Password",
       ],
+      errors: {},
     };
 
     this.validator = new SimpleReactValidator({
-      autoFoceAupdate: true,
+      autoFoceAupdate: this,
       messages: utilities.messageValidator,
     });
     this.validator2 = new SimpleReactValidator({
@@ -112,6 +113,7 @@ export class Signup extends Component {
 
   handleChange = (event) => {
     const { name, value } = event.target;
+    console.log(name, value);
     this.setState({
       data: {
         ...this.state.data,
@@ -134,61 +136,166 @@ export class Signup extends Component {
   };
 
   handleNext = () => {
-    const { stepActive, steps } = this.state;
+    const { stepActive, steps, data } = this.state;
+    let isFormValid = true;
     if (stepActive === 1) {
-      console.log(this.validator.allValid());
-      if (this.validator.allValid()) {
-        this.validator.purgeFields();
-        this.validator.hideMessages();
-
-        if (stepActive + 1 === steps.length) {
-          this.handleSubmit();
-        } else {
-          this.setState({
-            stepActive: stepActive + 1,
-          });
-        }
+      if (!data.burger_service_nummer) {
+        this.setState({
+          errors: {
+            ["burger_service_nummer"]:
+              "*Please enter your Burger Sevice Nummer.",
+          },
+        });
+        isFormValid = false;
       }
-      this.validator.showMessages();
+      if (!data.front_name) {
+        this.setState({
+          errors: {
+            ["front_name"]: "*Please enter your Front Name.",
+          },
+        });
+        isFormValid = false;
+      }
+      if (!data.family_name) {
+        this.setState({
+          errors: {
+            ["family_name"]: "*Please enter your Family Name.",
+          },
+        });
+        isFormValid = false;
+      }
+      if (!data.gender) {
+        this.setState({
+          errors: {
+            ["gender"]: "*Please Select your Gender.",
+          },
+        });
+        isFormValid = false;
+      }
+      if (!data.address) {
+        this.setState({
+          errors: {
+            ["address"]: "*Please Enter your address.",
+          },
+        });
+        isFormValid = false;
+      }
+      if (!data.birthday) {
+        this.setState({
+          errors: {
+            ["birthday"]: "*Please Enter your Birthday.",
+          },
+        });
+        isFormValid = false;
+      }
+      if (!data.postal_code) {
+        this.setState({
+          errors: {
+            ["postal_code"]: "*Please Enter your Postal Code.",
+          },
+        });
+        isFormValid = false;
+      }
+    }
+    if (stepActive === 2 && data.role_id === 2) {
+      if (!data.reg_code_branch) {
+        this.setState({
+          errors: {
+            ["reg_code_branch"]: "*Please enter your Reg Code of Branch.",
+          },
+        });
+        isFormValid = false;
+      }
+    }
+
+    if (isFormValid) {
+      this.setState({
+        errors: {},
+      });
+      if (stepActive + 1 === steps.length) {
+        this.handleSubmit();
+      } else {
+        this.setState({
+          stepActive: stepActive + 1,
+        });
+      }
     }
   };
 
   handleSubmit = async () => {
     const { REACT_APP_API_URL } = process.env;
-    const { data } = this.state;
-    const formdata = new FormData();
-    Object.entries(data).forEach((item) => {
-      const attr = item[0];
-      const value = item[1];
-      if (value) {
-        formdata.append(attr, value);
-      }
-    });
-    try {
-      const response = await axios({
-        url: `${REACT_APP_API_URL}/register`,
-        method: "POST",
-        data: formdata,
-        headers: {
-          "Content-Type": "multipart/form-data",
+    const { stepActive, steps, data } = this.state;
+    let isFormValid = true;
+
+    if (!data.email) {
+      this.setState({
+        errors: {
+          ["email"]: "*Please enter your Email.",
         },
       });
-      if (response.status === 200 && response.data.code === 200) {
-        Swal.fire({
-          title: "Success!",
-          text: "Your account has been created, Please check your email regularly for further confirmation!",
-          icon: "success",
-          confirmButtonText: "Ok",
-        }).then((confirm) => {
-          if (confirm.isConfirmed) {
-            this.setState({ isRedirect: true });
-          }
+      isFormValid = false;
+    }
+    if (!data.password) {
+      this.setState({
+        errors: {
+          ["password"]: "*Please enter your Password.",
+        },
+      });
+      isFormValid = false;
+    }
+    if (!data.repassword) {
+      this.setState({
+        errors: {
+          ["repassword"]: "*Please enter Retype Password.",
+        },
+      });
+      isFormValid = false;
+    } else {
+      if (data.password !== data.repassword) {
+        this.setState({
+          errors: {
+            ["repassword"]: "*Password doesn't match!.",
+          },
         });
-      } else {
-        throw new Error(response.data.message);
+        isFormValid = false;
       }
-    } catch (error) {
-      console.log(error);
+    }
+
+    if (isFormValid) {
+      const formdata = new FormData();
+      Object.entries(data).forEach((item) => {
+        const attr = item[0];
+        const value = item[1];
+        if (value) {
+          formdata.append(attr, value);
+        }
+      });
+      try {
+        const response = await axios({
+          url: `${REACT_APP_API_URL}/register`,
+          method: "POST",
+          data: formdata,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.status === 200 && response.data.code === 200) {
+          Swal.fire({
+            title: "Success!",
+            text: "Your account has been created, Please check your email regularly for further confirmation!",
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then((confirm) => {
+            if (confirm.isConfirmed) {
+              this.setState({ isRedirect: true });
+            }
+          });
+        } else {
+          throw new Error(response.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -208,7 +315,10 @@ export class Signup extends Component {
       identity_card,
       steps,
       isRedirect,
+      errors,
     } = this.state;
+
+    console.log(errors);
 
     if (isRedirect) {
       return (
@@ -245,7 +355,7 @@ export class Signup extends Component {
           {stepActive === 1 && (
             <FormPersonalData
               data={data}
-              validator={this.validator}
+              errors={errors}
               onChange={this.handleChange}
             />
           )}
@@ -255,6 +365,7 @@ export class Signup extends Component {
               validator={this.validator2}
               proofTeacherGrade={proof_teacher_grade}
               onChange={this.handleChange}
+              errors={errors}
               onChangeFile={this.handleChangeFile}
             />
           )}
@@ -262,6 +373,7 @@ export class Signup extends Component {
             <FormStudentUploadDoc
               validator={this.validator2}
               grades={grades}
+              errors={errors}
               identityCard={identity_card}
               onChange={this.handleChange}
               onChangeFile={this.handleChangeFile}
@@ -271,6 +383,7 @@ export class Signup extends Component {
             <FormEmailPasss
               validator={this.validator3}
               onChange={this.handleChange}
+              errors={errors}
             />
           )}
 

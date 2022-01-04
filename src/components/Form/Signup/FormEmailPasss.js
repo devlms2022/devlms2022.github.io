@@ -5,7 +5,7 @@ import Input from "../Input";
 import { Styling as WrapContent } from "./index";
 
 const FormEmailPass = (props) => {
-  const { onChange } = props;
+  const { onChange, errors } = props;
   return (
     <WrapContent>
       <Grid spacing={2} container>
@@ -15,20 +15,25 @@ const FormEmailPass = (props) => {
             onChange={onChange}
             label="Email"
             name="email"
+            error={errors.email ? true : false}
           />
           <Input
             className="form-control"
             label="Password"
             name="password"
             type="password"
+            error={errors.password ? true : false}
             onChange={onChange}
+            helperText={errors.password ? errors.password : ''}
           />
           <Input
             onChange={onChange}
             className="form-control"
             label="Retype Password"
             type="password"
+            error={errors.repassword ? true : false}
             name="repassword"
+            helperText={errors.repassword ? errors.repassword : ''}
           />
         </Grid>
       </Grid>
