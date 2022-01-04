@@ -30,14 +30,6 @@ const FormSign = (props) => {
 
   const [toSignUp, setToSignUp] = useState(false);
 
-  // const isEmailValid = validator.message("email", data.email, "required|email");
-
-  // const isPasswordValid = validator.message(
-  //   "password",
-  //   data.password,
-  //   "required"
-  // );
-
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
 
@@ -52,25 +44,26 @@ const FormSign = (props) => {
   };
 
   const handlerSubmit = () => {
-    console.log(values);
+    let isValid = true;
     if (!values.email) {
       setErrors({
         ...errors,
-        email: "Tolong isikan emailnya",
+        email: "*Please Enter your email!",
       });
+      isValid = false;
     }
 
     if (!values.password) {
       setErrors({
         ...errors,
-        password: "Tolong isikan Password",
+        password: "*Please Enter your password!",
       });
+      isValid = false;
     }
 
-    if (utilities.objectLength(errors) === 0) {
-      validation(true);
-    } else {
-      validation(false);
+    onSignin(isValid);
+    if (isValid) {
+      setErrors({});
     }
   };
 
@@ -91,19 +84,27 @@ const FormSign = (props) => {
         )}
 
         <Input
-          onChange={handlerChange}
+          onChange={(e) => {
+            handlerChange(e);
+            onChange(e);
+          }}
           name="email"
           className="input"
           label="Email"
           error={errors.email ? true : false}
           type="email"
+          helperText={errors.email ? errors.email : " "}
         />
         <Input
-          onChange={handlerChange}
+          onChange={(e) => {
+            handlerChange(e);
+            onChange(e);
+          }}
           name="password"
           className="input"
           label="Password"
           type="password"
+          helperText={errors.password ? errors.password : " "}
           error={errors.password ? true : false}
         />
 

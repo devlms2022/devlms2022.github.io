@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 // import ImageLogin from "../../assets/images/loginimage.png";
 import ImageLogin from "./assets/images/loginimage.png";
 import Appbar from "./components/Appbar";
@@ -18,7 +19,7 @@ function App(props) {
   const [password, setPassword] = useState("");
   const [alertShown, setShownAlert] = useState(false);
   const [isLoading, setIsloading] = useState(false);
-  const [validation, setValidation] = useState(false);
+  // const [validation, setValidation] = useState(false);
 
   const validator = new SimpleReactValidator();
 
@@ -39,23 +40,36 @@ function App(props) {
     history.push("/signup");
   };
 
-  const submitHandler = async () => {
+  const submitHandler = async (validation) => {
     if (validation) {
       const { REACT_APP_API_URL } = process.env;
       setIsloading(true);
       try {
         const response = await axios.post(`${REACT_APP_API_URL}/auth`, {
           email,
-          password,
+          password
         });
-        if (response.status === 200 && response.data.success) {
-          TokenService.setUser(response.data.data);
-          setShownAlert(true);
-          setIsloading(false);
-          setTimeout(() => {
-            setModalShown(false);
-          }, 3000);
+        // console.log(response);
+        if (response.status === 200) {
+          if (response.data.success) {
+            TokenService.setUser(response.data.data);
+            setIsloading(false);
+            Swal.fire({
+              title: "Successfull!",
+              text: "You are logged in",
+              icon: "success",
+              confirmButtonText: "Ok",
+            }).then((confirm) => {});
+          } else if (response.data.code === 100) {
+            Swal.fire({
+              title: "Login Failed!",
+              text: response.data.message,
+              icon: "error",
+              confirmButtonText: "Ok",
+            }).then((confirm) => {});
+          }
         }
+        setModalShown(false);
       } catch (error) {
         setIsloading(false);
         console.log(error);
@@ -103,8 +117,7 @@ function App(props) {
             </Grid>
             <Grid item sm={5}>
               <FormSign
-                validation={(isValid) => setValidation(isValid)}
-                onSignin={submitHandler}
+                onSignin={(validation) => submitHandler(validation)}
                 onChange={changHandler}
                 alertShown={alertShown}
                 validator={validator}

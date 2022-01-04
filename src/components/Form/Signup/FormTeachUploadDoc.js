@@ -42,6 +42,7 @@ const FormTeachUploadDoc = (props) => {
             name="reg_code_branch"
             onChange={onChange}
             error={errors.reg_code_branch ? true : false}
+            helperText={errors.reg_code_branch ? errors.reg_code_branch : " "}
           />
         </Grid>
       </Grid>
