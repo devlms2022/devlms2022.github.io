@@ -244,6 +244,7 @@ export class Signup extends Component {
       });
       isFormValid = false;
     }
+
     if (!data.password) {
       this.setState({
         errors: {
@@ -288,6 +289,7 @@ export class Signup extends Component {
             "Content-Type": "multipart/form-data",
           },
         });
+
         if (response.status === 200 && response.data.code === 200) {
           Swal.fire({
             title: "Success!",
@@ -300,7 +302,16 @@ export class Signup extends Component {
             }
           });
         } else {
-          throw new Error(response.data.message);
+          Swal.fire({
+            title: "Not Complete!",
+            text: "Your email has been existing, Please change your email",
+            icon: "error",
+            confirmButtonText: "Ok",
+          }).then((confirm) => {
+            if (confirm.isConfirmed) {
+              this.setState({ isRedirect: false });
+            }
+          });
         }
       } catch (error) {
         console.log(error);
