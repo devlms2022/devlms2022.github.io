@@ -55,6 +55,7 @@ ScrollTop.propTypes = {
 };
 
 export default function LandingPage(props) {
+  console.log('landing screen')
   return (
     <>
       <HeroSection />

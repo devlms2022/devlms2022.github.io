@@ -1,30 +1,25 @@
-import LandingPage from "./pages/Landing";
-import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
+import Dashboard from "./pages/Dashboard";
+import LandingPage from "./pages/Landing";
 // import SignUp from "./"
 
 const routes = [
     {
         path : "/",
-        layout : "app",
+        layout : "landing",
         component : LandingPage,
         basePath: true
     },
-    {
-        path : "/signin",
-        layout : "auth",
-        component : Login,
-        basePath: true
-    },
+   
     {
         path : "/about",
-        layout : "app",
+        layout : "landing",
         component : LandingPage,
         basePath: true
     },
     {
         path : "/course",
-        layout : "app",
+        layout : "landing",
         component : LandingPage,
         basePath: true
     },
@@ -32,6 +27,12 @@ const routes = [
         path : "/signup",
         layout : "auth",
         component : Signup,
+        basePath: true
+    },
+    {
+        path : "/",
+        layout : "admin",
+        component : Dashboard,
         basePath: true
     }
 ];
