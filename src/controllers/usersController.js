@@ -118,6 +118,8 @@ class Users {
       mailer.sendWaiting({
         emailTo: inputs.email,
         front_name: inputs.front_name,
+      }, (res) => {
+        console.log(res);
       });
       res.send(response.getResponse());
     } catch (error) {
