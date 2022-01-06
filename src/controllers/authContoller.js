@@ -14,6 +14,7 @@ class Auth {
           email,
         },
       });
+      
       response.code = 100;
       //cek user
       if (user) {
