@@ -45,15 +45,21 @@ const FormSign = (props) => {
 
   const handlerSubmit = () => {
     let isValid = true;
-    if (!values.email) {
+
+    if (!values.email && !values.password) {
+      setErrors({
+        ...errors,
+        email: "*Please Enter your email!",
+        password: "*Please Enter your password!",
+      });
+      isValid = false;
+    } else if (!values.email) {
       setErrors({
         ...errors,
         email: "*Please Enter your email!",
       });
       isValid = false;
-    }
-
-    if (!values.password) {
+    } else if (!values.password) {
       setErrors({
         ...errors,
         password: "*Please Enter your password!",
