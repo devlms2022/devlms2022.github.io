@@ -1,12 +1,19 @@
-import { Grid, Paper } from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import styled from "styled-components";
 import HeroImage from "../../assets/images/hero.png";
 import { Title, Label } from "../Text";
 import { OpenAccess, Education, Teacher, Everyone } from "../../assets/icons";
+import { ArrowForward } from "@mui/icons-material";
+import { useHistory } from "react-router-dom";
 
 const HeroSection = () => {
+  let history = new useHistory();
+  const clickSignUp = () => {
+    history.push("/signup");
+  };
+
   return (
     <SectionStyled>
       <Grid container spacing={2}>
@@ -18,6 +25,14 @@ const HeroSection = () => {
               education that you can choose to be useful for you..
             </span>
           </Box>
+          <Button
+            onClick={clickSignUp}
+            variant="outlined"
+            size="large"
+            endIcon={<ArrowForward />}
+          >
+            Get Started
+          </Button>
         </Grid>
         <Grid item sm={6}>
           <img src={HeroImage} width={"100%"} />
@@ -58,6 +73,10 @@ const HeroSection = () => {
 const SectionStyled = styled.section`
   margin-top: 70px;
   margin-bottom: 200px;
+
+  button {
+    margin-top: 30px;
+  }
 
   .box {
     width: 100%;
