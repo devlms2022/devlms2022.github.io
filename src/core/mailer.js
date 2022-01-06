@@ -14,7 +14,7 @@ class Mailer {
   }
 
   async sendWaiting({ emailTo, front_name }, cb) {
-    const subject = "LMS Information Witing Confirm";
+    const subject = "LMS Information Waiting Confirm";
     const html = `<p>Hello ${front_name} Thank you for registering at LMS. We will inform you again regarding account confirmation</p>`;
     const mailData = {
       from: process.env.EMAIL,

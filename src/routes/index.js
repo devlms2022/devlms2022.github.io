@@ -3,15 +3,15 @@
  */
 
 const { Router } = require("express");
+const { getAll, insert } = require("../controllers/usersController");
 const {
-  getAll,
   auth,
-  insert,
+  refreshToken,
   logout,
-} = require("../controllers/usersController");
+  registrasi,
+} = require("../controllers/authContoller");
 const { verifyToken, uploads } = require("../core/middleware");
-const refreshToken = require("../controllers/refreshToken");
-const upload = uploads('registrasi');
+const upload = uploads("registrasi");
 
 const router = new Router();
 
@@ -19,7 +19,7 @@ router.get("/ping", (req, res) => {
   res.send("PONG");
 });
 
-router.get("/user/", verifyToken, getAll);
+router.post("/user/", verifyToken, getAll);
 
 router.post(
   "/register",
@@ -28,11 +28,10 @@ router.post(
     { name: "identity_card", maxCount: 1 },
     { name: "grades", maxCount: 1 },
   ]),
-  insert
+  registrasi
 );
 router.post("/auth", auth);
-router.delete("/logout", logout);
-
-router.get("/token", refreshToken);
+router.post("/logout", logout);
+router.post("/token", refreshToken);
 
 module.exports = router;
