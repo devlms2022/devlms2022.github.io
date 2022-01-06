@@ -1,19 +1,23 @@
 {
   "files": {
-    "main.js": "/static/js/main.91f0d768.js",
+    "main.js": "/static/js/main.b1669d80.js",
     "static/media/hero.png": "/static/media/hero.e1264a31045e7b77c0ee.png",
     "static/media/about.svg": "/static/media/about.665241040c17d658a61af0dc9661255e.svg",
     "static/media/loginimage.png": "/static/media/loginimage.7e1fb4e528b63377e41c.png",
     "static/media/teachers.png": "/static/media/teachers.65995f3c8ccd8f2e4723.png",
     "static/media/students.png": "/static/media/students.5adc58e45278f28d5bbe.png",
     "static/media/everyone.svg": "/static/media/everyone.57159180023229812d2658bdbf39f8b3.svg",
+    "static/media/ph_student.svg": "/static/media/ph_student.75397d3ab5aa8109ca8a9eefdfcab1e7.svg",
     "static/media/open_access.svg": "/static/media/open_access.18e1e182c8a19d31a1914be4bc23b414.svg",
+    "static/media/teacherwhite.svg": "/static/media/teacherwhite.4c531dc75c578e926839bf4353b51c53.svg",
     "static/media/teacher.svg": "/static/media/teacher.9e4830d20eb3b92d7ef4be7a74b6fdab.svg",
     "index.html": "/index.html",
+    "static/media/carbon_course.svg": "/static/media/carbon_course.8b0ac742dc258518ea9f1a77395160f8.svg",
+    "static/media/discussion.svg": "/static/media/discussion.62dda9f511f0c12ae4eccdfb4e564d86.svg",
     "static/media/education.svg": "/static/media/education.43f0bafe2a790c7ceb9264cfe8d88e27.svg",
-    "main.91f0d768.js.map": "/static/js/main.91f0d768.js.map"
+    "main.b1669d80.js.map": "/static/js/main.b1669d80.js.map"
   },
   "entrypoints": [
-    "static/js/main.91f0d768.js"
+    "static/js/main.b1669d80.js"
   ]
 }
