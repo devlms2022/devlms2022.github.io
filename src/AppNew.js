@@ -16,7 +16,7 @@ const App = (props) => {
   }, []);
 
   return (
-    <Switch>
+    <Switch>    
       <Route
         path="/"
         render={(props) =>
