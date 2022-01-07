@@ -220,15 +220,6 @@ export class Signup extends Component {
         });
       }
     }
-    // if (stepActive === 1) {
-    //   console.log(this.validator.allValid());
-    //   if (this.validator.allValid()) {
-    //     this.validator.purgeFields();
-    //     this.validator.hideMessages();
-
-    //   }
-    //   this.validator.showMessages();
-    // }
   };
 
   handleSubmit = async () => {
@@ -280,6 +271,8 @@ export class Signup extends Component {
           formdata.append(attr, value);
         }
       });
+      formdata.append('status', 'waiting');
+      formdata.append('is_login', 0);
       try {
         const response = await axios({
           url: `${REACT_APP_API_URL}/register`,

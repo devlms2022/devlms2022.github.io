@@ -10,67 +10,90 @@ import TableRow from "@mui/material/TableRow";
 import ButtonCustom from "../Button/Button";
 import { Button } from "@mui/material";
 import BoxCustom from "../Box";
-
-const columns = [
-  { id: "no", label: "No", minWidth: 20 },
-  {
-    id: "fullname",
-    label: "Full Name",
-    minWidth: 170,
-    align: "center",
-  },
-  {
-    id: "category",
-    label: "Category",
-    minWidth: 170,
-    align: "center",
-  },
-  {
-    id: "detail",
-    label: "Detail",
-    minWidth: 170,
-    align: "center",
-    format: (value) => {
-      return (
-        <>
-          <ButtonCustom size="small" variant="outlined" >See More</ButtonCustom>
-        </>
-      );
-    },
-  },
-  {
-    id: "action",
-    label: "Action",
-    minWidth: 170,
-    align: "center",
-    format: (value) => {
-      return (
-        <BoxCustom direction="row" align="center" justify="space-evenly" >
-          <ButtonCustom >Apply</ButtonCustom>
-          <Button color="error">Decline</Button>
-        </BoxCustom>
-       
-      );
-    },
-  },
-];
-
-
-
+import Swal from "sweetalert2";
 
 export default function StickyHeadTable(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const {data} = props;
+  const { data } = props;
 
-  const rows = data.map((item,key) => {
+  const handleAction = (e) => {
+    const { name, id } = e.target;
+    Swal.fire({
+      title: `Are you sure, want to ${name} this user?`,
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        props.actionClicked({status : name,id});
+      }
+    });
+  };
+
+  const columns = [
+    { id: "no", label: "No", minWidth: 20 },
+    {
+      id: "fullname",
+      label: "Full Name",
+      minWidth: 170,
+      align: "center",
+    },
+    {
+      id: "category",
+      label: "Category",
+      minWidth: 170,
+      align: "center",
+    },
+    {
+      id: "detail",
+      label: "Detail",
+      minWidth: 170,
+      align: "center",
+      format: (value) => {
+        return (
+          <>
+            <ButtonCustom size="small" variant="outlined">
+              See More
+            </ButtonCustom>
+          </>
+        );
+      },
+    },
+    {
+      id: "action",
+      label: "Action",
+      minWidth: 170,
+      align: "center",
+      format: (value) => {
+        return (
+          <BoxCustom direction="row" align="center" justify="space-evenly">
+            <ButtonCustom id={value} onClick={handleAction} name="accept">
+              Accept
+            </ButtonCustom>
+            <Button id={value} onClick={handleAction} name="reject" color="error">
+              Reject
+            </Button>
+          </BoxCustom>
+        );
+      },
+    },
+  ];
+
+  const rows = data.map((item, key) => {
     return {
-      no : key+1,
-      fullname : item.front_name+" "+item.family_name,
-      category : item.category === "2" ? "Teacher" : (item.category === "3" ? "Student" : ""),
-      detail : item.id,
-      action : item.id
-    }
+      no: key + 1,
+      fullname: item.lms_user_profile.front_name + " " + item.lms_user_profile.family_name,
+      category:
+        item.role_id === "2"
+          ? "Teacher"
+          : item.role_id === "3"
+          ? "Student"
+          : "Admin",
+      detail: item.id,
+      action: item.id,
+    };
   });
 
   const handleChangePage = (event, newPage) => {
@@ -104,7 +127,7 @@ export default function StickyHeadTable(props) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 // console.log(row);
-                const fullname = row.front_name+" "+row.family_name;
+                const fullname = row.front_name + " " + row.family_name;
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.no}>
                     {columns.map((column) => {

@@ -1,13 +1,22 @@
 import { Container } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import { AppBarAdmin } from "../components/Appbar";
 import routes from "../routes";
+import TokenService from "../services/token.services";
 
 const AdminLayout = (props) => {
+
+  const handleProfileClicked = (nav) => {
+    if (nav === "logout") {
+      TokenService.removeUser();
+      document.location.reload();
+    }
+  };
+
   return (
     <>
-      <AppBarAdmin />
+      <AppBarAdmin onProfileClick={(nav) => handleProfileClicked(nav)} />
       <Container>
         <Switch>
           {routes.map((item, key) => {
@@ -22,9 +31,6 @@ const AdminLayout = (props) => {
               );
             } else {
               return;
-            }
-            {
-              /* <Route path="*" element /> */
             }
           })}
         </Switch>

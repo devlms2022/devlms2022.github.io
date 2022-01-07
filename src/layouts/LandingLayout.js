@@ -1,8 +1,7 @@
 import { Box, Container, Grid, Modal } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import styled from "styled-components";
 import Swal from "sweetalert2";

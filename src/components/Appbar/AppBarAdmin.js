@@ -15,9 +15,9 @@ import styled from "styled-components";
 import BoxCustom from "../Box";
 
 const pages = ["Dashboard", "Set Course", "Set Discussion", "Report"];
-const settings = ["Profile", "Account", "AppBarAdmin", "Logout"];
+const settings = ["Profile","Logout"];
 
-const AppBarAdmin = () => {
+const AppBarAdmin = (props)  => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -28,13 +28,19 @@ const AppBarAdmin = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (setting) => {
     setAnchorElNav(null);
+    props.onProfileClick(setting.toLowerCase());
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleClickProfile = (e) => {
+    const {name} = e.target;
+    console.log(name);
+  }
 
   return (
     <AppBarStyled color="default" position="static">
@@ -134,7 +140,7 @@ const AppBarAdmin = () => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseNavMenu}>
+                  <MenuItem key={setting} onClick={() => handleCloseNavMenu(setting)}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
