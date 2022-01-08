@@ -1,10 +1,11 @@
-import React, { Component } from "react";
 import { Grid, Step, StepLabel, Stepper } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
+import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import StudentsImg from "../../assets/images/students.png";
 import TeacherImg from "../../assets/images/teachers.png";
 import Button from "../../components/Button/Button";
@@ -12,10 +13,9 @@ import {
   FormEmailPasss,
   FormPersonalData,
   FormStudentUploadDoc,
-  FormTeachUploadDoc,
+  FormTeachUploadDoc
 } from "../../components/Form/Signup";
 import Title from "../../components/Text/Tittle";
-import Swal from "sweetalert2";
 import utilities from "../../utils/utilities";
 
 const RegistStep0 = (props) => {
@@ -273,6 +273,7 @@ export class Signup extends Component {
       });
       formdata.append('status', 'waiting');
       formdata.append('is_login', 0);
+      
       try {
         const response = await axios({
           url: `${REACT_APP_API_URL}/register`,

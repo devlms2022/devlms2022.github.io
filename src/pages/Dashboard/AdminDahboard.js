@@ -9,7 +9,8 @@ import {
 } from "../../assets/icons";
 import Paper from "../../components/Paper";
 import Table from "../../components/Table";
-import api from "../../services/api";
+import { Api } from "../../services/api";
+// import { Api as api} from "../../services/api";
 import TokenService from "../../services/token.services";
 
 export default class AdminDashboard extends Component {
@@ -30,7 +31,7 @@ export default class AdminDashboard extends Component {
   };
 
   getUsers = async () => {
-    const response = await api.post("/user");
+    const response = await Api.post("/user");
     this.setState({
       users: response.data.data,
     });
@@ -38,7 +39,7 @@ export default class AdminDashboard extends Component {
 
   handleAction = ({ id, status }) => {
     const { REACT_APP_API_URL } = process.env;
-    api
+    Api
       .post(REACT_APP_API_URL + "/activate", {
         id,
         status,
