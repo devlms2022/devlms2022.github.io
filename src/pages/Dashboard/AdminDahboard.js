@@ -1,6 +1,4 @@
 import { Grid } from "@mui/material";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
 import React, { Component } from "react";
 import styled from "styled-components";
 import {
@@ -11,6 +9,7 @@ import {
 } from "../../assets/icons";
 import Paper from "../../components/Paper";
 import Table from "../../components/Table";
+import api from "../../services/api";
 import TokenService from "../../services/token.services";
 
 export default class AdminDashboard extends Component {
@@ -22,93 +21,24 @@ export default class AdminDashboard extends Component {
       expire: 0,
       userSign: {},
     };
-    this.axiosjwt = axios.create();
-    this.axiosjwt.interceptors.request.use(
-      async (config) => {
-        const currentDate = new Date();
-        const expire = this.state.expire;
-        const { REACT_APP_API_URL } = process.env;
-        if (expire * 1000 < currentDate.getTime()) {
-          const response = await axios.post(
-            REACT_APP_API_URL + "/token",
-            {},
-            {
-              headers: {
-                token: TokenService.getLocalRefreshToken(),
-              },
-            }
-          );
-          config.headers.Authorization = `${response.data.accessToken}`;
-          // setToken(response.data.accessToken);
-          const decoded = jwt_decode(response.data.accessToken);
-          this.setState({
-            expire: decoded.exp,
-            token: response.data.accessToken,
-          });
-        }
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
   }
 
   componentDidMount = () => {
-    this.refreshToken();
     this.getUsers();
     const userSign = TokenService.getUser();
     this.setState({ userSign: userSign.data });
   };
 
-  refreshToken = async () => {
-    // const history = useHistory();
-    const { REACT_APP_API_URL } = process.env;
-    const refreshToken = TokenService.getLocalRefreshToken();
-
-    try {
-      const response = await axios.post(
-        REACT_APP_API_URL + "/token",
-        {},
-        {
-          headers: {
-            token: refreshToken,
-          },
-        }
-      );
-      const decoded = jwt_decode(response.data.accessToken);
-
-      this.setState({
-        expire: decoded.exp,
-        token: response.data.accessToken,
-      });
-    } catch (error) {
-      // if (error.response) {
-      //   history.push("/");
-      // }
-    }
-  };
-
   getUsers = async () => {
-    const { REACT_APP_API_URL } = process.env;
-    const response = await this.axiosjwt.post(
-      REACT_APP_API_URL + "/user",
-      {},
-      {
-        headers: {
-          Authorization: `${this.state.token}`,
-        },
-      }
-    );
-
+    const response = await api.post("/user");
     this.setState({
       users: response.data.data,
     });
-  }
+  };
 
   handleAction = ({ id, status }) => {
     const { REACT_APP_API_URL } = process.env;
-    this.axiosjwt
+    api
       .post(REACT_APP_API_URL + "/activate", {
         id,
         status,
@@ -123,7 +53,6 @@ export default class AdminDashboard extends Component {
       });
   };
 
- ;
   render() {
     const { users, token, userSign } = this.state;
 

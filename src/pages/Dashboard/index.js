@@ -24,36 +24,36 @@ export default class Dashboard extends Component {
       expire: 0,
       userSign: {},
     };
-    this.axiosjwt = axios.create();
-    this.axiosjwt.interceptors.request.use(
-      async (config) => {
-        const currentDate = new Date();
-        const expire = this.state.expire;
-        const { REACT_APP_API_URL } = process.env;
-        if (expire * 1000 < currentDate.getTime()) {
-          const response = await axios.post(
-            REACT_APP_API_URL + "/token",
-            {},
-            {
-              headers: {
-                token: TokenService.getLocalRefreshToken(),
-              },
-            }
-          );
-          config.headers.Authorization = `${response.data.accessToken}`;
-          // setToken(response.data.accessToken);
-          const decoded = jwt_decode(response.data.accessToken);
-          this.setState({
-            expire: decoded.exp,
-            token: response.data.accessToken,
-          });
-        }
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+    // this.axiosjwt = axios.create();
+    // this.axiosjwt.interceptors.request.use(
+    //   async (config) => {
+    //     const currentDate = new Date();
+    //     const expire = this.state.expire;
+    //     const { REACT_APP_API_URL } = process.env;
+    //     if (expire * 1000 < currentDate.getTime()) {
+    //       const response = await axios.post(
+    //         REACT_APP_API_URL + "/token",
+    //         {},
+    //         {
+    //           headers: {
+    //             token: TokenService.getLocalRefreshToken(),
+    //           },
+    //         }
+    //       );
+    //       config.headers.Authorization = `${response.data.accessToken}`;
+    //       // setToken(response.data.accessToken);
+    //       const decoded = jwt_decode(response.data.accessToken);
+    //       this.setState({
+    //         expire: decoded.exp,
+    //         token: response.data.accessToken,
+    //       });
+    //     }
+    //     return config;
+    //   },
+    //   (error) => {
+    //     return Promise.reject(error);
+    //   }
+    // );
   }
 
   componentDidMount = () => {
