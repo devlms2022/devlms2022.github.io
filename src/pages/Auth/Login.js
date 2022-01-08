@@ -28,8 +28,6 @@ class Login extends Component {
         email,
         password,
       });
-
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

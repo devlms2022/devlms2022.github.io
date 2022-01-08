@@ -11,7 +11,7 @@ const getLocalAccessToken = () => {
 
 const updateLocalAccessToken = (token) => {
   let user = JSON.parse(sessionStorage.getItem("user"));
-  user.access_token = token;
+  user.token = token;
   sessionStorage.setItem("user", JSON.stringify(user));
 };
 
