@@ -15,7 +15,9 @@ const FormEmailPass = (props) => {
             onChange={onChange}
             label="Email"
             name="email"
+            type="email"
             error={errors.email ? true : false}
+            helperText={errors.email ? errors.email : ""}
           />
           <Input
             className="form-control"
@@ -24,7 +26,7 @@ const FormEmailPass = (props) => {
             type="password"
             error={errors.password ? true : false}
             onChange={onChange}
-            helperText={errors.password ? errors.password : ''}
+            helperText={errors.password ? errors.password : ""}
           />
           <Input
             onChange={onChange}
@@ -33,7 +35,7 @@ const FormEmailPass = (props) => {
             type="password"
             error={errors.repassword ? true : false}
             name="repassword"
-            helperText={errors.repassword ? errors.repassword : ''}
+            helperText={errors.repassword ? errors.repassword : ""}
           />
         </Grid>
       </Grid>

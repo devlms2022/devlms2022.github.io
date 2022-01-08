@@ -139,59 +139,25 @@ export class Signup extends Component {
     const { stepActive, steps, data } = this.state;
     let isFormValid = true;
     if (stepActive === 1) {
-      if (!data.burger_service_nummer) {
+      if (
+        !(data.burger_service_nummer,
+        data.address,
+        data.birthday,
+        data.family_name,
+        data.front_name,
+        data.gender,
+        data.postal_code)
+      ) {
         this.setState({
           errors: {
             ["burger_service_nummer"]:
-              "*Please enter your Burger Sevice Nummer.",
-          },
-        });
-        isFormValid = false;
-      }
-      if (!data.front_name) {
-        this.setState({
-          errors: {
-            ["front_name"]: "*Please enter your Front Name.",
-          },
-        });
-        isFormValid = false;
-      }
-      if (!data.family_name) {
-        this.setState({
-          errors: {
-            ["family_name"]: "*Please enter your Family Name.",
-          },
-        });
-        isFormValid = false;
-      }
-      if (!data.gender) {
-        this.setState({
-          errors: {
-            ["gender"]: "*Please Select your Gender.",
-          },
-        });
-        isFormValid = false;
-      }
-      if (!data.address) {
-        this.setState({
-          errors: {
+              "*Please Enter your Burger Service Number.",
             ["address"]: "*Please Enter your address.",
-          },
-        });
-        isFormValid = false;
-      }
-      if (!data.birthday) {
-        this.setState({
-          errors: {
-            ["birthday"]: "*Please Enter your Birthday.",
-          },
-        });
-        isFormValid = false;
-      }
-      if (!data.postal_code) {
-        this.setState({
-          errors: {
-            ["postal_code"]: "*Please Enter your Postal Code.",
+            ["family_name"]: "*Family Name",
+            ["front_name"]: "Front Name",
+            ["gender"]: "gender",
+            ["birthday"]: "birthday",
+            ["postal_code"]: "postal code",
           },
         });
         isFormValid = false;
@@ -227,26 +193,11 @@ export class Signup extends Component {
     const { stepActive, steps, data } = this.state;
     let isFormValid = true;
 
-    if (!data.email) {
+    if (!(data.email, data.password, data.repassword)) {
       this.setState({
         errors: {
           ["email"]: "*Please enter your Email.",
-        },
-      });
-      isFormValid = false;
-    }
-
-    if (!data.password) {
-      this.setState({
-        errors: {
           ["password"]: "*Please enter your Password.",
-        },
-      });
-      isFormValid = false;
-    }
-    if (!data.repassword) {
-      this.setState({
-        errors: {
           ["repassword"]: "*Please enter Retype Password.",
         },
       });
@@ -271,8 +222,8 @@ export class Signup extends Component {
           formdata.append(attr, value);
         }
       });
-      formdata.append('status', 'waiting');
-      formdata.append('is_login', 0);
+      formdata.append("status", "waiting");
+      formdata.append("is_login", 0);
       try {
         const response = await axios({
           url: `${REACT_APP_API_URL}/register`,
