@@ -10,9 +10,9 @@ const ButtonCustom = (props) => {
 }
 
 const ButtonStyled = styled(Button)`
-    background: ${props => props.variant === 'outlined' ? `var(--white-color)` : 'var(--primary-color)'};
+    background: ${props => props.variant === 'outlined' ? `var(--white-color)` :  props.color?'inherit': 'var(--primary-color)'};
     &:hover {
-        background: ${props => props.variant === 'outlined' ? `var(--white-color)` : 'var(--primary-color)'};
+        background: ${props => props.variant === 'outlined' ? `var(--white-color)` :  props.color?'inherit': 'var(--primary-color)'};
     }
     height: ${props=>props.height ? props.height : '42px'};
     color: ${props => props.variant === 'outlined' ? `var(--primary-color)` : 'var(--white-color)'};

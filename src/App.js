@@ -47,7 +47,7 @@ function App(props) {
       try {
         const response = await axios.post(`${REACT_APP_API_URL}/auth`, {
           email,
-          password
+          password,
         });
         // console.log(response);
         if (response.status === 200) {
