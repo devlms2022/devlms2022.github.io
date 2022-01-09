@@ -33,8 +33,6 @@ function App(props) {
     }
   };
 
-  const [errors, setErrors] = useState({});
-
   const SignupHandler = async () => {
     const history = useHistory();
     history.push("/signup");

@@ -1,4 +1,4 @@
-import { Grid, IconButton, LinearProgress } from "@mui/material";
+import { Grid } from "@mui/material";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import React, { Component } from "react";
@@ -11,6 +11,7 @@ import {
 } from "../../assets/icons";
 import Paper from "../../components/Paper";
 import Table from "../../components/Table";
+import { Subtitle } from "../../components/Text";
 import TokenService from "../../services/token.services";
 import InfoIcon from "@mui/icons-material/Info";
 import Course from "../../components/Section/DashboardStudent/Course";
@@ -18,95 +19,8 @@ import Course from "../../components/Section/DashboardStudent/Course";
 export default class StudentDashboard extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      users: [],
-      token: "",
-      expire: 0,
-      userSign: {},
-    };
-    this.axiosjwt = axios.create();
-    this.axiosjwt.interceptors.request.use(
-      async (config) => {
-        const currentDate = new Date();
-        const expire = this.state.expire;
-        const { REACT_APP_API_URL } = process.env;
-        if (expire * 1000 < currentDate.getTime()) {
-          const response = await axios.post(
-            REACT_APP_API_URL + "/token",
-            {},
-            {
-              headers: {
-                token: TokenService.getLocalRefreshToken(),
-              },
-            }
-          );
-          config.headers.Authorization = `${response.data.accessToken}`;
-          // setToken(response.data.accessToken);
-          const decoded = jwt_decode(response.data.accessToken);
-          this.setState({
-            expire: decoded.exp,
-            token: response.data.accessToken,
-          });
-        }
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+    this.state = {};
   }
-
-  componentDidMount = () => {
-    this.refreshToken();
-    this.getUsers();
-    const userSign = TokenService.getUser();
-    this.setState({ userSign: userSign.data });
-  };
-
-  refreshToken = async () => {
-    // const history = useHistory();
-    const { REACT_APP_API_URL } = process.env;
-    const refreshToken = TokenService.getLocalRefreshToken();
-
-    try {
-      const response = await axios.post(
-        REACT_APP_API_URL + "/token",
-        {},
-        {
-          headers: {
-            token: refreshToken,
-          },
-        }
-      );
-      const decoded = jwt_decode(response.data.accessToken);
-
-      this.setState({
-        expire: decoded.exp,
-        token: response.data.accessToken,
-      });
-    } catch (error) {
-      // if (error.response) {
-      //   history.push("/");
-      // }
-    }
-  };
-
-  getUsers = async () => {
-    const { REACT_APP_API_URL } = process.env;
-    const response = await this.axiosjwt.post(
-      REACT_APP_API_URL + "/user",
-      {},
-      {
-        headers: {
-          Authorization: `${this.state.token}`,
-        },
-      }
-    );
-
-    this.setState({
-      users: response.data.data,
-    });
-  };
 
   handleAction = ({ id, status }) => {
     const { REACT_APP_API_URL } = process.env;
@@ -155,6 +69,9 @@ export default class StudentDashboard extends Component {
 
     return (
       <WrapContent>
+        <div className="welcome">
+          Welcome, <span>Bagus Fatwan Alfiat</span>{" "}
+        </div>
         <Paper className="paper">
           <Grid container spacing={4}>
             {boardData.map((itm, key) => {
@@ -169,6 +86,10 @@ export default class StudentDashboard extends Component {
             })}
           </Grid>
         </Paper>
+
+        <Subtitle>
+          <span>Course Catalog</span>
+        </Subtitle>
         <Course />
       </WrapContent>
     );
@@ -176,6 +97,14 @@ export default class StudentDashboard extends Component {
 }
 
 const WrapContent = styled.div`
+  .welcome {
+    font-size: 24px;
+    span {
+      font-size: 24px;
+      font-weight: 600;
+    }
+    margin-bottom: 20px;
+  }
   .paper {
     /* background: tomato; */
     padding: 25px 0;
