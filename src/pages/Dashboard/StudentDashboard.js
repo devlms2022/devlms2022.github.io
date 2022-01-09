@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, IconButton, LinearProgress } from "@mui/material";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import React, { Component } from "react";
@@ -12,6 +12,8 @@ import {
 import Paper from "../../components/Paper";
 import Table from "../../components/Table";
 import TokenService from "../../services/token.services";
+import InfoIcon from "@mui/icons-material/Info";
+import Course from "../../components/Section/DashboardStudent/Course";
 
 export default class StudentDashboard extends Component {
   constructor(props) {
@@ -167,6 +169,7 @@ export default class StudentDashboard extends Component {
             })}
           </Grid>
         </Paper>
+        <Course />
       </WrapContent>
     );
   }
