@@ -29,6 +29,15 @@ class Utilities {
     numeric: "This row must be a number!",
     in: `:attribute are not the same!`,
   };
+
+  readFileBlob(res, cb) {
+    var reader = new FileReader();
+    reader.readAsDataURL(res);
+    reader.onload = function () {
+      var imageDataUrl = reader.result;
+      cb(imageDataUrl);
+    };
+  }
 }
 
 export default new Utilities();

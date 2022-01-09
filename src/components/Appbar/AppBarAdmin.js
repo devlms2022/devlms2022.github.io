@@ -11,15 +11,25 @@ import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BoxCustom from "../Box";
+import ProfileNav from "./ProfileNav";
 
-const pages = ["Dashboard", "Set Course", "Set Discussion", "Report"];
-const settings = ["Profile","Logout"];
 
-const AppBarAdmin = (props)  => {
+
+const AppBarAdmin = (props) => {
+  const {userSign} = props;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  let pages = [];
+  if(userSign.role_id === '3') {
+    pages = ["Dashboard", "Course Progress", "Join Group", "Discussion"];
+  } else {
+    pages = ["Dashboard", "Set Course", "Set Discussion", "Report"];
+  }
+  
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -30,6 +40,9 @@ const AppBarAdmin = (props)  => {
 
   const handleCloseNavMenu = (setting) => {
     setAnchorElNav(null);
+  };
+
+  const onProfileClick = (setting) => {
     props.onProfileClick(setting.toLowerCase());
   };
 
@@ -38,9 +51,9 @@ const AppBarAdmin = (props)  => {
   };
 
   const handleClickProfile = (e) => {
-    const {name} = e.target;
+    const { name } = e.target;
     console.log(name);
-  }
+  };
 
   return (
     <AppBarStyled color="default" position="static">
@@ -117,7 +130,12 @@ const AppBarAdmin = (props)  => {
             </BoxCustom>
           </Grid>
           <Grid item className="wrapRight" xs={6}>
-            <BoxCustom direction="row" justify="flex-end" align="center" >
+            <BoxCustom
+              direction="row"
+              className="box"
+              justify="flex-end"
+              align="center"
+            >
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -139,11 +157,7 @@ const AppBarAdmin = (props)  => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={() => handleCloseNavMenu(setting)}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <ProfileNav onProfileClick={(param)=>onProfileClick(param)}/>
               </Menu>
             </BoxCustom>
           </Grid>
@@ -159,8 +173,11 @@ const AppBarStyled = styled(AppBar)`
   margin-bottom: 50px;
   .wrapRight {
     display: flex;
-    flex-direction : row;
-    justify-content : flex-end;
+    flex-direction: row;
+    justify-content: flex-end;
+    .list-item {
+      margin: 10px;
+    }
   }
 `;
 export default AppBarAdmin;

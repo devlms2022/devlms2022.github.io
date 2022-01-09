@@ -1,6 +1,7 @@
 import Signup from "./pages/Auth/Signup";
 import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/Landing";
+import Profile from "./pages/Profile";
 // import SignUp from "./"
 
 const routes = [
@@ -34,6 +35,12 @@ const routes = [
         layout : "admin",
         component : Dashboard,
         basePath: true
+    },
+    {
+        path : "/profile",
+        layout : "admin",
+        basePath : true,
+        component : Profile
     }
 ];
 

@@ -13,7 +13,7 @@ import {
   FormEmailPasss,
   FormPersonalData,
   FormStudentUploadDoc,
-  FormTeachUploadDoc
+  FormTeachUploadDoc,
 } from "../../components/Form/Signup";
 import Title from "../../components/Text/Tittle";
 import utilities from "../../utils/utilities";
@@ -222,9 +222,8 @@ export class Signup extends Component {
           formdata.append(attr, value);
         }
       });
-      formdata.append('status', 'waiting');
-      formdata.append('is_login', 0);
-      
+      formdata.append("status", "waiting");
+      formdata.append("is_login", 0);
       try {
         const response = await axios({
           url: `${REACT_APP_API_URL}/register`,
@@ -283,8 +282,6 @@ export class Signup extends Component {
       errors,
     } = this.state;
 
-    console.log(errors);
-
     if (isRedirect) {
       return (
         <Redirect
@@ -317,40 +314,41 @@ export class Signup extends Component {
           {stepActive === 0 && (
             <RegistStep0 handleClicked={this.handleChangeOption} />
           )}
-          {stepActive === 1 && (
-            <FormPersonalData
-              data={data}
-              errors={errors}
-              onChange={this.handleChange}
-            />
-          )}
-
-          {stepActive === 2 && registerType === 2 && (
-            <FormTeachUploadDoc
-              validator={this.validator2}
-              proofTeacherGrade={proof_teacher_grade}
-              onChange={this.handleChange}
-              errors={errors}
-              onChangeFile={this.handleChangeFile}
-            />
-          )}
-          {stepActive === 2 && registerType === 3 && (
-            <FormStudentUploadDoc
-              validator={this.validator2}
-              grades={grades}
-              errors={errors}
-              identityCard={identity_card}
-              onChange={this.handleChange}
-              onChangeFile={this.handleChangeFile}
-            />
-          )}
-          {stepActive === 3 && (
-            <FormEmailPasss
-              validator={this.validator3}
-              onChange={this.handleChange}
-              errors={errors}
-            />
-          )}
+          <div className="wrap-from">
+            {stepActive === 1 && (
+              <FormPersonalData
+                data={data}
+                errors={errors}
+                onChange={this.handleChange}
+              />
+            )}
+            {stepActive === 2 && registerType === 2 && (
+              <FormTeachUploadDoc
+                validator={this.validator2}
+                proofTeacherGrade={proof_teacher_grade}
+                onChange={this.handleChange}
+                errors={errors}
+                onChangeFile={this.handleChangeFile}
+              />
+            )}
+            {stepActive === 2 && registerType === 3 && (
+              <FormStudentUploadDoc
+                validator={this.validator2}
+                grades={grades}
+                errors={errors}
+                identityCard={identity_card}
+                onChange={this.handleChange}
+                onChangeFile={this.handleChangeFile}
+              />
+            )}
+            {stepActive === 3 && (
+              <FormEmailPasss
+                validator={this.validator3}
+                onChange={this.handleChange}
+                errors={errors}
+              />
+            )}
+          </div>
 
           {stepActive > 0 && (
             <Grid spacing={2} className="wrap-button" container>
@@ -401,7 +399,6 @@ const Container = styled.div`
 
   .box-option {
     display: flex;
-
     justify-content: center;
     flex-direction: column;
   }
@@ -414,6 +411,9 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 12px;
+    .wrap-from {
+      width: 480px;
+    }
   }
   .wrap-button {
     width: 450px;

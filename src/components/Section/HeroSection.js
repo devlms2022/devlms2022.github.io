@@ -7,6 +7,7 @@ import { Title, Label } from "../Text";
 import { OpenAccess, Education, Teacher, Everyone } from "../../assets/icons";
 import { ArrowForward } from "@mui/icons-material";
 import { useHistory } from "react-router-dom";
+import ButtonCustom from "../Button/Button";
 
 const HeroSection = () => {
   let history = new useHistory();
@@ -25,14 +26,14 @@ const HeroSection = () => {
               education that you can choose to be useful for you..
             </span>
           </Box>
-          <Button
+          <ButtonCustom
             onClick={clickSignUp}
             variant="outlined"
             size="large"
             endIcon={<ArrowForward />}
           >
             Get Started
-          </Button>
+          </ButtonCustom>
         </Grid>
         <Grid item sm={6}>
           <img src={HeroImage} width={"100%"} />

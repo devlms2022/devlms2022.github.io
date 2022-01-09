@@ -7,6 +7,10 @@ const BoxCustom = (props) => {
     direction = "col",
     px,
     py,
+    mx,
+    my,
+    mb,
+    mt,
     background,
     justify = "flex-start",
     align = "flex-start",
@@ -23,6 +27,10 @@ const BoxCustom = (props) => {
         background,
         justifyContent: justify,
         alignItems: align,
+        marginX: mx,
+        marginY: my,
+        marginBottom: mb,
+        marginTop: mt,
       }}
     >
       {children}

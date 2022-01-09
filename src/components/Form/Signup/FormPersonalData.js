@@ -1,12 +1,17 @@
-import { FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import React, { useState } from "react";
 import Input from "../Input";
 import { Styling as WrapContent } from "./index";
 
 const FormPersonalData = (props) => {
-  const { onChange, errors, data } = props;
-
-  console.log(errors);
+  const { onChange, errors, data, disabled } = props;
 
   return (
     <WrapContent>
@@ -15,27 +20,30 @@ const FormPersonalData = (props) => {
         label="Burger Service Nummer"
         name="burger_service_nummer"
         type="number"
-        value={data.burger_service_nummer}
+        disabled={
+          disabled ? (disabled.burger_service_nummer ? true : false) : false
+        }
         onChange={onChange}
         error={errors.burger_service_nummer ? true : false}
         helperText={
           errors.burger_service_nummer ? errors.burger_service_nummer : " "
         }
-        // helperText={isBurgerServiceValid ? isBurgerServiceValid : " "}
+        value={
+          data.burger_service_nummer ? data.burger_service_nummer : ""
+        }
       />
       <Grid spacing={2} container>
-        <Grid className="col" className="col" item xs={6}>
+        <Grid className="col" item xs={6}>
           <Input
             className="form-control"
             label="Family Name"
             name="family_name"
-            value={data.family_name}
             helperText={errors.family_name ? errors.family_name : " "}
             onChange={(e) => {
               onChange(e);
             }}
             error={errors.family_name ? true : false}
-            // helperText={isFamilyNameValid ? isFamilyNameValid : " "}
+            value={data.family_name ? data.family_name : ""}
           />
         </Grid>
         <Grid className="col" item xs={6}>
@@ -43,30 +51,33 @@ const FormPersonalData = (props) => {
             className="form-control"
             label="Front Name"
             name="front_name"
-            value={data.front_name}
             onChange={onChange}
             helperText={errors.front_name ? errors.front_name : " "}
             error={errors.front_name ? true : false}
+            value={data.front_name ? data.front_name : ""}
             // helperText={isFrontNameValid ? isFrontNameValid : " "}
           />
         </Grid>
         <Grid className="col" item xs={6}>
-          <FormControl  error={errors.gender ? true : false} sx={{ width: "100%" }}>
+          <FormControl
+            error={errors.gender ? true : false}
+            sx={{ width: "100%" }}
+          >
             <InputLabel>Gender</InputLabel>
             <Select
               onChange={onChange}
               autoWidth
-              value={data.genere}
+              value={data.gender ? data.gender : ""}
               name="gender"
               label="Gender"
-              defaultValue=""
-             
             >
               <MenuItem value="male">Male</MenuItem>
               <MenuItem value="female">Female</MenuItem>
             </Select>
-            
-            <FormHelperText>{errors.gender ? errors.gender : ''}</FormHelperText>
+
+            <FormHelperText>
+              {errors.gender ? errors.gender : ""}
+            </FormHelperText>
           </FormControl>
           {/* <Input className="form-control" label="Gener" name="gener" /> */}
         </Grid>
@@ -77,7 +88,7 @@ const FormPersonalData = (props) => {
             className="form-control"
             label="Birthday"
             name="birthday"
-            value={data.birthday}
+            value={data.birthday ? data.birthday : ""}
             error={errors.birthday ? true : false}
             InputLabelProps={{
               shrink: true,
@@ -93,7 +104,7 @@ const FormPersonalData = (props) => {
             label="Address"
             name="address"
             multiline
-            value={data.address}
+            value={data.address ? data.address : ""}
             error={errors.address ? true : false}
             onChange={onChange}
             rows={4}
@@ -106,10 +117,10 @@ const FormPersonalData = (props) => {
             className="form-control"
             label="Postal Code"
             name="postal_code"
-            value={data.postal_code}
             onChange={onChange}
             error={errors.postal_code ? true : false}
             helperText={errors.postal_code ? errors.postal_code : " "}
+            value={data.postal_code ? data.postal_code : ""}
             // helperText={isPostalCodeValid ? isPostalCodeValid : " "}
           />
         </Grid>

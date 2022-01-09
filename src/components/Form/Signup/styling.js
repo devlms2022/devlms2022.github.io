@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 const WrapContent = styled.div`
-  width: 480px;
+  width: 100%;
   /* background: #057fff; */
-  padding: 5px 25px;
+ 
 
   .form-control {
     width: 100%;
-    margin: 0 0 40px 0;
+    margin: 0 0 8px 0;
   }
 
   .title {
@@ -22,7 +22,7 @@ const WrapContent = styled.div`
   }
 
   .form-group {
-    margin-bottom: 45px;
+    margin-bottom: 40px;
   }
   .btn {
     margin-bottom: 15px;
