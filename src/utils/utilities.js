@@ -30,12 +30,36 @@ class Utilities {
     in: `:attribute are not the same!`,
   };
 
+  isJsonString(str) {
+    if (
+      /^[\],:{}\s]*$/.test(
+        str
+          .replace(/\\["\\\/bfnrtu]/g, '@')
+          .replace(
+            /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
+            ']',
+          )
+          .replace(/(?:^|:|,)(?:\s*\[)+/g, ''),
+      )
+    ) {
+     return true
+    } else return false;
+  }
+
   readFileBlob(res, cb) {
     var reader = new FileReader();
     reader.readAsDataURL(res);
     reader.onload = function () {
       var imageDataUrl = reader.result;
       cb(imageDataUrl);
+    };
+  }
+  readBlobAsText(blob, cb) {
+    var reader = new FileReader();
+    reader.readAsText(blob);
+    reader.onload = function () {
+      var text = reader.result;
+      cb(text);
     };
   }
 }

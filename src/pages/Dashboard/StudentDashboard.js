@@ -70,7 +70,7 @@ export default class StudentDashboard extends Component {
     return (
       <WrapContent>
         <div className="welcome">
-          Welcome, <span>Bagus Fatwan Alfiat</span>{" "}
+          Welcome, <span>Bagus Fatwan Alfiat</span>
         </div>
         <Paper className="paper">
           <Grid container spacing={4}>

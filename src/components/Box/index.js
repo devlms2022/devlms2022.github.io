@@ -15,11 +15,13 @@ const BoxCustom = (props) => {
     justify = "flex-start",
     align = "flex-start",
     children,
+    width
   } = props;
   return (
     <Box
       {...props}
       sx={{
+        width: width,
         display: "flex",
         flexDirection: direction === "col" ? "column" : "row",
         paddingX: px,

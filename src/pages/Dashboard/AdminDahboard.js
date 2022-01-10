@@ -8,7 +8,7 @@ import {
   TeacherWhiteIcon,
 } from "../../assets/icons";
 import Paper from "../../components/Paper";
-import Table from "../../components/Table";
+import {TableUser} from "../../components/Table";
 import { Api } from "../../services/api";
 // import { Api as api} from "../../services/api";
 import TokenService from "../../services/token.services";
@@ -18,8 +18,6 @@ export default class AdminDashboard extends Component {
     super(props);
     this.state = {
       users: [],
-      token: "",
-      expire: 0,
       userSign: {},
     };
   }
@@ -55,7 +53,7 @@ export default class AdminDashboard extends Component {
   };
 
   render() {
-    const { users, token, userSign } = this.state;
+    const { users } = this.state;
 
     const boardData = [
       {
@@ -101,7 +99,7 @@ export default class AdminDashboard extends Component {
             })}
           </Grid>
         </Paper>
-        <Table actionClicked={this.handleAction} data={users} />
+        <TableUser  actionClicked={this.handleAction} data={users} />
       </WrapContent>
     );
   }

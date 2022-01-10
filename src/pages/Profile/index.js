@@ -31,6 +31,7 @@ class Profile extends Component {
         old_password: "",
         new_password: "",
         renew_password: "",
+        avatar: undefined,
       },
       userId: "",
       avatar: "",
@@ -93,7 +94,7 @@ class Profile extends Component {
             renew_password: "",
           });
         });
-      } else  {
+      } else {
         Swal.fire({
           title: "Update Profile Failed!",
           text: res.data.message,
@@ -147,7 +148,24 @@ class Profile extends Component {
     }
   };
 
-  changeAvatar = async (e) => {};
+  changeAvatar = async (e) => {
+    const { files, name } = e.target;
+    const formdata = new FormData();
+    formdata.append("id", this.state.data.profile_id);
+    formdata.append("avatar", files[0]);
+    try {
+      const resp = await Api.post("/profile/updateFile", formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if(resp.data.success && resp.data.code === 200) {
+        this.fetchAvatar(this.state.data.profile_id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   async fetchAvatar(id) {
     try {
@@ -156,9 +174,18 @@ class Profile extends Component {
         { id, file: "avatar" },
         { responseType: "blob" }
       );
-
-      utilities.readFileBlob(res.data, (response) => {
-        this.setState({ avatar: response });
+      utilities.readBlobAsText(res.data, (string) => {
+        const isJSON = utilities.isJsonString(string);
+        if (isJSON) {
+          const response = JSON.parse(string);
+          if (response.code === 404) {
+            this.setState({ avatar: "" });
+          }
+        } else {
+          utilities.readFileBlob(res.data, (response) => {
+            this.setState({ avatar: response });
+          });
+        }
       });
     } catch (error) {
       console.log(error);
@@ -183,7 +210,7 @@ class Profile extends Component {
             front_name: data.profile.front_name,
             postal_code: data.profile.postal_code,
             gender: data.profile.gender,
-            profile_id : data.profile.id
+            profile_id: data.profile.id,
           },
         });
         this.fetchAvatar(data.profile.id);
@@ -204,7 +231,6 @@ class Profile extends Component {
   render() {
     const { data, errors, disabled, avatar } = this.state;
 
-
     return (
       <Wrap>
         <Grid container spacing={1}>
@@ -214,7 +240,7 @@ class Profile extends Component {
             </div>
             <InputFIle
               label="Change Avatar"
-              onChange={() => {}}
+              onChange={this.changeAvatar}
               name="avatar"
             />
           </Grid>
@@ -223,7 +249,13 @@ class Profile extends Component {
               <Subtitle>
                 <span>My Profile</span>
               </Subtitle>
-              <ButtonCustom  name="edit_profile"   onClick={this.handleSubmit} variant="outlined">EDIT PROFILE</ButtonCustom>
+              <ButtonCustom
+                name="edit_profile"
+                onClick={this.handleSubmit}
+                variant="outlined"
+              >
+                EDIT PROFILE
+              </ButtonCustom>
             </BoxCustom>
             <FormPersonalData
               className="form-personal"
@@ -234,7 +266,7 @@ class Profile extends Component {
             />
           </Grid>
           <Grid item sm={4} xs={12} className="wrap-profile">
-            <BoxCustom  mb={1} direction="row" justify="space-between">
+            <BoxCustom mb={1} direction="row" justify="space-between">
               <Subtitle>
                 <span>My Account</span>
               </Subtitle>
