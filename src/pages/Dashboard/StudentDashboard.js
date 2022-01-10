@@ -13,6 +13,8 @@ import Paper from "../../components/Paper";
 import Table from "../../components/Table";
 import { Subtitle } from "../../components/Text";
 import TokenService from "../../services/token.services";
+import InfoIcon from "@mui/icons-material/Info";
+import Course from "../../components/Section/DashboardStudent/Course";
 
 export default class StudentDashboard extends Component {
   constructor(props) {
@@ -88,6 +90,7 @@ export default class StudentDashboard extends Component {
         <Subtitle>
           <span>Course Catalog</span>
         </Subtitle>
+        <Course />
       </WrapContent>
     );
   }
