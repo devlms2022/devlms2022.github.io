@@ -1,4 +1,13 @@
+import moment from "moment";
 class Utilities {
+
+  now_timestamp() {
+    return moment().format("YYYY-MM-DD HH:mm:ss").toString();
+  }
+  now() {
+    return moment().format("YYYY-MM-DD").toString();
+  }
+
   makeid(length = 18) {
     var characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -19,7 +28,6 @@ class Utilities {
 
     return size;
   }
-
   //custom message SimpleReactValidator
   messageValidator = {
     required: "This row is required!",
@@ -34,15 +42,15 @@ class Utilities {
     if (
       /^[\],:{}\s]*$/.test(
         str
-          .replace(/\\["\\\/bfnrtu]/g, '@')
+          .replace(/\\["\\\/bfnrtu]/g, "@")
           .replace(
             /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
-            ']',
+            "]"
           )
-          .replace(/(?:^|:|,)(?:\s*\[)+/g, ''),
+          .replace(/(?:^|:|,)(?:\s*\[)+/g, "")
       )
     ) {
-     return true
+      return true;
     } else return false;
   }
 
