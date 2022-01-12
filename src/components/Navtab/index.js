@@ -1,32 +1,19 @@
-import * as React from "react";
-import TabsUnstyled from "@mui/base/TabsUnstyled";
-import TabsListUnstyled from "@mui/base/TabsListUnstyled";
-import TabPanelUnstyled from "@mui/base/TabPanelUnstyled";
 import { buttonUnstyledClasses } from "@mui/base/ButtonUnstyled";
+import TabsListUnstyled from "@mui/base/TabsListUnstyled";
+import TabsUnstyled from "@mui/base/TabsUnstyled";
 import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
+import * as React from "react";
 import styled from "styled-components";
 
-const blue = {
-  50: "#F0F7FF",
-  100: "#C2E0FF",
-  200: "#80BFFF",
-  300: "#66B2FF",
-  400: "#3399FF",
-  500: "#007FFF",
-  600: "#0072E5",
-  700: "#0059B2",
-  800: "#004C99",
-  900: "#003A75",
-};
 
 const Tab = styled(TabUnstyled)`
   color: white;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: bold;
-  background-color: transparent;
+  background-color: ${(props)=>props.active ? "white" : "transparent"};
   width: 100%;
-  padding: 12px 16px;
+  padding: 5px 6px;
   margin: 6px 6px;
   border: none;
   border-radius: 5px;
@@ -34,18 +21,12 @@ const Tab = styled(TabUnstyled)`
   justify-content: center;
 
   &:hover {
-    background-color: ${blue[400]};
-  }
-
-  &.${buttonUnstyledClasses.focusVisible} {
-    color: #fff;
-    outline: none;
-    background-color: ${blue[200]};
+    background-color: var(--primary-color);
   }
 
   &.${tabUnstyledClasses.selected} {
-    background-color: ${blue[50]};
-    color: ${blue[600]};
+    background-color:white;
+    color: var(--primary-color);
   }
 
   &.${buttonUnstyledClasses.disabled} {
@@ -54,15 +35,11 @@ const Tab = styled(TabUnstyled)`
   }
 `;
 
-const TabPanel = styled(TabPanelUnstyled)`
-  width: 100%;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 0.875rem;
-`;
+
 
 const TabsList = styled(TabsListUnstyled)`
   min-width: 320px;
-  background-color: ${blue[500]};
+  background-color: var(--primary-color);
   border-radius: 8px;
   margin-bottom: 16px;
   display: flex;
@@ -72,17 +49,19 @@ const TabsList = styled(TabsListUnstyled)`
 `;
 
 const Navtab = (props) => {
-  const { data } = props;
+  const { tabsData , onClick, navIndexActive } = props;
+
   return (
-    <TabsUnstyled defaultValue={0}>
-      <TabsList>
-        <Tab>One</Tab>
-        <Tab>Two</Tab>
-        <Tab>Three</Tab>
+    <TabsUnstyled value={navIndexActive} >
+      <TabsList >
+        {tabsData.map((tab,index) => {
+          return (
+            <Tab key={tab.name} onClick={(e) => onClick(e,index)} name={tab.name}>
+              {tab.label}
+            </Tab>
+          );
+        })}
       </TabsList>
-      <TabPanel value={0}>First content</TabPanel>
-      <TabPanel value={1}>Second content</TabPanel>
-      <TabPanel value={2}>Third content</TabPanel>
     </TabsUnstyled>
   );
 };

@@ -16,7 +16,7 @@ import utilities from "../../utils/utilities";
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.user = TokenService.getUser();
+    this._isMounted = false;
     this.state = {
       data: {
         burger_service_nummer: "",
@@ -159,7 +159,7 @@ class Profile extends Component {
           "Content-Type": "multipart/form-data",
         },
       });
-      if(resp.data.success && resp.data.code === 200) {
+      if (resp.data.success && resp.data.code === 200) {
         this.fetchAvatar(this.state.data.profile_id);
       }
     } catch (error) {
@@ -199,20 +199,21 @@ class Profile extends Component {
         data: { data },
       } = res;
       if (res.status === 200 && res.data.code === 200) {
-        this.setState({
-          data: {
-            ...this.state.data,
-            burger_service_nummer: data.profile.burger_service_nummer,
-            birthday: data.profile.birthday,
-            address: data.profile.address,
-            email: data.email,
-            family_name: data.profile.family_name,
-            front_name: data.profile.front_name,
-            postal_code: data.profile.postal_code,
-            gender: data.profile.gender,
-            profile_id: data.profile.id,
-          },
-        });
+        this._isMounted &&
+          this.setState({
+            data: {
+              ...this.state.data,
+              burger_service_nummer: data.profile.burger_service_nummer,
+              birthday: data.profile.birthday,
+              address: data.profile.address,
+              email: data.email,
+              family_name: data.profile.family_name,
+              front_name: data.profile.front_name,
+              postal_code: data.profile.postal_code,
+              gender: data.profile.gender,
+              profile_id: data.profile.id,
+            },
+          });
         this.fetchAvatar(data.profile.id);
       }
     } catch (error) {
@@ -221,11 +222,18 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    const userId = this.user.data.id;
+    this._isMounted = true;
+    const user = TokenService.getUser();
+
+    const userId = user.data.id;
     this.setState({
       userId,
     });
-    this.fetchUser(userId);
+    this._isMounted && this.fetchUser(userId);
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

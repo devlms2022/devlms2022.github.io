@@ -8,7 +8,7 @@ import {
   TeacherWhiteIcon,
 } from "../../assets/icons";
 import Paper from "../../components/Paper";
-import {TableUser} from "../../components/Table";
+import { TableUser } from "../../components/Table";
 import { Api } from "../../services/api";
 // import { Api as api} from "../../services/api";
 import TokenService from "../../services/token.services";
@@ -19,6 +19,11 @@ export default class AdminDashboard extends Component {
     this.state = {
       users: [],
       userSign: {},
+      role_id: 3,
+      search: "",
+      page: 0,
+      limit: 10,
+      totalData : 0,
     };
   }
 
@@ -29,19 +34,43 @@ export default class AdminDashboard extends Component {
   };
 
   getUsers = async () => {
-    const response = await Api.post("/user");
+    const { page, limit } = this.state;
+    const response = await Api.post("/user", {
+      filter: {
+        status: "waiting",
+        role_id: this.state.role_id,
+      },
+      search: this.state.search,
+      page,
+      limit,
+    });
     this.setState({
       users: response.data.data,
+      totalData : response.data.total
     });
+  };
+
+  handleChangePage = (event, newPage) => {
+    console.log(newPage);
+    this.setState({
+      page: newPage,
+    });
+  };
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({
+      limit: +event.target.value,
+      page: 0,
+    });
+    console.log( +event.target.value)
   };
 
   handleAction = ({ id, status }) => {
     const { REACT_APP_API_URL } = process.env;
-    Api
-      .post(REACT_APP_API_URL + "/activate", {
-        id,
-        status,
-      })
+    Api.post(REACT_APP_API_URL + "/activate", {
+      id,
+      status,
+    })
       .then((res) => {
         if (res.status === 200 && res.data.code === 200) {
           this.getUsers();
@@ -52,8 +81,29 @@ export default class AdminDashboard extends Component {
       });
   };
 
+  handleSwitch = (role) => {
+    role = role === "teacher" ? 2 : 3;
+    this.setState({ role_id: role });
+  };
+
+  handleSearch = (keyword) => {
+    this.setState({
+      search: keyword,
+    });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.role_id !== this.state.role_id) {
+      this.getUsers();
+    }
+    if (prevState.search !== this.state.search) {
+      this.getUsers();
+    }
+  }
+
   render() {
-    const { users } = this.state;
+    const { users, role_id, page, limit, totalData} = this.state;
+    console.log(users);
 
     const boardData = [
       {
@@ -99,7 +149,17 @@ export default class AdminDashboard extends Component {
             })}
           </Grid>
         </Paper>
-        <TableUser  actionClicked={this.handleAction} data={users} />
+        <TableUser
+          onSwitch={this.handleSwitch}
+          actionClicked={this.handleAction}
+          data={users}
+          onSearch={this.handleSearch}
+          total={totalData}
+          page={page}
+          limit={limit}
+          onChangePage={this.handleChangePage}
+          onChangeRowPerpage={this.handleChangeRowsPerPage}
+        />
       </WrapContent>
     );
   }

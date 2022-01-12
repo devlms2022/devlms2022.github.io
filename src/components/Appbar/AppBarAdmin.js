@@ -3,29 +3,61 @@ import { Grid } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BoxCustom from "../Box";
+import ButtonLink from "../Button/ButtonLink";
 import ProfileNav from "./ProfileNav";
 
 const AppBarAdmin = (props) => {
-  const { userSign } = props;
+  const { userSign, pathname } = props;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   let pages = [];
   if (userSign.role_id === "3") {
-    pages = ["Dashboard", "Course Progress", "Join Group", "Discussion"];
+    pages = [
+      {
+        label: "Dashboard",
+        route: "/",
+      },
+      {
+        label: "Study Progress",
+        route: "/study/progress",
+      },
+      {
+        label: "Join Group",
+        route: "/join-group",
+      },
+      {
+        label: "Discussion",
+        route: "/discussion",
+      },
+    ];
   } else {
-    pages = ["Dashboard", "Set Course", "Set Discussion", "Report"];
+    pages = [
+      {
+        label: "Dashboard",
+        route: "/",
+      },
+      {
+        label: "Set Study",
+        route: "/study/set",
+      },
+      {
+        label: "Set Discussion",
+        route: "/discussion/set",
+      },
+      {
+        label: "Report",
+        route: "/report",
+      },
+    ];
   }
 
   const handleOpenNavMenu = (event) => {
@@ -87,10 +119,10 @@ const AppBarAdmin = (props) => {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <span>{page}</span>
-                  </MenuItem>
+                {pages.map((item, i) => (
+                  <ButtonLink to={item.route} key={item.route}>
+                    {item.label}
+                  </ButtonLink>
                 ))}
               </Menu>
             </Box>
@@ -112,17 +144,17 @@ const AppBarAdmin = (props) => {
                     md: "flex",
                     justifyContent: "space-evenly",
                   },
+                  paddingY: "10px",
                 }}
               >
-                {pages.map((page) => (
-                  <Link
-                    to={"/" + page}
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: "black", display: "block" }}
+                {pages.map((item, i) => (
+                  <ButtonLink
+                    isActive={pathname === item.route ? true : false}
+                    to={item.route}
+                    key={item.route}
                   >
-                    {page}
-                  </Link>
+                    {item.label}
+                  </ButtonLink>
                 ))}
               </Box>
             </BoxCustom>

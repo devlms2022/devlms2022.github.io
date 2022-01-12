@@ -1,12 +1,6 @@
 import { SearchRounded } from "@mui/icons-material";
-import {
-  FormControl,
-  Icon,
-  InputAdornment,
-  OutlinedInput,
-} from "@mui/material";
+import { FormControl, InputAdornment, TextField } from "@mui/material";
 import React from "react";
-import BoxCustom from "../../Box";
 
 const Search = (props) => {
   const {
@@ -16,25 +10,25 @@ const Search = (props) => {
     className,
     onBlur,
     placeholder,
-    autoComplete = "off",
   } = props;
   return (
-    <BoxCustom component="form" autoComplete={autoComplete}>
-      <FormControl sx={{ width }}>
-        <OutlinedInput
-          startAdornment={
+    <FormControl sx={{ width }}>
+      <TextField
+        InputProps={{
+          startAdornment: (
             <InputAdornment position="start">
               <SearchRounded />
             </InputAdornment>
-          }
-          onChange={onChange}
-          name={name}
-          className={className}
-          onBlur={onBlur}
-          placeholder={placeholder}
-        />
-      </FormControl>
-    </BoxCustom>
+          ),
+        }}
+        onChange={(e) => onChange(e.target.value)}
+        name={name}
+        className={className}
+        onBlur={onBlur}
+        placeholder={placeholder}
+        
+      />
+    </FormControl>
   );
 };
 
