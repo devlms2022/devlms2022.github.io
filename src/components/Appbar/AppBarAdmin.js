@@ -16,20 +16,17 @@ import styled from "styled-components";
 import BoxCustom from "../Box";
 import ProfileNav from "./ProfileNav";
 
-
-
 const AppBarAdmin = (props) => {
-  const {userSign} = props;
+  const { userSign } = props;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   let pages = [];
-  if(userSign.role_id === '3') {
+  if (userSign.role_id === "3") {
     pages = ["Dashboard", "Course Progress", "Join Group", "Discussion"];
   } else {
     pages = ["Dashboard", "Set Course", "Set Discussion", "Report"];
   }
-  
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -118,13 +115,14 @@ const AppBarAdmin = (props) => {
                 }}
               >
                 {pages.map((page) => (
-                  <Button
+                  <Link
+                    to={"/" + page}
                     key={page}
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: "black", display: "block" }}
                   >
                     {page}
-                  </Button>
+                  </Link>
                 ))}
               </Box>
             </BoxCustom>
@@ -157,7 +155,7 @@ const AppBarAdmin = (props) => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <ProfileNav onProfileClick={(param)=>onProfileClick(param)}/>
+                <ProfileNav onProfileClick={(param) => onProfileClick(param)} />
               </Menu>
             </BoxCustom>
           </Grid>
