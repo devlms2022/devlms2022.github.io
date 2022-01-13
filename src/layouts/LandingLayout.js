@@ -112,7 +112,7 @@ function App(props) {
                 return (
                   <Route
                     path={`${item.path}`}
-                    component={item.component}
+                    component={item.component} 
                     key={key}
                     exact={item.basePath}
                   />

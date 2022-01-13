@@ -25,26 +25,12 @@ export default function TableUser(props) {
     onChangePage,
     onChangeRowPerpage,
     onSearch,
-   
     onSwitch,
+    onClickDetail
   } = props;
-  // console.log(data);
+
   const [navIndexActive, setNavIndexActive] = useState(0);
 
-  const handleAction = (e) => {
-    const { name, id } = e.target;
-    Swal.fire({
-      title: `Are you sure, want to ${name} this user?`,
-      showDenyButton: true,
-      confirmButtonText: "Yes",
-      denyButtonText: `No`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        props.actionClicked({ status: name, id });
-      }
-    });
-  };
 
   const columns = [
     { id: "no", label: "No", minWidth: 20 },
@@ -71,41 +57,23 @@ export default function TableUser(props) {
       format: (value) => {
         return (
           <>
-            <ButtonCustom size="small" variant="outlined">
+            <ButtonCustom onClick={() => onClickDetail(value)} size="small" variant="outlined">
               See More
             </ButtonCustom>
           </>
         );
       },
     },
-    // {
-    //   id: "action",
-    //   label: "Action",
-    //   minWidth: 170,
-    //   align: "center",
-    //   format: (value) => {
-    //     return (
-    //       <BoxCustom direction="row" align="center" justify="space-evenly">
-    //         <ButtonCustom id={value} onClick={handleAction} name="accept">
-    //           Accept
-    //         </ButtonCustom>
-    //         <Button
-    //           id={value}
-    //           onClick={handleAction}
-    //           name="reject"
-    //           color="error"
-    //         >
-    //           Reject
-    //         </Button>
-    //       </BoxCustom>
-    //     );
-    //   },
-    // },
+   
   ];
 
+  let initialNumber = limit*page;
+  let increment = 1;
   const rows = data.map((item, key) => {
+    let number = initialNumber + increment;
+    increment++;
     return {
-      no: key + 1,
+      no: number,
       fullname: item.profile.front_name + " " + item.profile.family_name,
       created_at: item.created_at,
       detail: item.id,

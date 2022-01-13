@@ -11,8 +11,8 @@ import Input from "../Input";
 import { Styling as WrapContent } from "./index";
 
 const FormPersonalData = (props) => {
-  const { onChange, errors, data, disabled } = props;
-
+  const { onChange, errors, data, disabled, forDetail } = props;
+ 
   return (
     <WrapContent>
       <Input
@@ -20,17 +20,19 @@ const FormPersonalData = (props) => {
         label="Burger Service Nummer"
         name="burger_service_nummer"
         type="number"
-        disabled={
-          disabled ? (disabled.burger_service_nummer ? true : false) : false
+        inputProps={
+          {readOnly : disabled ? (disabled.burger_service_nummer ? true : false) : forDetail ? true : false} 
         }
         onChange={onChange}
-        error={errors.burger_service_nummer ? true : false}
+        error={errors ? (errors.burger_service_nummer ? true : false) : false}
         helperText={
-          errors.burger_service_nummer ? errors.burger_service_nummer : " "
+          errors
+            ? errors.burger_service_nummer
+              ? errors.burger_service_nummer
+              : ""
+            : ""
         }
-        value={
-          data.burger_service_nummer ? data.burger_service_nummer : ""
-        }
+        value={data.burger_service_nummer ? data.burger_service_nummer : ""}
       />
       <Grid spacing={2} container>
         <Grid className="col" item xs={6}>
@@ -38,11 +40,14 @@ const FormPersonalData = (props) => {
             className="form-control"
             label="Family Name"
             name="family_name"
-            helperText={errors.family_name ? errors.family_name : " "}
+            helperText={
+              errors ? (errors.family_name ? errors.family_name : "") : ""
+            }
             onChange={(e) => {
               onChange(e);
             }}
-            error={errors.family_name ? true : false}
+            inputProps={{readOnly : disabled ? (disabled.family_name ? true : false) : forDetail ? true : false}}
+            error={errors ? (errors.family_name ? true : false) : false}
             value={data.family_name ? data.family_name : ""}
           />
         </Grid>
@@ -52,15 +57,18 @@ const FormPersonalData = (props) => {
             label="Front Name"
             name="front_name"
             onChange={onChange}
-            helperText={errors.front_name ? errors.front_name : " "}
-            error={errors.front_name ? true : false}
+            helperText={
+              errors ? (errors.front_name ? errors.front_name : "") : ""
+            }
+            error={errors ? (errors.front_name ? true : false) : false}
             value={data.front_name ? data.front_name : ""}
+            inputProps={{readOnly : disabled ? (disabled.front_name ? true : false) : forDetail ? true : false}}
             // helperText={isFrontNameValid ? isFrontNameValid : " "}
           />
         </Grid>
         <Grid className="col" item xs={6}>
           <FormControl
-            error={errors.gender ? true : false}
+            error={errors ? (errors.gender ? true : false) : false}
             sx={{ width: "100%" }}
           >
             <InputLabel>Gender</InputLabel>
@@ -70,16 +78,16 @@ const FormPersonalData = (props) => {
               value={data.gender ? data.gender : ""}
               name="gender"
               label="Gender"
+              inputProps={{readOnly : disabled ? (disabled.gender ? true : false) : forDetail ? true : false}}
             >
               <MenuItem value="male">Male</MenuItem>
               <MenuItem value="female">Female</MenuItem>
             </Select>
 
             <FormHelperText>
-              {errors.gender ? errors.gender : ""}
+              {errors ? (errors.gender ? errors.gender : "") : ""}
             </FormHelperText>
           </FormControl>
-          {/* <Input className="form-control" label="Gener" name="gener" /> */}
         </Grid>
         <Grid className="col" item xs={6}>
           <Input
@@ -89,13 +97,13 @@ const FormPersonalData = (props) => {
             label="Birthday"
             name="birthday"
             value={data.birthday ? data.birthday : ""}
-            error={errors.birthday ? true : false}
+            error={errors ? (errors.birthday ? true : false) : false}
             InputLabelProps={{
               shrink: true,
             }}
-            // helperText={isBirthDayValid ? isBirthDayValid : " "}
-            helperText={errors.birthday ? errors.birthday : " "}
+            helperText={errors ? (errors.birthday ? errors.birthday : "") : ""}
             onChange={onChange}
+            inputProps={{readOnly : disabled ? (disabled.birthday ? true : false) : forDetail ? true : false}}
           />
         </Grid>
         <Grid className="col" item xs={7}>
@@ -105,10 +113,11 @@ const FormPersonalData = (props) => {
             name="address"
             multiline
             value={data.address ? data.address : ""}
-            error={errors.address ? true : false}
+            error={errors ? (errors.address ? true : false) : false}
+            inputProps={{readOnly : disabled ? (disabled.address ? true : false) : forDetail ? true : false}}
             onChange={onChange}
             rows={4}
-            helperText={errors.address ? errors.address : " "}
+            helperText={errors ? (errors.address ? errors.address : "") : ""}
             // helperText={isAddressValid ? isAddressValid : " "}
           />
         </Grid>
@@ -118,8 +127,11 @@ const FormPersonalData = (props) => {
             label="Postal Code"
             name="postal_code"
             onChange={onChange}
-            error={errors.postal_code ? true : false}
-            helperText={errors.postal_code ? errors.postal_code : " "}
+            error={errors ? (errors.postal_code ? true : false) : false}
+            helperText={
+              errors ? (errors.postal_code ? errors.postal_code : "") : ""
+            }
+            inputProps={{readOnly : disabled ? (disabled.postal_code ? true : false) : forDetail ? true : false}}
             value={data.postal_code ? data.postal_code : ""}
             // helperText={isPostalCodeValid ? isPostalCodeValid : " "}
           />
