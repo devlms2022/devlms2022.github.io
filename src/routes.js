@@ -44,7 +44,7 @@ const routes = [
     component: Profile,
   },
   {
-    path: "/forgotpassword",
+    path: "/resetpassword",
     layout: "auth",
     component: ForgotPassword,
     basePath: true,

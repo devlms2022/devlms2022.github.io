@@ -119,8 +119,8 @@ const FormSign = (props) => {
         <FormGroup className="form-group">
           <FormControlLabel control={<Checkbox />} label="Stay Logged In" />
           <ButtonLink
-            to={"/forgotpassword"}
-            text={"Forgot Password"}
+            to={"/resetpassword"}
+            text={"Forgot Password?"}
             onClick={onClickForgotPassword}
           />
         </FormGroup>
@@ -165,9 +165,6 @@ const Wraplogin = styled.div`
     justify-content: space-between;
     align-items: center;
 
-    a {
-      text-decoration: underline;
-    }
     a:hover {
       color: blue;
     }

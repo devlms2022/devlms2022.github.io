@@ -89,7 +89,7 @@ function App(props) {
 
   return (
     <>
-      {pathname === "/signup" || pathname === "/forgotpassword" ? (
+      {pathname === "/signup" || pathname === "/resetpassword" ? (
         <HeaderLogin />
       ) : (
         <AppBarLanding signinClicked={() => setModalShown(true)} />
