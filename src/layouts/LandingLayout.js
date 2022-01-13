@@ -89,7 +89,7 @@ function App(props) {
 
   return (
     <>
-      {pathname === "/signup" ? (
+      {pathname === "/signup" || pathname === "/forgotpassword" ? (
         <HeaderLogin />
       ) : (
         <AppBarLanding signinClicked={() => setModalShown(true)} />
@@ -140,6 +140,7 @@ function App(props) {
             <Grid item sm={5}>
               <FormSign
                 onSignin={(validation) => submitHandler(validation)}
+                onClickForgotPassword={() => setModalShown(!modalShown)}
                 onChange={changHandler}
                 alertShown={alertShown}
                 validator={validator}

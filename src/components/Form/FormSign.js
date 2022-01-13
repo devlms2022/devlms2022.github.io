@@ -13,6 +13,7 @@ import styled from "styled-components";
 import Signup from "../../pages/Auth/Signup";
 import utilities from "../../utils/utilities";
 import Button from "../Button/Button";
+import ButtonLink from "../Button/ButtonLink";
 import Tittle from "../Text/Tittle";
 import Input from "./Input";
 
@@ -26,6 +27,7 @@ const FormSign = (props) => {
     validator,
     onOpenSignUp,
     validation,
+    onClickForgotPassword,
   } = props;
 
   const [toSignUp, setToSignUp] = useState(false);
@@ -116,7 +118,11 @@ const FormSign = (props) => {
 
         <FormGroup className="form-group">
           <FormControlLabel control={<Checkbox />} label="Stay Logged In" />
-          <Link to="/forgotpassword">Forgot Password</Link>
+          <ButtonLink
+            to={"/forgotpassword"}
+            text={"Forgot Password"}
+            onClick={onClickForgotPassword}
+          />
         </FormGroup>
         <Button
           onClick={(e) => handlerSubmit(e)}

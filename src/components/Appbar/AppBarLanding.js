@@ -6,7 +6,6 @@ import styled from "styled-components";
 import Button from "../Button/Button";
 import HeaderLogin from "../Header/HeaderLogin";
 
-
 const AppBarLanding = (props) => {
   const { signinClicked } = props;
   let location = useLocation();
