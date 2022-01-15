@@ -78,19 +78,6 @@ export class Signup extends Component {
       ],
       errors: {},
     };
-
-    this.validator = new SimpleReactValidator({
-      autoFoceAupdate: this,
-      messages: utilities.messageValidator,
-    });
-    this.validator2 = new SimpleReactValidator({
-      autoFoceAupdate: true,
-      messages: utilities.messageValidator,
-    });
-    this.validator3 = new SimpleReactValidator({
-      autoFoceAupdate: true,
-      messages: utilities.messageValidator,
-    });
   }
 
   handleChangeFile = (event) => {
@@ -113,7 +100,6 @@ export class Signup extends Component {
 
   handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(name, value);
     this.setState({
       data: {
         ...this.state.data,
