@@ -10,6 +10,7 @@ const Email = ({
   handleChanger,
   errorEmail,
   helperTextEmail,
+  valueEmail,
 }) => {
   return (
     <FormEmail>
@@ -21,6 +22,7 @@ const Email = ({
           label="Email"
           type="email"
           onChange={handleChanger}
+          value={valueEmail}
           error={errorEmail}
           helperText={helperTextEmail}
         />

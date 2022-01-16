@@ -94,7 +94,7 @@ function App(props) {
       ) : (
         <AppBarLanding signinClicked={() => setModalShown(true)} />
       )}
-      ;
+
       <Container>
         <Switch>
           {routes.map((item, key) => {
@@ -112,7 +112,7 @@ function App(props) {
                 return (
                   <Route
                     path={`${item.path}`}
-                    component={item.component} 
+                    component={item.component}
                     key={key}
                     exact={item.basePath}
                   />
