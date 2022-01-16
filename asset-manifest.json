@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/static/js/main.6c46799d.js",
+    "main.js": "/static/js/main.a66f6be6.js",
     "static/media/hero.png": "/static/media/hero.e1264a31045e7b77c0ee.png",
     "static/media/about.svg": "/static/media/about.665241040c17d658a61af0dc9661255e.svg",
     "static/media/loginimage.png": "/static/media/loginimage.7e1fb4e528b63377e41c.png",
@@ -16,9 +16,9 @@
     "static/media/carbon_course.svg": "/static/media/carbon_course.8b0ac742dc258518ea9f1a77395160f8.svg",
     "static/media/discussion.svg": "/static/media/discussion.62dda9f511f0c12ae4eccdfb4e564d86.svg",
     "static/media/education.svg": "/static/media/education.43f0bafe2a790c7ceb9264cfe8d88e27.svg",
-    "main.6c46799d.js.map": "/static/js/main.6c46799d.js.map"
+    "main.a66f6be6.js.map": "/static/js/main.a66f6be6.js.map"
   },
   "entrypoints": [
-    "static/js/main.6c46799d.js"
+    "static/js/main.a66f6be6.js"
   ]
 }
