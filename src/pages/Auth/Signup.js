@@ -106,6 +106,10 @@ export class Signup extends Component {
         [name]: value,
       },
     });
+
+    this.setState({
+      errors: {},
+    });
   };
 
   handleChangeOption = (event) => {
@@ -177,6 +181,7 @@ export class Signup extends Component {
   handleSubmit = async () => {
     const { REACT_APP_API_URL } = process.env;
     const { stepActive, steps, data } = this.state;
+    let cekEmail = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
     let isFormValid = true;
 
     if (!(data.email, data.password, data.repassword)) {
@@ -188,10 +193,27 @@ export class Signup extends Component {
         },
       });
       isFormValid = false;
+    } else if (!cekEmail.test(data.email)) {
+      this.setState({
+        errors: {
+          ["email"]:
+            "*Your email is not correct, please input your email right",
+        },
+      });
+      isFormValid = false;
     } else {
-      if (data.password !== data.repassword) {
+      if (data.password.length < 6) {
         this.setState({
           errors: {
+            ["password"]:
+              "*Your password is to short, please input your password more 6 character",
+          },
+        });
+        isFormValid = false;
+      } else if (data.password !== data.repassword) {
+        this.setState({
+          errors: {
+            ["password"]: "*Password doesn't match!.",
             ["repassword"]: "*Password doesn't match!.",
           },
         });
