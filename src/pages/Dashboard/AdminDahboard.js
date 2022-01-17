@@ -6,7 +6,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   CourseIcon,
@@ -27,9 +27,54 @@ import BoxCustom from "../../components/Box";
 import DefContainerImg from "../../assets/images/imgcontainer.png";
 import ButtonCustom from "../../components/Button/Button";
 import Swal from "sweetalert2";
+import util from "../../utils/utilities";
 
 function CardImageRegister(props) {
-  const { role, data } = props;
+  const { role, data, profileid } = props;
+  const [proof_teacher_grade, set_proof_teacher_grade] = useState(null);
+  const [grades, set_grades] = useState(null);
+  const [identity_card, set_identity_card] = useState(null);
+
+  useEffect(async () => {
+    if (role === "2") {
+      const proofTeacherGrade = await Api.post(
+        "/profile/getFile",
+        {
+          id: profileid,
+          file: "proof_teacher_grade",
+        },
+        { responseType: "blob" }
+      );
+
+      util.cekFile(proofTeacherGrade.data, (response) => {
+        if (response) set_proof_teacher_grade(response);
+      });
+    } else if (role === "3") {
+      const identity_card = await Api.post(
+        "/profile/getFile",
+        {
+          id: profileid,
+          file: "identity_card",
+        },
+        { responseType: "blob" }
+      );
+      util.cekFile(identity_card.data, (response) => {
+        if (response) set_identity_card(response);
+      });
+      const grades = await Api.post(
+        "/profile/getFile",
+        {
+          id: profileid,
+          file: "grades",
+        },
+        { responseType: "blob" }
+      );
+      util.cekFile(grades.data, (response) => {
+        if (response) set_grades(response);
+      });
+     
+    }
+  }, [role]);
 
   if (role === "2") {
     return (
@@ -44,9 +89,14 @@ function CardImageRegister(props) {
         </Grid>
         <Grid item xs={12} md={12}>
           <BoxCustom width="100%" justify="center" align="center">
-            <Label>Passport/Identity Card</Label>
+            <Label>Proof Of Teacher Grade</Label>
             <ImgContainer>
-              <img src={DefContainerImg} alt="default-conainer-img" />
+              <img
+                src={
+                  proof_teacher_grade ? proof_teacher_grade : DefContainerImg
+                }
+                alt="default-conainer-img"
+              />
             </ImgContainer>
           </BoxCustom>
         </Grid>
@@ -59,7 +109,10 @@ function CardImageRegister(props) {
           <BoxCustom width="100%" justify="center" align="center">
             <Label>Passport/Identity Card</Label>
             <ImgContainer>
-              <img src={DefContainerImg} alt="default-conainer-img" />
+              <img
+                src={identity_card ? identity_card : DefContainerImg}
+                alt="default-conainer-img"
+              />
             </ImgContainer>
           </BoxCustom>
         </Grid>
@@ -67,7 +120,10 @@ function CardImageRegister(props) {
           <BoxCustom width="100%" justify="center" align="center">
             <Label variant="bold">Grades</Label>
             <ImgContainer>
-              <img src={DefContainerImg} alt="default-conainer-img" />
+              <img
+                src={grades ? grades : DefContainerImg}
+                alt="default-conainer-img"
+              />
             </ImgContainer>
           </BoxCustom>
         </Grid>
@@ -92,6 +148,7 @@ export default class AdminDashboard extends Component {
       registerDetail: {
         id: "",
         role_id: 0,
+        profile_id: "",
         burger_service_nummer: "",
         family_name: "",
         front_name: "",
@@ -143,6 +200,7 @@ export default class AdminDashboard extends Component {
       registerDetail: {
         id: data.id,
         role_id: data.role_id,
+        profile_id: data.profile_id,
         burger_service_nummer: data.profile.burger_service_nummer,
         family_name: data.profile.family_name,
         front_name: data.profile.front_name,
@@ -360,6 +418,7 @@ export default class AdminDashboard extends Component {
                     reg_code_branch: registerDetail.reg_code_branch,
                   }}
                   role={registerDetail.role_id}
+                  profileid={registerDetail.profile_id}
                 />
                 <BoxCustom
                   height="6rem"
@@ -421,7 +480,7 @@ const ImgContainer = styled.div`
   width: 250px;
   background-color: var(--background-light-color);
   padding: 12px;
-  height: 175px;
+  height: 195px;
   overflow: hidden;
   img {
     width: 100%;

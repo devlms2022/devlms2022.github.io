@@ -1,6 +1,5 @@
 import moment from "moment";
 class Utilities {
-
   now_timestamp() {
     return moment().format("YYYY-MM-DD HH:mm:ss").toString();
   }
@@ -69,6 +68,22 @@ class Utilities {
       var text = reader.result;
       cb(text);
     };
+  }
+
+  cekFile(data, cb) {
+    this.readBlobAsText(data, (string) => {
+      const isJSON = this.isJsonString(string);
+      if (isJSON) {
+        const response = JSON.parse(string);
+        if (response.code === 404) {
+          cb(false);
+        }
+      } else {
+        this.readFileBlob(data, (response) => {
+          cb(response);
+        });
+      }
+    });
   }
 }
 
