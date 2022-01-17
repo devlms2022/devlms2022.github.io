@@ -1,4 +1,5 @@
 import MenuIcon from "@mui/icons-material/Menu";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
 import {
   Box,
   AppBar,
@@ -10,7 +11,6 @@ import {
   List,
   Divider,
   ListItem,
-  ListItemText,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -34,146 +34,164 @@ const AppBarLanding = (props) => {
     return <HeaderLogin />;
   }
 
+  const ElevationScroll = (props) => {
+    const { children, window } = props;
+    // Note that you normally won't need to set the window ref as useScrollTrigger
+    // will default to window.
+    // This is only being set here because the demo is in an iframe.
+    const trigger = useScrollTrigger({
+      disableHysteresis: false,
+      threshold: 0,
+      target: window ? window() : undefined,
+    });
+
+    return React.cloneElement(children, {
+      elevation: trigger ? 4 : 0,
+    });
+  };
+
   return (
-    <AppBar position="static">
-      <Container>
-        <Toolbar
-          disableGutters
-          sx={{
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "flex" },
-            }}
-          >
-            LOGO
-          </Typography>
-
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "none", md: "flex" },
-              gap: 6,
-              alignItems: "center",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Typography sx={{ my: 2, color: "white", display: "block" }}>
-              <Link className="link" to="/">
-                Home
-              </Link>
-            </Typography>
-            <Typography sx={{ my: 2, color: "white", display: "block" }}>
-              <Link className="link" to="/about">
-                About Us
-              </Link>
-            </Typography>
-            <Typography sx={{ my: 2, color: "white", display: "block" }}>
-              <Link className="link" to="/course">
-                Studies
-              </Link>
-            </Typography>
-            <Button
-              sx={{ my: 2, color: "white", display: "block" }}
-              onClick={signinClicked}
-              variant="outlined"
+    <Navbar>
+      <ElevationScroll {...props}>
+        <AppBar className="navbar">
+          <Container>
+            <Toolbar
+              disableGutters
+              sx={{
+                justifyContent: "space-between",
+              }}
             >
-              SIGN IN
-            </Button>
-          </Box>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  mr: 2,
+                  display: { xs: "flex", md: "flex" },
+                  color: "black",
+                }}
+              >
+                LOGO
+              </Typography>
 
-          {/* Menu Hamburger */}
-          <Box
-            sx={{
-              display: { xs: "flex", md: "none" },
-            }}
-          >
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={() => toggleDrawer(true)}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-          </Box>
-
-          <SwipeableDrawer
-            anchor={"right"}
-            open={openMenu}
-            onClose={() => toggleDrawer(false)}
-            onOpen={() => toggleDrawer(false)}
-          >
-            <Box
-              sx={{ width: 250 }}
-              role="presentation"
-              onClick={() => toggleDrawer(false)}
-            >
-              <List>
-                <ListItem button>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: { xs: "none", md: "flex" },
+                  gap: 6,
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Typography sx={{ my: 2, display: "block" }}>
                   <Link className="link" to="/">
                     Home
                   </Link>
-                </ListItem>
-                <ListItem button>
+                </Typography>
+                <Typography sx={{ my: 2, display: "block" }}>
                   <Link className="link" to="/about">
                     About Us
                   </Link>
-                </ListItem>
-                <ListItem button>
+                </Typography>
+                <Typography sx={{ my: 2, display: "block" }}>
                   <Link className="link" to="/course">
                     Studies
                   </Link>
-                </ListItem>
-              </List>
-              <Divider />
-              <List>
-                <ListItem>
-                  <Button
-                    sx={{ my: 2, color: "white", display: "block" }}
-                    onClick={signinClicked}
-                    variant="outlined"
-                  >
-                    SIGN IN
-                  </Button>
-                </ListItem>
-              </List>
-            </Box>
-          </SwipeableDrawer>
-        </Toolbar>
-      </Container>
-    </AppBar>
+                </Typography>
+                <Button
+                  sx={{ my: 2, display: "block" }}
+                  onClick={signinClicked}
+                  variant="outlined"
+                >
+                  SIGN IN
+                </Button>
+              </Box>
+
+              {/* Menu Hamburger */}
+              <Box
+                sx={{
+                  display: { xs: "flex", md: "none" },
+                }}
+              >
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={() => toggleDrawer(true)}
+                  color="inherit"
+                >
+                  <MenuIcon className="iconHamburger" />
+                </IconButton>
+              </Box>
+
+              <SwipeableDrawer
+                anchor="right"
+                open={openMenu}
+                onClose={() => toggleDrawer(false)}
+                onOpen={() => toggleDrawer(true)}
+              >
+                <Box
+                  sx={{ width: 250 }}
+                  role="presentation"
+                  onClick={() => toggleDrawer(false)}
+                  onOpen={() => toggleDrawer(true)}
+                >
+                  <List>
+                    <ListItem button>
+                      <Link className="link" to="/">
+                        Home
+                      </Link>
+                    </ListItem>
+                    <ListItem button>
+                      <Link className="link" to="/about">
+                        About Us
+                      </Link>
+                    </ListItem>
+                    <ListItem button>
+                      <Link className="link" to="/course">
+                        Studies
+                      </Link>
+                    </ListItem>
+                  </List>
+                  <Divider />
+                  <List>
+                    <ListItem>
+                      <Button
+                        sx={{ my: 2, display: "block" }}
+                        onClick={signinClicked}
+                        variant="outlined"
+                      >
+                        SIGN IN
+                      </Button>
+                    </ListItem>
+                  </List>
+                </Box>
+              </SwipeableDrawer>
+            </Toolbar>
+          </Container>
+        </AppBar>
+      </ElevationScroll>
+    </Navbar>
   );
 };
 
-const AppBarStyled = styled.div`
-  background-color: var(--white-color);
-  display: flex;
-  flex-direction: row;
-  padding: 35px;
-  padding-bottom: 35px;
+const Navbar = styled.div`
+  margin-bottom: 10vw;
 
-  .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
+  .navbar {
+    background-color: var(--white-color);
   }
 
-  .link {
-    margin-right: 55px;
-    &:hover {
-      color: var(--primary-color);
-    }
+  a,
+  .iconHamburger {
+    color: black;
   }
+
+  a:hover {
+    color: var(--primary-color);
+  }
+
   .signin {
     font-weight: 600;
   }
