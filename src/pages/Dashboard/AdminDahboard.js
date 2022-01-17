@@ -310,83 +310,88 @@ export default class AdminDashboard extends Component {
             onChangeRowPerpage={this.handleChangeRowsPerPage}
             onClickDetail={(id) => this.handleDetailClicked(id)}
           />
-        </WrapContent>
-        <Modal
-          size={"xl"}
-          title="Detail Data Register"
-          open={shownModalDetail}
-          onClose={() => this.setState({ shownModalDetail: !shownModalDetail })}
-        >
-          <Grid container spacing={4}>
-            <Grid item sm={12} md={5}>
-              <FormControl sx={{ width: "100%", marginBottom: "10px" }}>
-                <InputLabel>Registrant</InputLabel>
-                <Select
-                  autoWidth
-                  value={registerDetail.role_id}
-                  label="Registrant"
-                  inputProps={{
-                    readOnly: true,
-                  }}
-                >
-                  <MenuItem value="0">Select</MenuItem>
-                  <MenuItem value="2">Teacher</MenuItem>
-                  <MenuItem value="3">Student</MenuItem>
-                </Select>
-              </FormControl>
-              <FormPersonalData forDetail data={registerDetail} />
-            </Grid>
-            <Grid item md={7} sm={12}>
-              <Grid style={{ marginBottom: "9px" }} container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    width="100%"
-                    label="Email"
-                    value={registerDetail.email}
-                    inputProps={{ readOnly: true }}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    width="100%"
-                    label="Study"
-                    value="Study"
-                    inputProps={{ readOnly: true }}
-                  />
-                </Grid>
+          <Modal
+            title="Detail Data Register"
+            open={shownModalDetail}
+            onClose={() =>
+              this.setState({ shownModalDetail: !shownModalDetail })
+            }
+          >
+            <Grid sx={{ width: "100%" }} container spacing={4}>
+              <Grid item sm={12} md={5}>
+                <FormControl sx={{ width: "100%", marginBottom: "10px" }}>
+                  <InputLabel>Registrant</InputLabel>
+                  <Select
+                    autoWidth
+                    value={registerDetail.role_id}
+                    label="Registrant"
+                    inputProps={{
+                      readOnly: true,
+                    }}
+                  >
+                    <MenuItem value="0">Select</MenuItem>
+                    <MenuItem value="2">Teacher</MenuItem>
+                    <MenuItem value="3">Student</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormPersonalData forDetail data={registerDetail} />
               </Grid>
-              <CardImageRegister
-                data={{
-                  reg_code_branch: registerDetail.reg_code_branch,
-                }}
-                role={registerDetail.role_id}
-              />
-              <BoxCustom
-                height="6rem"
-                justify="space-between"
-                px="2.8rem"
-                width="100%"
-              >
-                <ButtonCustom
-                  fullWidth
-                  name="accept"
-                  onClick={(e) => this.handleActionDetail(e, registerDetail.id)}
+              <Grid item md={7} sm={12}>
+                <Grid style={{ marginBottom: "9px" }} container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <Input
+                      width="100%"
+                      label="Email"
+                      value={registerDetail.email}
+                      inputProps={{ readOnly: true }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Input
+                      width="100%"
+                      label="Study"
+                      value="Study"
+                      inputProps={{ readOnly: true }}
+                    />
+                  </Grid>
+                </Grid>
+                <CardImageRegister
+                  data={{
+                    reg_code_branch: registerDetail.reg_code_branch,
+                  }}
+                  role={registerDetail.role_id}
+                />
+                <BoxCustom
+                  height="6rem"
+                  justify="space-between"
+                  px="2.8rem"
+                  width="100%"
                 >
-                  Accept
-                </ButtonCustom>
-                <Button
-                  fullWidth
-                  color="error"
-                  name="reject"
-                  onClick={(e) => this.handleActionDetail(e, registerDetail.id)}
-                  variant="contained"
-                >
-                  Reject
-                </Button>
-              </BoxCustom>
+                  <ButtonCustom
+                    fullWidth
+                    name="accept"
+                    onClick={(e) =>
+                      this.handleActionDetail(e, registerDetail.id)
+                    }
+                  >
+                    Accept
+                  </ButtonCustom>
+                  <Button
+                    fullWidth
+                    color="error"
+                    name="reject"
+                    onClick={(e) =>
+                      this.handleActionDetail(e, registerDetail.id)
+                    }
+                    variant="contained"
+                  >
+                    Reject
+                  </Button>
+                </BoxCustom>
+              </Grid>
             </Grid>
-          </Grid>
-        </Modal>
+          </Modal>
+        </WrapContent>
       </>
     );
   }
