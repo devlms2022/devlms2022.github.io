@@ -1,27 +1,17 @@
-import {
-  Dashboard as DashboardIcon,
-  Inbox as InboxIcon,
-  Mail as MailIcon,
-  Group as GroupIcon,
-  Comment as CommentIcon,
-  Feed as FeedIcon,
-  School as SchoolIcon,
-} from "@mui/icons-material";
 import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import AppBarAdmin from "../components/Appbar/AppBarAdmin";
+import MenuItem from "../components/Menu/MenuItem";
+import { Menuadmin } from "../data/sidebarmenu";
 import routes from "../routes";
+import { Api } from "../services/api";
 import TokenService from "../services/token.services";
 
 const drawerWidth = 240;
@@ -31,12 +21,19 @@ function AdminLayout(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userSign, setUserSign] = useState({});
   const { pathname } = useLocation();
-  const history = new useHistory();
 
   const handleProfileClicked = (nav) => {
     if (nav === "logout") {
-      TokenService.removeUser();
-      document.location.href = "/";
+      const user = TokenService.getUser();
+      const refreshToken = user.refreshToken;
+      Api.post("/logout", {
+        refresh_token: refreshToken,
+      })
+        .then((res) => {
+          TokenService.removeUser();
+          document.location.href = "/";
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -49,91 +46,24 @@ function AdminLayout(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleClickPage = (route) => {
-    history.push(route);
-  };
 
-  let pages = [];
+  let menus = [];
   if (userSign.role_id === "3") {
-    pages = [
-      {
-        label: "Dashboard",
-        route: "/",
-        icon: DashboardIcon,
-      },
-      {
-        label: "Study Progress",
-        route: "/study/progress",
-        icon: SchoolIcon,
-      },
-      {
-        label: "Join Group",
-        route: "/join-group",
-        icon: GroupIcon,
-      },
-      {
-        label: "Discussion",
-        route: "/discussion",
-        CommentIcon,
-      },
-    ];
-  } else {
-    pages = [
-      {
-        label: "Dashboard",
-        route: "/",
-        icon: DashboardIcon,
-      },
-      {
-        label: "Set Study",
-        route: "/study/set",
-        icon: SchoolIcon,
-      },
-      {
-        label: "Set Discussion",
-        route: "/discussion/set",
-        icon: CommentIcon,
-      },
-      {
-        label: "Report",
-        route: "/report",
-        icon: FeedIcon,
-      },
-    ];
+    menus = Menuadmin;
+  } else if (userSign.role_id === "1") {
+    menus = Menuadmin;
   }
-  
 
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
-      <List>
-        {pages.map((page, index) => {
-          const Icon = page.icon;
-          return (
-            <ListItem
-              onClick={() => handleClickPage(page.route)}
-              key={page.label}
-              sx={{
-                background:
-                  pathname === page.route ? "var(--primary-color)" : null,
-                color: pathname === page.route ? "white" : "inherit",
-              }}
-            >
-              <ListItemIcon>
-                <Icon
-                  sx={{
-                    color: pathname === page.route ? "white" : "inherit",
-                  }}
-                />
-              </ListItemIcon>
-              {/* <ListItemButton>{page.label}</ListItemButton> */}
-              <ListItemTextStyled>{page.label}</ListItemTextStyled>
-            </ListItem>
-          );
+      <SidebarWrap>
+        
+        {menus.map((item, key) => {
+          return <MenuItem item={item} key={key} />;
         })}
-      </List>
-      <Divider />
+      </SidebarWrap>
     </div>
   );
 
@@ -193,7 +123,7 @@ function AdminLayout(props) {
           flexGrow: 1,
           p: 3,
           width: { xs: `100%` },
-        }}  
+        }}
       >
         <Toolbar />
         <Container maxWidth="lg">
@@ -231,9 +161,7 @@ AdminLayout.propTypes = {
 
 export default AdminLayout;
 
-const ListItemTextStyled = styled(ListItemText)`
-  &:hover {
-    cursor: pointer;
-    background-color: "var(--primary-color)";
-  }
+const SidebarWrap = styled.div`
+  width: 100%;
+  /* background: red; */
 `;

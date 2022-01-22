@@ -26,9 +26,7 @@ const AppBarAdmin2 = (props) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = (setting) => {
-    setAnchorElNav(null);
-  };
+
 
   const onProfileClick = (setting) => {
     props.onProfileClick(setting.toLowerCase());
@@ -38,10 +36,7 @@ const AppBarAdmin2 = (props) => {
     setAnchorElUser(null);
   };
 
-  const handleClickProfile = (e) => {
-    const { name } = e.target;
-    console.log(name);
-  };
+
 
   return (
     <AppBar

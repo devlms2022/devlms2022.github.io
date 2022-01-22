@@ -3,6 +3,7 @@ import Signup from "./pages/Auth/Signup";
 import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/Landing";
 import Profile from "./pages/Profile";
+import UserRegister from "./pages/Users/UserRegister";
 // import SignUp from "./"
 
 const routes = [
@@ -12,7 +13,6 @@ const routes = [
     component: LandingPage,
     basePath: true,
   },
-
   {
     path: "/about",
     layout: "landing",
@@ -42,6 +42,12 @@ const routes = [
     layout: "admin",
     basePath: true,
     component: Profile,
+  },
+  {
+    path: "/user/register",
+    layout: "admin",
+    basePath: true,
+    component: UserRegister,
   },
   {
     path: "/resetpassword",

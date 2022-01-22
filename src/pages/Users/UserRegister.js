@@ -132,7 +132,7 @@ function CardImageRegister(props) {
   return <></>;
 }
 
-export default class AdminDashboard extends Component {
+export default class UserRegister extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -338,23 +338,6 @@ export default class AdminDashboard extends Component {
     return (
       <>
         <WrapContent>
-          <Paper className="paper">
-            <Grid container spacing={4}>
-              {boardData.map((itm, key) => {
-                return (
-                  <Grid key={key} item sm={col}>
-                    <div className="box">
-                      <img src={itm.icon} alt={itm.label} />
-                      <div className="value">
-                        {itm.label}
-                        <span>{itm.value}</span>
-                      </div>
-                    </div>
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </Paper>
           <TableUser
             onSwitch={this.handleSwitch}
             actionClicked={this.handleAction}

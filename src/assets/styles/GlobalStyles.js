@@ -1,4 +1,4 @@
-import {createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -59,6 +59,14 @@ const GlobalStyle = createGlobalStyle`
         color : var(--white-color);
         font-size: 1.2rem;
         padding-bottom: .6rem;
+    }
+
+    ul {
+        padding: 0;
+        margin: 0;
+    }
+    li {
+        list-style: none;
     }
 `;
 
