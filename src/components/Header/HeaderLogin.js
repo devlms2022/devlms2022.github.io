@@ -1,7 +1,8 @@
 import { Close } from "@mui/icons-material";
-import { Box, IconButton } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
+import ButtonCustom from "../Button/Button";
 
 const HeaderLogin = (props) => {
   const { onClick } = props;
@@ -10,13 +11,11 @@ const HeaderLogin = (props) => {
       sx={{
         display: "flex",
         flexDirection: "row",
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
       }}
     >
-      <IconButton onClick={onClick}>
-        <Close fontSize="inherit" />
-      </IconButton>
+      <ButtonCustom text="Back to home" variant="outlined" onClick={onClick} />
     </BoxStyled>
   );
 };

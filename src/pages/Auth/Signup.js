@@ -1,5 +1,12 @@
-import { Grid, Step, StepLabel, Stepper } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+  Grid,
+  Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography,
+} from "@mui/material";
+import { Box, typography } from "@mui/system";
 import axios from "axios";
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
@@ -12,6 +19,7 @@ import Button from "../../components/Button/Button";
 import {
   FormEmailPasss,
   FormPersonalData,
+  FormStudentPersonalData,
   FormStudentUploadDoc,
   FormTeachUploadDoc,
 } from "../../components/Form/Signup";
@@ -22,22 +30,28 @@ const RegistStep0 = (props) => {
   const { handleClicked } = props;
 
   return (
-    <Grid spacing={2} container>
-      <Grid item className="col" sm={6}>
-        <Box className="box-option">
+    <Grid spacing={5} container mb={10}>
+      <Grid
+        item
+        className="col"
+        sm={6}
+        onClick={() => handleClicked("teacher")}
+      >
+        <Paper className="box-option">
           <img src={TeacherImg} />
-          <Button onClick={handleClicked} name="teacher" variant="outlined">
-            Teacher
-          </Button>
-        </Box>
+          <Typography variant="h4">Teacher</Typography>
+        </Paper>
       </Grid>
-      <Grid item className="col" sm={6}>
-        <Box className="box-option">
+      <Grid
+        item
+        className="col"
+        sm={6}
+        onClick={() => handleClicked("student")}
+      >
+        <Paper className="box-option">
           <img src={StudentsImg} />
-          <Button onClick={handleClicked} name="student" variant="outlined">
-            Student
-          </Button>
-        </Box>
+          <Typography variant="h4">Student</Typography>
+        </Paper>
       </Grid>
     </Grid>
   );
@@ -112,8 +126,7 @@ export class Signup extends Component {
     });
   };
 
-  handleChangeOption = (event) => {
-    const { name } = event.target;
+  handleChangeOption = (name) => {
     const registerType = name === "teacher" ? 2 : name === "student" ? 3 : 0;
     this.setState({
       registerType,
@@ -123,6 +136,8 @@ export class Signup extends Component {
         role_id: registerType,
       },
     });
+
+    console.log(name);
   };
 
   handleNext = () => {
@@ -130,24 +145,26 @@ export class Signup extends Component {
     let isFormValid = true;
     if (stepActive === 1) {
       if (
-        !(data.burger_service_nummer,
-        data.address,
-        data.birthday,
-        data.family_name,
-        data.front_name,
-        data.gender,
-        data.postal_code)
+        !(
+          data.burger_service_nummer &&
+          data.address &&
+          data.birthday &&
+          data.family_name &&
+          data.front_name &&
+          data.gender &&
+          data.postal_code
+        )
       ) {
         this.setState({
           errors: {
             ["burger_service_nummer"]:
               "*Please Enter your Burger Service Number.",
             ["address"]: "*Please Enter your address.",
-            ["family_name"]: "*Family Name",
-            ["front_name"]: "Front Name",
-            ["gender"]: "gender",
-            ["birthday"]: "birthday",
-            ["postal_code"]: "postal code",
+            ["family_name"]: "*Please Enter your family name.",
+            ["front_name"]: "*Please Enter your front name",
+            ["gender"]: "*Please Enter your gender.",
+            ["birthday"]: "*Please Enter your birthday",
+            ["postal_code"]: "*Please Enter your postal code.",
           },
         });
         isFormValid = false;
@@ -184,7 +201,7 @@ export class Signup extends Component {
     let cekEmail = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
     let isFormValid = true;
 
-    if (!(data.email, data.password, data.repassword)) {
+    if (!(data.email && data.password && data.repassword)) {
       this.setState({
         errors: {
           ["email"]: "*Please enter your Email.",
@@ -322,7 +339,7 @@ export class Signup extends Component {
           {stepActive === 0 && (
             <RegistStep0 handleClicked={this.handleChangeOption} />
           )}
-          <div className="wrap-from">
+          <div className="form-input">
             {stepActive === 1 && (
               <FormPersonalData
                 data={data}
@@ -359,12 +376,19 @@ export class Signup extends Component {
           </div>
 
           {stepActive > 0 && (
-            <Grid spacing={2} className="wrap-button" container>
+            <Grid
+              spacing={2}
+              className="wrap-button"
+              container
+              mb={7}
+              justifyContent={"center"}
+            >
               {stepActive > 1 && (
                 <Grid
                   style={{ display: "flex", flexDirection: "column" }}
                   item
-                  xs={6}
+                  xs={4}
+                  sm={4}
                 >
                   <Button onClick={this.handlePrev} variant="outlined">
                     Prev
@@ -374,7 +398,8 @@ export class Signup extends Component {
               <Grid
                 style={{ display: "flex", flexDirection: "column" }}
                 item
-                xs={stepActive > 1 ? 6 : 12}
+                xs={stepActive > 1 ? 5 : 8}
+                sm={stepActive > 1 ? 8 : 12}
               >
                 <Button onClick={this.handleNext}>
                   {stepActive + 1 === steps.length ? "Sign Up" : "Next"}
@@ -389,14 +414,27 @@ export class Signup extends Component {
 }
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   width: 100%;
-  padding: 0 60px;
   /* background: blue; */
 
   .title {
     text-align: center;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+  }
+
+  .form-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 10vw;
+  }
+
+  .content-step {
+    margin-bottom: 40px;
   }
 
   .col {
@@ -409,9 +447,20 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
+    align-items: center;
+    padding: 25px;
+    gap: 20px;
+    box-shadow: 0px 25px 50px rgba(129, 129, 129, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
   }
+
+  .box-option:hover {
+    box-shadow: 0px 25px 50px rgba(69, 130, 255, 0.27);
+  }
+
   .content {
-    padding: 13px 25px;
+    /* padding: 13px 25px; */
     /* background: red; */
     display: flex;
     flex-direction: column;
