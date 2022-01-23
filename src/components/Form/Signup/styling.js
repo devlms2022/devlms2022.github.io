@@ -3,7 +3,6 @@ import styled from "styled-components";
 const WrapContent = styled.div`
   width: 100%;
   /* background: #057fff; */
- 
 
   .form-control {
     width: 100%;

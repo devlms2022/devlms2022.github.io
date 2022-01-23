@@ -1,5 +1,12 @@
-import { Grid, Step, StepLabel, Stepper } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+  Grid,
+  Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography,
+} from "@mui/material";
+import { Box, typography } from "@mui/system";
 import axios from "axios";
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
@@ -23,21 +30,27 @@ const RegistStep0 = (props) => {
 
   return (
     <Grid spacing={2} container>
-      <Grid item className="col" sm={6}>
-        <Box className="box-option">
+      <Grid
+        item
+        className="col"
+        sm={6}
+        onClick={() => handleClicked("teacher")}
+      >
+        <Paper className="box-option">
           <img src={TeacherImg} />
-          <Button onClick={handleClicked} name="teacher" variant="outlined">
-            Teacher
-          </Button>
-        </Box>
+          <Typography variant="h4">Teacher</Typography>
+        </Paper>
       </Grid>
-      <Grid item className="col" sm={6}>
-        <Box className="box-option">
+      <Grid
+        item
+        className="col"
+        sm={6}
+        onClick={() => handleClicked("student")}
+      >
+        <Paper className="box-option">
           <img src={StudentsImg} />
-          <Button onClick={handleClicked} name="student" variant="outlined">
-            Student
-          </Button>
-        </Box>
+          <Typography variant="h4">Student</Typography>
+        </Paper>
       </Grid>
     </Grid>
   );
@@ -112,8 +125,7 @@ export class Signup extends Component {
     });
   };
 
-  handleChangeOption = (event) => {
-    const { name } = event.target;
+  handleChangeOption = (name) => {
     const registerType = name === "teacher" ? 2 : name === "student" ? 3 : 0;
     this.setState({
       registerType,
@@ -123,6 +135,8 @@ export class Signup extends Component {
         role_id: registerType,
       },
     });
+
+    console.log(name);
   };
 
   handleNext = () => {
@@ -322,7 +336,7 @@ export class Signup extends Component {
           {stepActive === 0 && (
             <RegistStep0 handleClicked={this.handleChangeOption} />
           )}
-          <div className="wrap-from">
+          <div className="form-input">
             {stepActive === 1 && (
               <FormPersonalData
                 data={data}
@@ -389,14 +403,27 @@ export class Signup extends Component {
 }
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   width: 100%;
-  padding: 0 60px;
   /* background: blue; */
 
   .title {
     text-align: center;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+  }
+
+  .form-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 10vw;
+  }
+
+  .content-step {
+    margin-bottom: 40px;
   }
 
   .col {
@@ -409,9 +436,20 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
+    align-items: center;
+    padding: 25px;
+    gap: 20px;
+    box-shadow: 0px 25px 50px rgba(129, 129, 129, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
   }
+
+  .box-option:hover {
+    box-shadow: 0px 25px 50px rgba(69, 130, 255, 0.27);
+  }
+
   .content {
-    padding: 13px 25px;
+    /* padding: 13px 25px; */
     /* background: red; */
     display: flex;
     flex-direction: column;
