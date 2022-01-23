@@ -1,4 +1,8 @@
-import { Grid } from "@mui/material";
+import {
+  Delete as DeleteIcon,
+  ModeEdit as EditIcon,
+} from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,15 +10,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import React, { useState } from "react";
-import styled from "styled-components";
-import Swal from "sweetalert2";
-import ButtonCustom from "../Button/Button";
-import Search from "../Form/Search";
-import Paper from "../Paper";
-import moment from "moment";
-import Navtab from "../Navtab";
-import CustomeBox from "../Box";
+import React from "react";
+import util from "../../utils/utilities";
+import { default as BoxCustom } from "../Box";
+import Input from "../Form/Input";
 
 export default function TableUser(props) {
   const {
@@ -24,46 +23,58 @@ export default function TableUser(props) {
     page,
     onChangePage,
     onChangeRowPerpage,
-    onSearch,
-    onSwitch,
-    onClickDetail,
+    actionClicked,
+    edit,
   } = props;
 
-  const [navIndexActive, setNavIndexActive] = useState(0);
+  const rowdata = (column, value, id) => {
+   
+    let result = column.format ? column.format(value) : value;
+    if (edit.id) {
+      if (edit.id === id) {
+        if (column.id === "name") result = <Input value={edit.name} name="name" />;
+      }
+    }
+    return result;
+  };
 
   const columns = [
-    { id: "no", label: "No", maxWidth: 12 },
-    {
-      id: "fullname",
-      label: "Full Name",
-      minWidth: 170,
-      align: "center",
-    },
+    { id: "no", label: "No", minWidth: 10 },
     {
       id: "created_at",
-      label: "Date Registration",
-      minWidth: 80,
-      align: "center",
-      format: (val) => {
-        return moment(val).format("YYYY-MM-DD HH:mm:ss");
-      },
+      label: "Date Input",
+      minWidth: 100,
+      align: "left",
     },
     {
-      id: "detail",
-      label: "Detail",
-      minWidth: 170,
+      id: "name",
+      label: "Topic",
+      minWidth: 100,
+      align: "left",
+    },
+    {
+      id: "action",
+      label: "Action",
+      minWidth: 20,
       align: "center",
-      format: (value) => {
+      format: (id) => {
         return (
-          <>
-            <ButtonCustom
-              onClick={() => onClickDetail(value)}
+          <BoxCustom direction="row" width="100%" justify="space-evenly">
+            <IconButton
+              onClick={(e) => actionClicked(e, "edit", id)}
+              color="primary"
               size="small"
-              variant="outlined"
             >
-              See More
-            </ButtonCustom>
-          </>
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              onClick={(e) => actionClicked(e, "delete", id)}
+              color="error"
+              size="small"
+            >
+              <DeleteIcon />
+            </IconButton>
+          </BoxCustom>
         );
       },
     },
@@ -75,43 +86,18 @@ export default function TableUser(props) {
     let number = initialNumber + increment;
     increment++;
     return {
+      id : item.id,
       no: number,
-      fullname: item.profile.front_name + " " + item.profile.family_name,
-      created_at: item.created_at,
-      detail: item.id,
+      created_at: util.moment(item.created_at),
+      name: item.name,
+      action: item.id,
     };
   });
 
-  const tabs = [
-    {
-      label: "Students",
-      name: "student",
-    },
-    {
-      label: "Teachers",
-      name: "teacher",
-    },
-  ];
+  // console.log("rows",rows);
 
   return (
-    <ContainTable>
-      <Grid className="filter" container spacing={1}>
-        <Grid sm={12} md={6} xl={6} item>
-          <CustomeBox width="50%">
-            <Navtab
-              navIndexActive={navIndexActive}
-              tabsData={tabs}
-              onClick={(e, indexNav) => {
-                setNavIndexActive(indexNav);
-                onSwitch(e.target.name);
-              }}
-            />
-          </CustomeBox>
-        </Grid>
-        <Grid sm={12} md={6} xl={6} item>
-          <Search onChange={onSearch} width="100%" placeholder="Search..." />
-        </Grid>
-      </Grid>
+    <>
       {/* </BoxCustom> */}
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
@@ -136,7 +122,8 @@ export default function TableUser(props) {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format ? column.format(value) : value}
+                        {/* {column.format ? column.format(value) : value} */}
+                        {rowdata(column, value, row.id)}
                       </TableCell>
                     );
                   })}
@@ -155,13 +142,6 @@ export default function TableUser(props) {
         onPageChange={onChangePage}
         onRowsPerPageChange={onChangeRowPerpage}
       />
-    </ContainTable>
+    </>
   );
 }
-
-const ContainTable = styled(Paper)`
-  padding: 15px;
-  .filter {
-    margin-bottom: 15px;
-  }
-`;

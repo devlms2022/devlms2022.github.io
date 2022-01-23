@@ -7,6 +7,10 @@ class Utilities {
     return moment().format("YYYY-MM-DD").toString();
   }
 
+  moment(date) {
+    return moment(date).format("YYYY-MM-DD");
+  }
+
   makeid(length = 18) {
     var characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

@@ -7,7 +7,7 @@ const Paper = (props) => {
 };
 
 const PaperStyled = styled.div`
-  box-shadow: 0px 25px 50px rgba(129, 129, 129, 0.1);
+  box-shadow: 0px 0px 12px 9px rgba(0,0,0,0.18);
   border-radius: 10px;
 `;
 

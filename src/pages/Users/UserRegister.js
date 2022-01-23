@@ -302,7 +302,6 @@ export default class UserRegister extends Component {
   render() {
     const {
       users,
-      role_id,
       page,
       limit,
       totalData,

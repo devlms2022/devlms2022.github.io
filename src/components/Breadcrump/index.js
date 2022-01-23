@@ -8,7 +8,7 @@ const handleClick = (event) => {
   console.info('You clicked a breadcrumb.');
 }
 
-export default function Breadcrumbs() {
+export default function Breadcrumb() {
   return (
     <div role="presentation" onClick={handleClick}>
       <Breadcrumbs aria-label="breadcrumb">

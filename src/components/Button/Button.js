@@ -6,7 +6,7 @@ import styled from "styled-components";
 const ButtonCustom = (props) => {
   const { text, to, height, variant } = props;
   
-  return <ButtonStyled {...props}>{text ? text : props.children}</ButtonStyled>;
+  return <ButtonStyled  {...props}>{text ? text : props.children}</ButtonStyled>;
 };
 
 const ButtonStyled = styled(Button)`
@@ -31,6 +31,7 @@ const ButtonStyled = styled(Button)`
       : "var(--white-color)"};
   border: ${(props) =>
     props.variant === "outlined" && "1px solid var(--primary-color)"};
+   
 `;
 
 export default ButtonCustom;

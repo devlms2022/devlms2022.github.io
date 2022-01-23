@@ -8,13 +8,14 @@ import React, { useEffect, useState } from "react";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import AppBarAdmin from "../components/Appbar/AppBarAdmin";
+import Breadcrumb from "../components/Breadcrump";
 import MenuItem from "../components/Menu/MenuItem";
 import { Menuadmin } from "../data/sidebarmenu";
 import routes from "../routes";
 import { Api } from "../services/api";
 import TokenService from "../services/token.services";
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 function AdminLayout(props) {
   const { window } = props;
@@ -46,7 +47,6 @@ function AdminLayout(props) {
     setMobileOpen(!mobileOpen);
   };
 
-
   let menus = [];
   if (userSign.role_id === "3") {
     menus = Menuadmin;
@@ -59,7 +59,6 @@ function AdminLayout(props) {
       <Toolbar />
       <Divider />
       <SidebarWrap>
-        
         {menus.map((item, key) => {
           return <MenuItem item={item} key={key} />;
         })}
@@ -127,6 +126,9 @@ function AdminLayout(props) {
       >
         <Toolbar />
         <Container maxWidth="lg">
+          <BreadcrumbWrap>
+            <Breadcrumb />
+          </BreadcrumbWrap>
           <Switch>
             {routes.map((item, key) => {
               if (item.layout === "admin") {
@@ -152,10 +154,6 @@ function AdminLayout(props) {
 }
 
 AdminLayout.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window: PropTypes.func,
 };
 
@@ -163,5 +161,9 @@ export default AdminLayout;
 
 const SidebarWrap = styled.div`
   width: 100%;
-  /* background: red; */
+`;
+
+const BreadcrumbWrap = styled.div`
+  width: 100%;
+  margin-bottom : 35px;
 `;
