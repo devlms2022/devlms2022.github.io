@@ -8,6 +8,8 @@ import { Api } from "../../services/api";
 import Alert from "@mui/material/Alert";
 import QueryString from "query-string";
 import Swal from "sweetalert2";
+import { Button, Paper } from "@mui/material";
+import ButtonCustom from "../../components/Button/Button";
 
 const ForgotPassword = () => {
   const [values, setValues] = useState({});
@@ -151,7 +153,7 @@ const ForgotPassword = () => {
           notSame={errors.passwordnotsame ? errors.passwordnotsame : ""}
           onSubmit={handleSubmit}
         />
-      ) : (
+      ) : flashAlert === false ? (
         <Email
           tombolNext={handleNext}
           tombolBack={handleBack}
@@ -160,6 +162,14 @@ const ForgotPassword = () => {
           errorEmail={errors.email ? true : false}
           helperTextEmail={errors.email ? errors.email : ""}
         />
+      ) : (
+        <Paper className="btn">
+          <ButtonCustom
+            variant="outlined"
+            text="Back to Home"
+            onClick={handleBack}
+          />
+        </Paper>
       )}
     </WrapContent>
   );
@@ -174,6 +184,10 @@ const WrapContent = styled.div`
   h1 {
     text-align: center;
     margin-bottom: 40px;
+  }
+
+  .btn {
+    margin-top: 20px;
   }
 `;
 

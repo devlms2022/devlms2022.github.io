@@ -34,7 +34,7 @@ const FormTeachUploadDoc = (props) => {
             </label>
           </div>
           <Grid spacing={2} container>
-            <Grid className="col" item xs={12} sm={12}>
+            <Grid className="col" item xs={12} sm={12} mb={"none"}>
               <Input
                 className="form-control input"
                 label="Registrion Code Of Branch"

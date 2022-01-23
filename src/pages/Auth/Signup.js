@@ -19,6 +19,7 @@ import Button from "../../components/Button/Button";
 import {
   FormEmailPasss,
   FormPersonalData,
+  FormStudentPersonalData,
   FormStudentUploadDoc,
   FormTeachUploadDoc,
 } from "../../components/Form/Signup";
@@ -29,7 +30,7 @@ const RegistStep0 = (props) => {
   const { handleClicked } = props;
 
   return (
-    <Grid spacing={2} container>
+    <Grid spacing={5} container mb={10}>
       <Grid
         item
         className="col"
@@ -144,24 +145,26 @@ export class Signup extends Component {
     let isFormValid = true;
     if (stepActive === 1) {
       if (
-        !(data.burger_service_nummer,
-        data.address,
-        data.birthday,
-        data.family_name,
-        data.front_name,
-        data.gender,
-        data.postal_code)
+        !(
+          data.burger_service_nummer &&
+          data.address &&
+          data.birthday &&
+          data.family_name &&
+          data.front_name &&
+          data.gender &&
+          data.postal_code
+        )
       ) {
         this.setState({
           errors: {
             ["burger_service_nummer"]:
               "*Please Enter your Burger Service Number.",
             ["address"]: "*Please Enter your address.",
-            ["family_name"]: "*Family Name",
-            ["front_name"]: "Front Name",
-            ["gender"]: "gender",
-            ["birthday"]: "birthday",
-            ["postal_code"]: "postal code",
+            ["family_name"]: "*Please Enter your family name.",
+            ["front_name"]: "*Please Enter your front name",
+            ["gender"]: "*Please Enter your gender.",
+            ["birthday"]: "*Please Enter your birthday",
+            ["postal_code"]: "*Please Enter your postal code.",
           },
         });
         isFormValid = false;
@@ -198,7 +201,7 @@ export class Signup extends Component {
     let cekEmail = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
     let isFormValid = true;
 
-    if (!(data.email, data.password, data.repassword)) {
+    if (!(data.email && data.password && data.repassword)) {
       this.setState({
         errors: {
           ["email"]: "*Please enter your Email.",
@@ -373,12 +376,19 @@ export class Signup extends Component {
           </div>
 
           {stepActive > 0 && (
-            <Grid spacing={2} className="wrap-button" container>
+            <Grid
+              spacing={2}
+              className="wrap-button"
+              container
+              mb={7}
+              justifyContent={"center"}
+            >
               {stepActive > 1 && (
                 <Grid
                   style={{ display: "flex", flexDirection: "column" }}
                   item
-                  xs={6}
+                  xs={4}
+                  sm={4}
                 >
                   <Button onClick={this.handlePrev} variant="outlined">
                     Prev
@@ -388,7 +398,8 @@ export class Signup extends Component {
               <Grid
                 style={{ display: "flex", flexDirection: "column" }}
                 item
-                xs={stepActive > 1 ? 6 : 12}
+                xs={stepActive > 1 ? 5 : 8}
+                sm={stepActive > 1 ? 8 : 12}
               >
                 <Button onClick={this.handleNext}>
                   {stepActive + 1 === steps.length ? "Sign Up" : "Next"}
