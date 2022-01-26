@@ -68,6 +68,10 @@ const GlobalStyle = createGlobalStyle`
     li {
         list-style: none;
     }
+
+    .box-shadow {
+        box-shadow: 0px 25px 50px rgba(129, 129, 129, 0.1);
+    }
 `;
 
 export default GlobalStyle;

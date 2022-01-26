@@ -1,8 +1,4 @@
-import {
-  Delete as DeleteIcon,
-  ModeEdit as EditIcon,
-} from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,73 +6,76 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import moment from "moment";
 import React from "react";
-import util from "../../utils/utilities";
-import { default as BoxCustom } from "../Box";
-import Input from "../Form/Input";
+import BoxCustom from "../Box";
 
-export default function TableUser(props) {
+export default function TableUserEnroll(props) {
   const {
     data,
     total,
     limit = 10,
-    page,
+    page = 0,
+    onClickAction,
     onChangePage,
     onChangeRowPerpage,
-    actionClicked,
-    edit,
-    onChangeEdit,
-    onSaveEdit
   } = props;
 
-  const rowdata = (column, value, id) => {
-   
-    let result = column.format ? column.format(value) : value;
-    if (edit.id) {
-      if (edit.id === id) {
-        if (column.id === "name") result = <Input onBlur={onSaveEdit} autoFocus onChange={onChangeEdit} value={edit.name} name="name" />;
-      }
-    }
-    return result;
-  };
-
   const columns = [
-    { id: "no", label: "No", minWidth: 10 },
+    { id: "no", label: "No", maxWidth: 12 },
     {
       id: "created_at",
-      label: "Date Input",
-      minWidth: 100,
-      align: "left",
+      label: "Date Enroll",
+      minWidth: 170,
+      align: "center",
+      format: (val) => {
+        return moment(val).format("YYYY-MM-DD HH:mm:ss");
+      },
     },
     {
-      id: "name",
-      label: "Topic",
-      minWidth: 100,
-      align: "left",
+      id: "fullname",
+      label: "Fullname",
+      minWidth: 80,
+      align: "center",
     },
     {
-      id: "action",
-      label: "Action",
-      minWidth: 20,
+      id: "email",
+      label: "Email",
+      minWidth: 170,
+      align: "center",
+    },
+    {
+      id: "study",
+      label: "Study Taken",
+      minWidth: 170,
+      align: "center",
+    },
+    {
+      id: "detail",
+      label: "Detail",
+      minWidth: 120,
       align: "center",
       format: (id) => {
         return (
-          <BoxCustom direction="row" width="100%" justify="space-evenly">
-            <IconButton
-              onClick={(e) => actionClicked(e, "edit", id)}
-              color="primary"
-              size="small"
-            >
-              <EditIcon />
-            </IconButton>
-            <IconButton
-              onClick={(e) => actionClicked(e, "delete", id)}
-              color="error"
-              size="small"
-            >
-              <DeleteIcon />
-            </IconButton>
-          </BoxCustom>
+          <>
+            <BoxCustom direction="row" justify="space-between">
+              <Button
+                onClick={(e) => onClickAction(e, id, "accept")}
+                size="small"
+                variant="contained"
+              >
+                Accept
+              </Button>
+              <Button
+                onClick={(e) => onClickAction(e, id, "reject")}
+                size="small"
+                variant="outlined"
+                color="error"
+              >
+                Reject
+              </Button>
+            </BoxCustom>
+          </>
         );
       },
     },
@@ -88,20 +87,19 @@ export default function TableUser(props) {
     let number = initialNumber + increment;
     increment++;
     return {
-      id : item.id,
       no: number,
-      created_at: util.moment(item.created_at),
-      name: item.name,
-      action: item.id,
+      fullname: item.user.profile.fullname,
+      email: item.user.email,
+      created_at: item.created_at,
+      study: item.master_studies.title,
+      detail: item.id,
     };
   });
-
-  // console.log("rows",rows);
 
   return (
     <>
       {/* </BoxCustom> */}
-      <TableContainer sx={{ maxHeight: 378 }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -124,8 +122,7 @@ export default function TableUser(props) {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {/* {column.format ? column.format(value) : value} */}
-                        {rowdata(column, value, row.id)}
+                        {column.format ? column.format(value) : value}
                       </TableCell>
                     );
                   })}

@@ -23,6 +23,7 @@ const InputFIle = (props) => {
 
 const Div = styled.div`
   /* min-width : 320px; */
+  display: flex;
   .button-input {
     padding: 10px 22px;
     width: 100%;

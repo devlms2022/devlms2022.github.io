@@ -6,15 +6,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import moment from "moment";
 import React, { useState } from "react";
 import styled from "styled-components";
-import Swal from "sweetalert2";
+import CustomeBox from "../Box";
 import ButtonCustom from "../Button/Button";
 import Search from "../Form/Search";
-import Paper from "../Paper";
-import moment from "moment";
 import Navtab from "../Navtab";
-import CustomeBox from "../Box";
+import Paper from "../Paper";
 
 export default function TableUser(props) {
   const {

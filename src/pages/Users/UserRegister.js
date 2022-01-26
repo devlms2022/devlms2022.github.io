@@ -263,9 +263,7 @@ export default class UserRegister extends Component {
 
   handleActionDetail = (e, id) => {
     const { name } = e.target;
-    let title = "",
-      text = "",
-      icon = "";
+   
 
     Swal.fire({
       title: name.toUpperCase(),

@@ -98,6 +98,7 @@ export class Signup extends Component {
     const { name, files } = event.target;
 
     const reader = new FileReader();
+    reader.readAsDataURL(files[0]);
     reader.onload = () => {
       if (reader.readyState === 2) {
         this.setState({
@@ -109,7 +110,6 @@ export class Signup extends Component {
         });
       }
     };
-    reader.readAsDataURL(files[0]);
   };
 
   handleChange = (event) => {

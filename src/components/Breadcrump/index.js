@@ -13,7 +13,7 @@ export default function Breadcrumb() {
     <div role="presentation" onClick={handleClick}>
       <Breadcrumbs aria-label="breadcrumb">
         <Link underline="hover" color="inherit" href="/">
-          MUI
+          Dashboard
         </Link>
         <Link
           underline="hover"

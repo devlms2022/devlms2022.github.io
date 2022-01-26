@@ -38,7 +38,7 @@ const Tab = styled(TabUnstyled)`
 
 
 const TabsList = styled(TabsListUnstyled)`
-  min-width: 320px;
+  min-width: 150px;
   background-color: var(--primary-color);
   border-radius: 8px;
   margin-bottom: 16px;

@@ -71,7 +71,7 @@ export default class MasterTopic extends Component {
       limit,
       page,
       sortby: "DESC",
-      search
+      search,
     })
       .then((response) => {
         this.setState({
@@ -126,6 +126,33 @@ export default class MasterTopic extends Component {
     this.setState({
       [name]: value,
     });
+  };
+
+  handleChangeEdit = (e) => {
+    const { value } = e.target;
+    this.setState({
+      edit: {
+        ...this.state.edit,
+        name: value,
+      },
+    });
+  };
+
+  handelUpdateTopic = () => {
+    const { name, id } = this.state.edit;
+    Api.post("/topic/update", {
+      id,
+      name,
+    })
+      .then((response) => {
+        if (response.status === 200 && response.data.code === 200) {
+          this.fetchDataTopic();
+          this.setState({ edit: {} });
+        }
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
   };
 
   handleAction = async (e, action, id) => {
@@ -207,9 +234,11 @@ export default class MasterTopic extends Component {
             total={totalData}
             page={page}
             limit={limit}
+            onChangeEdit={this.handleChangeEdit}
             onChangePage={this.handleChangePage}
             onChangeRowPerpage={this.handleChangeRowsPerPage}
             edit={edit}
+            onSaveEdit={this.handelUpdateTopic}
           />
         </ContainContent>
       </>

@@ -1062,14 +1062,14 @@
 
 "@bedrock-layout/use-forwarded-ref@^1.1.4":
   version "1.1.11"
-  resolved "https://registry.yarnpkg.com/@bedrock-layout/use-forwarded-ref/-/use-forwarded-ref-1.1.11.tgz#c649a0dc442ee7633509f1d279f55152e55e718f"
+  resolved "https://registry.npmjs.org/@bedrock-layout/use-forwarded-ref/-/use-forwarded-ref-1.1.11.tgz"
   integrity sha512-FR10Q59jOzOfAk1TMSWpBAPRG35cCW57Y1gLloqwBqbYypuUICaXnYGoMCy9bBqpeBpweVJNSWVvmFhuAFzLjg==
   dependencies:
     "@bedrock-layout/use-stateful-ref" "^1.1.11"
 
 "@bedrock-layout/use-stateful-ref@^1.1.11":
   version "1.1.11"
-  resolved "https://registry.yarnpkg.com/@bedrock-layout/use-stateful-ref/-/use-stateful-ref-1.1.11.tgz#16c08097bec069ab234043383d1ccc77a4dacd4a"
+  resolved "https://registry.npmjs.org/@bedrock-layout/use-stateful-ref/-/use-stateful-ref-1.1.11.tgz"
   integrity sha512-yU73p/LxInc3T4ZHF/2vGrmYB0LxHEbpw9bOLG8YE8cptmnDWbxd3vTEFERts9dwD0kqV+UV2iqXzuHWwj9kiA==
 
 "@csstools/normalize.css@*":
@@ -1324,6 +1324,21 @@
     "@types/node" "*"
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
+
+"@microsoft/tsdoc-config@0.15.2":
+  version "0.15.2"
+  resolved "https://registry.npmjs.org/@microsoft/tsdoc-config/-/tsdoc-config-0.15.2.tgz"
+  integrity sha512-mK19b2wJHSdNf8znXSMYVShAHktVr/ib0Ck2FA3lsVBSEhSI/TfXT7DJQkAYgcztTuwazGcg58ZjYdk0hTCVrA==
+  dependencies:
+    "@microsoft/tsdoc" "0.13.2"
+    ajv "~6.12.6"
+    jju "~1.4.0"
+    resolve "~1.19.0"
+
+"@microsoft/tsdoc@0.13.2":
+  version "0.13.2"
+  resolved "https://registry.npmjs.org/@microsoft/tsdoc/-/tsdoc-0.13.2.tgz"
+  integrity sha512-WrHvO8PDL8wd8T2+zBGKrMwVL5IyzR3ryWUsl0PXgEV0QHup4mTLi0QcATefGI6Gx9Anu7vthPyyyLpY0EpiQg==
 
 "@mui/base@5.0.0-alpha.63":
   version "5.0.0-alpha.63"
@@ -2312,7 +2327,7 @@ ajv-keywords@^5.0.0:
   dependencies:
     fast-deep-equal "^3.1.3"
 
-ajv@^6.10.0, ajv@^6.12.2, ajv@^6.12.4, ajv@^6.12.5:
+ajv@^6.10.0, ajv@^6.12.2, ajv@^6.12.4, ajv@^6.12.5, ajv@~6.12.6:
   version "6.12.6"
   resolved "https://registry.npmjs.org/ajv/-/ajv-6.12.6.tgz"
   integrity sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==
@@ -2513,6 +2528,11 @@ atob@^2.1.2:
   version "2.1.2"
   resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
+
+autobind-decorator@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.npmjs.org/autobind-decorator/-/autobind-decorator-2.4.0.tgz"
+  integrity sha512-OGYhWUO72V6DafbF8PM8rm3EPbfuyMZcJhtm5/n26IDwO18pohE4eNazLoCGhPiXOCD0gEGmrbU3849QvM8bbw==
 
 autoprefixer@^10.4.1:
   version "10.4.2"
@@ -2754,7 +2774,7 @@ body-parser@1.19.1:
 
 body-scroll-lock@^3.1.5:
   version "3.1.5"
-  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-3.1.5.tgz#c1392d9217ed2c3e237fee1e910f6cdd80b7aaec"
+  resolved "https://registry.npmjs.org/body-scroll-lock/-/body-scroll-lock-3.1.5.tgz"
   integrity sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==
 
 bonjour@^3.5.0:
@@ -2970,7 +2990,7 @@ cjs-module-lexer@^1.0.0:
 
 classnames@^2.2.6:
   version "2.3.1"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
+  resolved "https://registry.npmjs.org/classnames/-/classnames-2.3.1.tgz"
   integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
 
 clean-css@^5.2.2:
@@ -3166,10 +3186,10 @@ core-js-pure@^3.19.0, core-js-pure@^3.8.1:
   resolved "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.20.2.tgz"
   integrity sha512-CmWHvSKn2vNL6p6StNp1EmMIfVY/pqn3JLAjfZQ8WZGPOlGoO92EkX9/Mk81i6GxvoPXjUqEQnpM3rJ5QxxIOg==
 
-core-js@^3.19.2:
-  version "3.20.2"
-  resolved "https://registry.npmjs.org/core-js/-/core-js-3.20.2.tgz"
-  integrity sha512-nuqhq11DcOAbFBV4zCbKeGbKQsUDRqTX0oqx7AttUBuqe3h20ixsE039QHelbL6P4h+9kytVqyEtyZ6gsiwEYw==
+core-js@^3.19.2, core-js@^3.20.3:
+  version "3.20.3"
+  resolved "https://registry.npmjs.org/core-js/-/core-js-3.20.3.tgz"
+  integrity sha512-vVl8j8ph6tRS3B8qir40H7yw7voy17xL0piAjlbBUsH7WIfzoedL/ZOr1OV9FyZQLWXsayOJyV4tnRyXR85/ag==
 
 core-util-is@~1.0.0:
   version "1.0.3"
@@ -4018,6 +4038,14 @@ eslint-plugin-testing-library@^5.0.1:
   integrity sha512-8ZV4HbbacvOwu+adNnGpYd8E64NRcil2a11aFAbc/TZDUB/xxK2c8Z+LoeoHUbxNBGbTUdpAE4YUugxK85pcwQ==
   dependencies:
     "@typescript-eslint/experimental-utils" "^5.5.0"
+
+eslint-plugin-tsdoc@^0.2.14:
+  version "0.2.14"
+  resolved "https://registry.npmjs.org/eslint-plugin-tsdoc/-/eslint-plugin-tsdoc-0.2.14.tgz"
+  integrity sha512-fJ3fnZRsdIoBZgzkQjv8vAj6NeeOoFkTfgosj6mKsFjX70QV256sA/wq+y/R2+OL4L8E79VVaVWrPeZnKNe8Ng==
+  dependencies:
+    "@microsoft/tsdoc" "0.13.2"
+    "@microsoft/tsdoc-config" "0.15.2"
 
 eslint-scope@5.1.1, eslint-scope@^5.1.1:
   version "5.1.1"
@@ -5017,7 +5045,7 @@ is-callable@^1.1.4, is-callable@^1.2.4:
   resolved "https://registry.npmjs.org/is-callable/-/is-callable-1.2.4.tgz"
   integrity sha512-nsuwtxZfMX67Oryl9LCQ+upnC0Z0BgpwntpS89m1H/TLF0zNfzfLMV/9Wa/6MZsj0acpEjAO0KF1xT6ZdLl95w==
 
-is-core-module@^2.2.0, is-core-module@^2.8.0:
+is-core-module@^2.1.0, is-core-module@^2.2.0, is-core-module@^2.8.0:
   version "2.8.1"
   resolved "https://registry.npmjs.org/is-core-module/-/is-core-module-2.8.1.tgz"
   integrity sha512-SdNCUs284hr40hFTFP6l0IfZ/RSrMXF3qgoRHd3/79unUTvrFO/JoXwkGm+5J/Oe3E/b5GsnG330uUNgRpu1PA==
@@ -5658,6 +5686,28 @@ jest@^27.4.3:
     "@jest/core" "^27.4.7"
     import-local "^3.0.2"
     jest-cli "^27.4.7"
+
+jju@~1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/jju/-/jju-1.4.0.tgz"
+  integrity sha1-o6vicYryQaKykE+EpiWXDzia4yo=
+
+jodit-react@^1.1.18:
+  version "1.1.18"
+  resolved "https://registry.npmjs.org/jodit-react/-/jodit-react-1.1.18.tgz"
+  integrity sha512-tSp8v5GgLAbqcaoK1wj2T081ii6qNUzmS2863SK5cT5aqXHD+RqQrKMMqCwODEoRry+7nESNPhLdoF1vO3qbiA==
+  dependencies:
+    jodit "^3.9.4"
+
+jodit@^3.9.4:
+  version "3.12.5"
+  resolved "https://registry.npmjs.org/jodit/-/jodit-3.12.5.tgz"
+  integrity sha512-jywB5pFsd2G+xm+rcXJCsIDt25pqK6iIS3CxZnCqv6VG+0MtROccDwee9v6Ahg5xLhNUXTX97frL7SwTL9h29g==
+  dependencies:
+    autobind-decorator "^2.4.0"
+    core-js "^3.20.3"
+    eslint-plugin-tsdoc "^0.2.14"
+    postcss-less "^5.0.0"
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -6769,6 +6819,11 @@ postcss-lab-function@^4.0.3:
   dependencies:
     postcss-value-parser "^4.2.0"
 
+postcss-less@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/postcss-less/-/postcss-less-5.0.0.tgz"
+  integrity sha512-djK6NlApALJeBnNx7CzLatq64eMF3BCyzBH+faYPxrvNHHM/YCimJ6XQkgWgtim2G89EzdQG4Ed0lGNCXPfD7A==
+
 postcss-load-config@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npmjs.org/postcss-load-config/-/postcss-load-config-3.1.1.tgz"
@@ -7334,7 +7389,7 @@ react-refresh@^0.11.0:
 
 react-responsive-modal@^6.2.0:
   version "6.2.0"
-  resolved "https://registry.yarnpkg.com/react-responsive-modal/-/react-responsive-modal-6.2.0.tgz#339226b911d8ffaba4e0afce83387a65221b8e29"
+  resolved "https://registry.npmjs.org/react-responsive-modal/-/react-responsive-modal-6.2.0.tgz"
   integrity sha512-i3Or4ixdDnLOeZbOQltgayOj69zg6Pbd8IF+RMi6gG1hyZvXHL39QvMvXBuG7poEaBMHspXNDtCzbTBJpOmdfw==
   dependencies:
     "@bedrock-layout/use-forwarded-ref" "^1.1.4"
@@ -7649,6 +7704,14 @@ resolve@^2.0.0-next.3:
   integrity sha512-W8LucSynKUIDu9ylraa7ueVZ7hc0uAgJBxVsQSKOXOyle8a93qXhcz+XAXZ8bIq2d6i4Ehddn6Evt+0/UwKk6Q==
   dependencies:
     is-core-module "^2.2.0"
+    path-parse "^1.0.6"
+
+resolve@~1.19.0:
+  version "1.19.0"
+  resolved "https://registry.npmjs.org/resolve/-/resolve-1.19.0.tgz"
+  integrity sha512-rArEXAgsBG4UgRGcynxWIWKFvh/XZCcS8UJdHhwy91zwAvCZIbcs+vAbflgBnNjYMs/i/i+/Ux6IZhML1yPvxg==
+  dependencies:
+    is-core-module "^2.1.0"
     path-parse "^1.0.6"
 
 retry@^0.13.1:
@@ -8228,6 +8291,16 @@ stylehacks@^5.0.1:
   dependencies:
     browserslist "^4.16.0"
     postcss-selector-parser "^6.0.4"
+
+suneditor-react@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/suneditor-react/-/suneditor-react-3.3.1.tgz#540901d71d5f45a2485ac923cada8eeb692aab18"
+  integrity sha512-/bljp0IGEvkpzJ4Ty9xrb89RHN6U/Ap+OGtZtpJzVb9V6fLk6wuCEyt/9mH1xslefQnM8/FPZwcIP/vo//xh9A==
+
+suneditor@^2.42.0:
+  version "2.42.0"
+  resolved "https://registry.yarnpkg.com/suneditor/-/suneditor-2.42.0.tgz#9a8e0118113ce4065292424868485442f772dad9"
+  integrity sha512-qlZBF5dk6kSOGGPn66gPu5NhHdxyuzWQKNgmHmV/G73XAKC+oGWTRnCjNasluQM+FHsKwFvemH0hDng7trjHVA==
 
 supports-color@^5.3.0, supports-color@^5.5.0:
   version "5.5.0"

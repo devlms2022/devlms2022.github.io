@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Tittle = (props) => {
+const Subtitle = (props) => {
   let { color, children, variant = "normal" } = props;
   if (variant == "bold") {
     variant = 600;
@@ -28,4 +28,4 @@ const Typography6 = styled.h6`
   }
 `;
 
-export default Tittle;
+export default Subtitle;

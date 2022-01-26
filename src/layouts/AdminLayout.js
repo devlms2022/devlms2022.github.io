@@ -5,7 +5,7 @@ import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import AppBarAdmin from "../components/Appbar/AppBarAdmin";
 import Breadcrumb from "../components/Breadcrump";
@@ -125,7 +125,7 @@ function AdminLayout(props) {
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg">
+        <Container  maxWidth="xl">
           <BreadcrumbWrap>
             <Breadcrumb />
           </BreadcrumbWrap>

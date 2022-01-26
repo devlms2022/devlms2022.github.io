@@ -42,13 +42,14 @@ export const Menuadmin = [
     iconOpened: <KeyboardArrowUp />,
     subNav: [
       {
+        title: "User Active",
+        path: "/user/active",
+      },
+      {
         title: "User Register",
         path: "/user/register",
       },
-      {
-        title: "Manage User",
-        path: "/user/manage",
-      },
+      
     ],
   },
   {
@@ -59,8 +60,8 @@ export const Menuadmin = [
     iconOpened: <KeyboardArrowUp />,
     subNav: [
       {
-        title: "List Registrant",
-        path: "/study/registrant",
+        title: "User Enroll",
+        path: "/study/enroll",
       },
     ],
   },
@@ -69,5 +70,4 @@ export const Menuadmin = [
     path: "#",
     icon: <CommentIcon />,
   },
-  
 ];

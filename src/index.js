@@ -1,3 +1,4 @@
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
@@ -6,13 +7,22 @@ import GlobalStyle from "./assets/styles/GlobalStyles";
 
 // import reportWebVitals from './reportWebVitals';
 
+const theme = createTheme({
+  palette: {
+    primary:  {
+      main : "#3f51b5"
+    }
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <GlobalStyle/>
-      <App />
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
-

@@ -2,8 +2,11 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Signup from "./pages/Auth/Signup";
 import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/Landing";
+import FormMasterStudies from "./pages/Masterdata/Form/FormMasterStudies";
+import MasterStudies from "./pages/Masterdata/MasterStudies";
 import MasterTopic from "./pages/Masterdata/MasterTopics";
 import Profile from "./pages/Profile";
+import UserEnroll from "./pages/Study/UserEnroll";
 import UserRegister from "./pages/Users/UserRegister";
 // import SignUp from "./"
 
@@ -55,6 +58,23 @@ const routes = [
     layout: "admin",
     basePath: true,
     component: MasterTopic,
+  },
+  {
+    path: "/master/setstudy",
+    layout: "admin",
+    basePath: true,
+    component: MasterStudies
+  },
+  {
+    path: "/master/setstudy/add",
+    layout: "admin",
+    component: FormMasterStudies
+  },
+  {
+    path : "/study/enroll",
+    layout : "admin",
+    basePath : true,
+    component : UserEnroll
   },
   {
     path: "/resetpassword",
