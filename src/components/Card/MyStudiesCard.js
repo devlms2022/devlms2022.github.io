@@ -43,7 +43,9 @@ const MyStudiesCard = (props) => {
           Active
         </Button>
         <BoxCustom direction="row">
-          <Button onClick={(e) => onSetupClicked(e,data.master_studies.id)}>setup</Button>
+          <Button onClick={(e) => onSetupClicked(e, data.master_studies.id)}>
+            setup
+          </Button>
         </BoxCustom>
       </BoxCustom>
     </PaperStyled>
