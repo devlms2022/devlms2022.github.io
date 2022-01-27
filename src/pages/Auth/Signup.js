@@ -6,7 +6,7 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
-import { Box, typography } from "@mui/system";
+import { Box, spacing, typography } from "@mui/system";
 import axios from "axios";
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
@@ -25,6 +25,7 @@ import {
 } from "../../components/Form/Signup";
 import Title from "../../components/Text/Tittle";
 import utilities from "../../utils/utilities";
+import { Api } from "../../services/api";
 
 const RegistStep0 = (props) => {
   const { handleClicked } = props;
@@ -66,6 +67,7 @@ export class Signup extends Component {
       isRedirect: false,
       data: {
         role_id: 0,
+        study_master: "",
         burger_service_nummer: "",
         family_name: "",
         front_name: "",
@@ -92,6 +94,14 @@ export class Signup extends Component {
       ],
       errors: {},
     };
+  }
+
+  async componentDidMount() {
+    const response = await Api.post("/master_studies", {
+      limit: 1000,
+    });
+
+    this.setState({ studies: response.data.data });
   }
 
   handleChangeFile = (event) => {
@@ -142,9 +152,10 @@ export class Signup extends Component {
   handleNext = () => {
     const { stepActive, steps, data } = this.state;
     let isFormValid = true;
-    if (stepActive === 1) {
+    if (stepActive === 2) {
       if (
         !(
+          data.study_master &&
           data.burger_service_nummer &&
           data.address &&
           data.birthday &&
@@ -156,6 +167,7 @@ export class Signup extends Component {
       ) {
         this.setState({
           errors: {
+            ["study_master"]: "*Please choose your study",
             ["burger_service_nummer"]:
               "*Please Enter your Burger Service Number.",
             ["address"]: "*Please Enter your address.",
@@ -169,7 +181,10 @@ export class Signup extends Component {
         isFormValid = false;
       }
     }
-    if (stepActive === 2 && data.role_id === 2) {
+
+    console.log(data, isFormValid);
+
+    if (stepActive === 3 && data.role_id === 2) {
       if (!data.reg_code_branch) {
         this.setState({
           errors: {
@@ -248,6 +263,7 @@ export class Signup extends Component {
       });
       formdata.append("status", "waiting");
       formdata.append("is_login", 0);
+      formdata.append("master_study", data.study_master);
       try {
         const response = await axios({
           url: `${REACT_APP_API_URL}/register`,
@@ -344,6 +360,7 @@ export class Signup extends Component {
                 data={data}
                 errors={errors}
                 onChange={this.handleChange}
+                listStudies={this.state.studies}
               />
             )}
             {stepActive === 2 && registerType === 2 && (
