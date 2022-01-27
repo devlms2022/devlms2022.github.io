@@ -163,7 +163,7 @@ class Profile extends Component {
         this.fetchAvatar(this.state.data.profile_id);
       }
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
 

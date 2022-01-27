@@ -1,20 +1,9 @@
 import { Grid } from "@mui/material";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
 import React, { Component } from "react";
 import styled from "styled-components";
-import {
-  CourseIcon,
-  DiscussionIcon,
-  StudentIcon,
-  TeacherWhiteIcon,
-} from "../../assets/icons";
 import Paper from "../../components/Paper";
-import Table from "../../components/Table";
-import { Subtitle } from "../../components/Text";
-import TokenService from "../../services/token.services";
-import InfoIcon from "@mui/icons-material/Info";
 import Course from "../../components/Section/DashboardStudent/Course";
+import { Subtitle } from "../../components/Text";
 
 export default class StudentDashboard extends Component {
   constructor(props) {

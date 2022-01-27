@@ -19,17 +19,17 @@ const style = {
 };
 
 export default function ModalCustom(props) {
-  let { open = false, onClose, width,title } = props;
+  let { open = false, onClose, width,title, height } = props;
 
   return (
     <Modal
       aria-labelledby="unstyled-modal-title"
       aria-describedby="unstyled-modal-description"
       open={open}
-      sx={{zIndex : 9}}
+      sx={{zIndex : 99}}
       onClose={onClose}
     >
-      <BoxStyled sx={{...style, width}} >
+      <BoxStyled sx={{...style, width, height}} >
         <HeaderModal>
           <Subtitle>{title}</Subtitle>
           <IconButton onClick={onClose}>

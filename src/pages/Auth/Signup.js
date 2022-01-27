@@ -137,7 +137,6 @@ export class Signup extends Component {
       },
     });
 
-    console.log(name);
   };
 
   handleNext = () => {

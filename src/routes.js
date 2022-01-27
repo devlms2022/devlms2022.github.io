@@ -6,6 +6,9 @@ import FormMasterStudies from "./pages/Masterdata/Form/FormMasterStudies";
 import MasterStudies from "./pages/Masterdata/MasterStudies";
 import MasterTopic from "./pages/Masterdata/MasterTopics";
 import Profile from "./pages/Profile";
+import CourseList from "./pages/Study/Course/CourseList";
+import CourseSections from "./pages/Study/Course/CourseSections";
+import MyStudies from "./pages/Study/MyStudies";
 import UserEnroll from "./pages/Study/UserEnroll";
 import UserRegister from "./pages/Users/UserRegister";
 // import SignUp from "./"
@@ -75,6 +78,22 @@ const routes = [
     layout : "admin",
     basePath : true,
     component : UserEnroll
+  },
+  {
+    path : "/mystudies/setup",
+    layout : "admin",
+    basePath : true,
+    component : MyStudies
+  },
+  {
+    path : "/mystudies/setup/sections/:studyid",
+    layout : "admin",
+    component : CourseSections
+  },
+  {
+    path : "/mystudies/setup/course/:sectionId",
+    layout : "admin",
+    component : CourseList
   },
   {
     path: "/resetpassword",
