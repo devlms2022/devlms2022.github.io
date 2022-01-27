@@ -1,12 +1,12 @@
+import { Button, Grid } from "@mui/material";
 import React, { Component } from "react";
-import { Button, Grid, Tab } from "@mui/material";
 import styled from "styled-components";
-import Paper from "../../components/Paper";
+import Swal from "sweetalert2";
 import Search from "../../components/Form/Search";
-import { Api } from "../../services/api";
-import TableUserEnroll from "../../components/Table/TableUserEnroll";
 import Navtab from "../../components/Navtab";
-import BoxCustom from "../../components/Box";
+import Paper from "../../components/Paper";
+import TableUserEnroll from "../../components/Table/TableUserEnroll";
+import { Api } from "../../services/api";
 
 export default class UserEnroll extends Component {
   constructor(props) {
@@ -29,7 +29,8 @@ export default class UserEnroll extends Component {
       page,
       search,
       filter: {
-        role_id : roleSwitch
+        role_id: roleSwitch,
+        status_confirm: "pendding",
       },
     })
       .then((resp) => {
@@ -40,6 +41,7 @@ export default class UserEnroll extends Component {
 
   handleSwitch = (role) => {
     role = role === "teacher" ? 2 : 3;
+
     this.setState({ roleSwitch: role });
   };
 
@@ -57,22 +59,51 @@ export default class UserEnroll extends Component {
   };
 
   handleAction = (e, id, value) => {
-    Api.post("/studies/confirm", {
-      id,
-      status_confirm: value,
-    })
-      .then((response) => {
-        if (response.status === 200 && response.data.code === 200) {
-          this.fetchData();
-        } else {
-          throw Error(response.data);
-        }
-      })
-      .catch((err) => alert(err.message));
+    Swal.fire({
+      title: value.toUpperCase(),
+      text: `Are you sure you want to ${value} this user for the study taken?`,
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Ok",
+    }).then((confirm) => {
+      if (confirm.isConfirmed) {
+        Api.post("/studies/confirm", {
+          id,
+          status_confirm: value,
+        })
+          .then((response) => {
+            if (response.status === 200 && response.data.code === 200) {
+              this.fetchData();
+            } else {
+              throw Error(response.data);
+            }
+          })
+          .catch((err) => alert(err.message));
+      }
+    });
   };
 
   componentDidMount = () => {
     this.fetchData();
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.roleSwitch !== this.state.roleSwitch) {
+      this.fetchData();
+    }
+    if (prevState.search !== this.state.search) {
+      this.fetchData();
+    }
+    if (prevState.search !== this.state.search) {
+      this.fetchData();
+    }
+    if (
+      prevState.page !== this.state.page ||
+      prevState.limit !== this.state.limit
+    ) {
+      this.fetchData();
+    }
   };
 
   render() {

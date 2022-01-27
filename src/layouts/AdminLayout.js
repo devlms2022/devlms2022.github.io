@@ -10,7 +10,7 @@ import styled from "styled-components";
 import AppBarAdmin from "../components/Appbar/AppBarAdmin";
 import Breadcrumb from "../components/Breadcrump";
 import MenuItem from "../components/Menu/MenuItem";
-import { Menuadmin } from "../data/sidebarmenu";
+import { Menuadmin, MenuTeacher } from "../data/sidebarmenu";
 import routes from "../routes";
 import { Api } from "../services/api";
 import TokenService from "../services/token.services";
@@ -48,8 +48,8 @@ function AdminLayout(props) {
   };
 
   let menus = [];
-  if (userSign.role_id === "3") {
-    menus = Menuadmin;
+  if (userSign.role_id === "2") {
+    menus = MenuTeacher;
   } else if (userSign.role_id === "1") {
     menus = Menuadmin;
   }

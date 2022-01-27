@@ -5,6 +5,7 @@ import {
   Group as GroupIcon,
   School as SchoolIcon,
   DataSaverOff,
+  Report,
   KeyboardArrowUp,
   KeyboardArrowDown,
 } from "@mui/icons-material";
@@ -70,4 +71,43 @@ export const Menuadmin = [
     path: "#",
     icon: <CommentIcon />,
   },
+];
+
+export const MenuTeacher = [
+  {
+    title: "Dashboard",
+    path: "/",
+    icon: <DashboardIcon />,
+    
+  },
+  {
+    title: "My Studies",
+    path: "#",
+    icon: <FeedIcon />,
+    iconClosed: <KeyboardArrowDown />,
+    iconOpened: <KeyboardArrowUp />,
+    subNav: [
+      {
+        title: "Setup Course",
+        path: "/mystudies/setup",
+      },
+      {
+        title: "List Studies",
+        path: "/studies/list",
+      },
+    ],
+  },
+  {
+    title: "Discussion",
+    path: "/discussion",
+    icon: <GroupIcon />,
+     
+  },
+  {
+    title: "Report",
+    path: "/report",
+    icon: <Report />,
+    
+  },
+  
 ];

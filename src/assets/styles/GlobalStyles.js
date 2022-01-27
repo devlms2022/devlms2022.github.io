@@ -5,7 +5,7 @@ const GlobalStyle = createGlobalStyle`
     :root {
         --primary-color: #3F51B5;
         --danger-color: #3F51B5;
-        --primary-color-light: #057FFF;
+        --primary-color-light: #4582FF;
         --secondary-color: #6c757d;
         --background-dark-color: #10121A;
         --background-dark-grey: #191D2B;
@@ -28,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         font-size: 16px;
         list-style: none;
-        line-height: 150%;
+        /* line-height: 150%; */
         letter-spacing: 0.15px;
         text-decoration: none;
         font-family: 'Roboto', sans-serif;

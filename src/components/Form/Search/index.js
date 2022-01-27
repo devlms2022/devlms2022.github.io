@@ -14,6 +14,7 @@ const Search = (props) => {
   return (
     <FormControl sx={{ width }}>
       <TextField
+        size="small"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -26,7 +27,6 @@ const Search = (props) => {
         className={className}
         onBlur={onBlur}
         placeholder={placeholder}
-        
       />
     </FormControl>
   );

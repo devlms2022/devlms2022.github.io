@@ -56,6 +56,7 @@ export default function TableUserEnroll(props) {
       minWidth: 120,
       align: "center",
       format: (id) => {
+        console.log(id);
         return (
           <>
             <BoxCustom direction="row" justify="space-between">
@@ -120,6 +121,7 @@ export default function TableUserEnroll(props) {
                 <TableRow hover tabIndex={-1} key={row.no}>
                   {columns.map((column) => {
                     const value = row[column.id];
+                    if (column.id === "detail") console.log(value);
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.format ? column.format(value) : value}
