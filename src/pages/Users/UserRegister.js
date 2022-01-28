@@ -161,11 +161,13 @@ export default class UserRegister extends Component {
         grades: undefined,
         identity_card: undefined,
       },
+      listStudies : [],
     };
   }
 
   componentDidMount = () => {
     this.getUsers();
+    this.getStudyMaster();
     const userSign = TokenService.getUser();
     this.setState({ userSign: userSign.data });
   };
@@ -212,6 +214,19 @@ export default class UserRegister extends Component {
       },
     });
   };
+
+  getStudyMaster = async () => {
+    const response = await Api.post("/master_studies", {
+      limit : 1000
+    });
+    const {
+      data: { data },
+    } = response;
+
+    this.setState({
+      listStudies : data
+    });
+  }
 
   handleChangePage = (event, newPage) => {
     console.log(newPage);
@@ -263,7 +278,6 @@ export default class UserRegister extends Component {
 
   handleActionDetail = (e, id) => {
     const { name } = e.target;
-   
 
     Swal.fire({
       title: name.toUpperCase(),
@@ -298,14 +312,8 @@ export default class UserRegister extends Component {
   }
 
   render() {
-    const {
-      users,
-      page,
-      limit,
-      totalData,
-      shownModalDetail,
-      registerDetail,
-    } = this.state;
+    const { users, page, limit, totalData, shownModalDetail, registerDetail, listStudies } =
+      this.state;
 
     const boardData = [
       {
@@ -371,7 +379,7 @@ export default class UserRegister extends Component {
                     <MenuItem value="3">Student</MenuItem>
                   </Select>
                 </FormControl>
-                <FormPersonalData forDetail data={registerDetail} />
+                <FormPersonalData forDetail listStudies={listStudies} data={registerDetail} />
               </Grid>
               <Grid item md={7} sm={12}>
                 <Grid style={{ marginBottom: "9px" }} container spacing={2}>

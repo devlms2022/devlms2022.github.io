@@ -17,13 +17,6 @@ export function TabPanel(props) {
   );
 }
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
 export default function BaseTabs(props) {
   const [value, setValue] = React.useState(0);
 
@@ -35,25 +28,29 @@ export default function BaseTabs(props) {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{marginBottom : "12px"}} >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
+      <Box sx={{ marginBottom: "12px" }}>
+        <Tabs value={value} onChange={handleChange}>
           {tabLabel.map((item, key) => {
             return <Tab label={item} key={key.toString()} />;
           })}
         </Tabs>
       </Box>
       {tabPanel.map((item, key) => {
-        const Component = item.content;
+        const isValidElement = React.isValidElement(item.content);
+        let Component;
+        if (isValidElement) {
+          Component = item.content;
+        } else {
+          let Comp = item.content;
+          Component = <Comp />;
+        }
+
         return (
           <TabPanel
             value={value}
             key={key.toString()}
             index={key}
-            content={<Component />}
+            content={Component}
           />
         );
       })}

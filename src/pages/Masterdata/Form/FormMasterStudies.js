@@ -8,10 +8,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
-
 } from "@mui/material";
-
-import { Box } from "@mui/system";
 import React, { Component } from "react";
 import styled from "styled-components";
 import SunEditor, { buttonList } from "suneditor-react";
@@ -81,7 +78,7 @@ export default class FormMasterStudies extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-   
+
     const { dataInput, userSign } = this.state;
     const formdata = new FormData();
     Object.entries(dataInput).forEach((item) => {
@@ -91,7 +88,7 @@ export default class FormMasterStudies extends Component {
         formdata.append(attr, value);
       }
     });
-    formdata.append('created_by', userSign.id);
+    formdata.append("created_by", userSign.id);
 
     try {
       const response = await Api.post("/master_studies/insert", formdata, {
@@ -99,7 +96,7 @@ export default class FormMasterStudies extends Component {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response);
+
       if (response.status === 200 && response.data.code === 200) {
         this.fetchMasterStudies();
         this.setState({ dataInput: {} });
