@@ -1,4 +1,4 @@
-import { Delete, Edit, FiberManualRecord, Info } from "@mui/icons-material";
+import { FiberManualRecord, Info } from "@mui/icons-material";
 import { Button, Chip, IconButton, Paper, Tooltip } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ const MyStudiesCard = (props) => {
         justify="space-between"
         direction="row"
       >
-        <FiberManualRecord color="success" />
+        <FiberManualRecord color="success"  />
         <Chip
           label={data.master_studies.topic.name}
           color="primary"
@@ -23,7 +23,6 @@ const MyStudiesCard = (props) => {
           variant="outlined"
         />
       </BoxCustom>
-
       <BoxCustom
         mt="10px"
         mb="5px"
@@ -43,7 +42,9 @@ const MyStudiesCard = (props) => {
           Active
         </Button>
         <BoxCustom direction="row">
-          <Button onClick={(e) => onSetupClicked(e,data.master_studies.id)}>setup</Button>
+          <Button onClick={(e) => onSetupClicked(e, data.master_studies.id)}>
+            setup
+          </Button>
         </BoxCustom>
       </BoxCustom>
     </PaperStyled>

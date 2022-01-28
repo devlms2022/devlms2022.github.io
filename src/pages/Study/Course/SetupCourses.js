@@ -1,13 +1,17 @@
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
+import AssignmentCourse from "../../../components/Courses/AssignmentCourse";
+import ListCourses from "../../../components/Courses/ListCourses";
+import NotesCourse from "../../../components/Courses/NotesCourse";
 import HeaderContent from "../../../components/Header/HeaderContent";
+import ListMenuContent from "../../../components/List/ListMenuContent";
 import Paper from "../../../components/Paper";
 import { Api } from "../../../services/api";
 import TokenService from "../../../services/token.services";
 import utilities from "../../../utils/utilities";
 
-export default class CourseList extends Component {
+export default class SetupCourses extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +23,23 @@ export default class CourseList extends Component {
       page: 0,
       totalData: 0,
       search: "",
+      sideFeature: [
+        {
+          title: "List Course",
+          isActive: true,
+          name: "listcourse",
+        },
+        {
+          title: "Assignment",
+          isActive: false,
+          name: "assignment",
+        },
+        {
+          title: "Note",
+          isActive: false,
+          name: "note",
+        },
+      ],
     };
     this.sectionId = this.props.match.params.sectionId;
   }
@@ -88,6 +109,22 @@ export default class CourseList extends Component {
       });
   };
 
+  handleClickMenu = (name) => {
+    const menuItem = this.state.sideFeature.map((item) => {
+      return {
+        title: item.title,
+        name: item.name,
+        isActive: false,
+      };
+    });
+    const indexMenuActive = menuItem.findIndex((item) => item.name === name);
+    menuItem[indexMenuActive].isActive = true;
+
+    this.setState({
+      sideFeature: menuItem,
+    });
+  };
+
   componentDidMount = () => {
     const userSign = TokenService.getUser();
     this.fetchDataCourse();
@@ -97,19 +134,30 @@ export default class CourseList extends Component {
   };
 
   render() {
-    const { coursesData, coruseSection, study } = this.state;
-
+    const { coursesData, coruseSection, study, sideFeature } = this.state;
+    const menuActive = sideFeature.find((item) => item.isActive === true);
     return (
       <Grid container spacing={2}>
         <Grid item xl={3} xs={12} sm={12} md={4}>
-          {utilities.objectLength(coursesData) > 0 && (<>
-            <WrapContent>
-              <HeaderContent title="Back to Section" goBack={this.props.history.goBack()} />
-            </WrapContent>
-          </>)}
+          <WrapContent>
+            <HeaderContent
+              className="header"
+              title="Back to Section"
+              goBack={() => this.props.history.goBack()}
+            />
+            <Button className="btn-add" variant="contained" color="primary">
+              Add Course
+            </Button>
+            <ListMenuContent
+              onClickItemMenu={this.handleClickMenu}
+              data={sideFeature}
+            />
+          </WrapContent>
         </Grid>
         <Grid item xl={9} xs={12} sm={12} md={8}>
-          <WrapContent>kanan</WrapContent>
+          <WrapContent>
+            {menuActive.name === "listcourse" && <ListCourses data={coursesData} />}
+          </WrapContent>
         </Grid>
       </Grid>
     );
@@ -118,7 +166,7 @@ export default class CourseList extends Component {
 
 const WrapContent = styled(Paper)`
   padding: 12px;
-  max-height: 695px;
+  height: 600px;
   display: flex;
   flex-direction: column;
 
