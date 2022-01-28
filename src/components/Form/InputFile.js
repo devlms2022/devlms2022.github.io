@@ -10,9 +10,6 @@ const InputFIle = (props) => {
         {...props}
         style={{ display: "none" }}
         type={"file"}
-      
-        
-        // onChange={this.fileSelectedHandler}
       />
       <label htmlFor={name} variant={variant} className="button-input">
         {label}

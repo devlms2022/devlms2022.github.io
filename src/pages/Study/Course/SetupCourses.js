@@ -1,15 +1,14 @@
 import { Button, Grid } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
-import AssignmentCourse from "../../../components/Courses/AssignmentCourse";
+import Swal from "sweetalert2";
 import ListCourses from "../../../components/Courses/ListCourses";
-import NotesCourse from "../../../components/Courses/NotesCourse";
+import FormAddCourse from "../../../components/Form/Course";
 import HeaderContent from "../../../components/Header/HeaderContent";
 import ListMenuContent from "../../../components/List/ListMenuContent";
 import Paper from "../../../components/Paper";
 import { Api } from "../../../services/api";
 import TokenService from "../../../services/token.services";
-import utilities from "../../../utils/utilities";
 
 export default class SetupCourses extends Component {
   constructor(props) {
@@ -40,6 +39,7 @@ export default class SetupCourses extends Component {
           name: "note",
         },
       ],
+      shownFormAdd: false,
     };
     this.sectionId = this.props.match.params.sectionId;
   }
@@ -125,6 +125,36 @@ export default class SetupCourses extends Component {
     });
   };
 
+  handleSave = async (param) => {
+    const { userSign } = this.state;
+    const formdata = new FormData();
+    Object.entries(param).forEach((item) => {
+      const attr = item[0];
+      const value = item[1];
+      if (value) {
+        formdata.append(attr, value);
+      }
+    });
+    formdata.append("created_by", userSign.id);
+    formdata.append("id_course_section", this.sectionId);
+
+    try {
+      const response = await Api.post("/courses/insert", formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200 && response.data.code === 200) {
+        this.fetchDataCourse();
+        this.setState({ shownFormAdd: false });
+        Swal.fire("Succesfull!", "The Course has ben created!", "success");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   componentDidMount = () => {
     const userSign = TokenService.getUser();
     this.fetchDataCourse();
@@ -134,7 +164,8 @@ export default class SetupCourses extends Component {
   };
 
   render() {
-    const { coursesData, coruseSection, study, sideFeature } = this.state;
+    const { coursesData, coruseSection, study, sideFeature, shownFormAdd } =
+      this.state;
     const menuActive = sideFeature.find((item) => item.isActive === true);
     return (
       <Grid container spacing={2}>
@@ -145,7 +176,12 @@ export default class SetupCourses extends Component {
               title="Back to Section"
               goBack={() => this.props.history.goBack()}
             />
-            <Button className="btn-add" variant="contained" color="primary">
+            <Button
+              onClick={() => this.setState({ shownFormAdd: true })}
+              className="btn-add"
+              variant="contained"
+              color="primary"
+            >
               Add Course
             </Button>
             <ListMenuContent
@@ -155,9 +191,19 @@ export default class SetupCourses extends Component {
           </WrapContent>
         </Grid>
         <Grid item xl={9} xs={12} sm={12} md={8}>
-          <WrapContent>
-            {menuActive.name === "listcourse" && <ListCourses data={coursesData} />}
-          </WrapContent>
+          {shownFormAdd && (
+            <FormAddCourse
+              onSave={this.handleSave}
+              onCancle={() => this.setState({ shownFormAdd: false })}
+            />
+          )}
+          {!shownFormAdd && (
+            <WrapContent>
+              {menuActive.name === "listcourse" && (
+                <ListCourses data={coursesData} />
+              )}
+            </WrapContent>
+          )}
         </Grid>
       </Grid>
     );
