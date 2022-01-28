@@ -50,7 +50,6 @@ export const Menuadmin = [
         title: "User Register",
         path: "/user/register",
       },
-      
     ],
   },
   {
@@ -78,7 +77,6 @@ export const MenuTeacher = [
     title: "Dashboard",
     path: "/",
     icon: <DashboardIcon />,
-    
   },
   {
     title: "My Studies",
@@ -101,13 +99,10 @@ export const MenuTeacher = [
     title: "Discussion",
     path: "/discussion",
     icon: <GroupIcon />,
-     
   },
   {
     title: "Report",
     path: "/report",
     icon: <Report />,
-    
   },
-  
 ];

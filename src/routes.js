@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import CourseList from "./pages/Study/Course/CourseList";
 import CourseSections from "./pages/Study/Course/CourseSections";
 import MyStudies from "./pages/Study/MyStudies";
+import ListStudies from "./pages/Study/ListStudies";
 import UserEnroll from "./pages/Study/UserEnroll";
 import UserRegister from "./pages/Users/UserRegister";
 // import SignUp from "./"
@@ -66,34 +67,40 @@ const routes = [
     path: "/master/setstudy",
     layout: "admin",
     basePath: true,
-    component: MasterStudies
+    component: MasterStudies,
   },
   {
     path: "/master/setstudy/add",
     layout: "admin",
-    component: FormMasterStudies
+    component: FormMasterStudies,
   },
   {
-    path : "/study/enroll",
-    layout : "admin",
-    basePath : true,
-    component : UserEnroll
+    path: "/study/enroll",
+    layout: "admin",
+    basePath: true,
+    component: UserEnroll,
   },
   {
-    path : "/mystudies/setup",
-    layout : "admin",
-    basePath : true,
-    component : MyStudies
+    path: "/mystudies/setup",
+    layout: "admin",
+    basePath: true,
+    component: MyStudies,
   },
   {
-    path : "/mystudies/setup/sections/:studyid",
-    layout : "admin",
-    component : CourseSections
+    path: "/studies/list",
+    layout: "admin",
+    basePath: true,
+    component: ListStudies,
   },
   {
-    path : "/mystudies/setup/course/:sectionId",
-    layout : "admin",
-    component : CourseList
+    path: "/mystudies/setup/sections/:studyid",
+    layout: "admin",
+    component: CourseSections,
+  },
+  {
+    path: "/mystudies/setup/course/:sectionId",
+    layout: "admin",
+    component: CourseList,
   },
   {
     path: "/resetpassword",
