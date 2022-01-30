@@ -40,6 +40,8 @@ export default class SetupCourses extends Component {
         },
       ],
       shownFormAdd: false,
+      isLoading: false,
+      persentaseLoad: 0,
     };
     this.sectionId = this.props.match.params.sectionId;
   }
@@ -139,15 +141,28 @@ export default class SetupCourses extends Component {
     formdata.append("id_course_section", this.sectionId);
 
     try {
+      this.setState({
+        isLoading: true,
+      });
       const response = await Api.post("/courses/insert", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          const sizeOfFile = progressEvent.total;
+          let loadedData = progressEvent.loaded;
+          let persentase = (loadedData / sizeOfFile) * 100;
+          this.setState({ persentaseLoad: parseInt(persentase.toFixed(0)) });
         },
       });
 
       if (response.status === 200 && response.data.code === 200) {
         this.fetchDataCourse();
-        this.setState({ shownFormAdd: false });
+        this.setState({
+          shownFormAdd: false,
+          isLoading: false,
+          persentaseLoad: 0,
+        });
         Swal.fire("Succesfull!", "The Course has ben created!", "success");
       }
     } catch (error) {
@@ -164,9 +179,17 @@ export default class SetupCourses extends Component {
   };
 
   render() {
-    const { coursesData, coruseSection, study, sideFeature, shownFormAdd } =
-      this.state;
+    const {
+      coursesData,
+      coruseSection,
+      study,
+      persentaseLoad,
+      isLoading,
+      sideFeature,
+      shownFormAdd,
+    } = this.state;
     const menuActive = sideFeature.find((item) => item.isActive === true);
+    console.log(persentaseLoad, isLoading);
     return (
       <Grid container spacing={2}>
         <Grid item xl={3} xs={12} sm={12} md={4}>
@@ -193,6 +216,8 @@ export default class SetupCourses extends Component {
         <Grid item xl={9} xs={12} sm={12} md={8}>
           {shownFormAdd && (
             <FormAddCourse
+              actionDisabled={isLoading}
+              persentaseLoad={persentaseLoad}
               onSave={this.handleSave}
               onCancle={() => this.setState({ shownFormAdd: false })}
             />

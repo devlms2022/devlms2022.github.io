@@ -18,7 +18,7 @@ const ListCourses = (props) => {
         {data.length > 0 &&
           data.map((item, key) => {
             return (
-              <ul className="list-course">
+              <ul key={key} className="list-course">
                 <li className="item-course">
                   <Grid container spacing={1}>
                     <Grid item xl={8} sm={12} xs={12} md={7}>

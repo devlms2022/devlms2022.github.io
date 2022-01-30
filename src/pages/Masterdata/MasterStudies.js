@@ -6,6 +6,7 @@ import ButtonCustom from "../../components/Button/Button";
 import StudyCard from "../../components/Card/StudyCard";
 import Search from "../../components/Form/Search";
 import { Api } from "../../services/api";
+import TokenService from "../../services/token.services";
 
 export default class MasterStudies extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export default class MasterStudies extends Component {
       page: 0,
       search: "",
     };
+    this.userSign = TokenService.getUser().data;
   }
 
   fetchStudies = () => {
@@ -63,7 +65,7 @@ export default class MasterStudies extends Component {
             {data.map((itm, index) => {
               return (
                 <Grid key={index} item xl={3} md={6} xs={12}>
-                  <StudyCard data={itm} />
+                  <StudyCard roleUser={this.userSign.role_id} data={itm} />
                 </Grid>
               );
             })}
@@ -92,7 +94,7 @@ const WrapButton = styled.div`
 const WrapStudy = styled.div`
   padding: 15px 0;
   margin: 15px 0;
-  padding-bottom : 15px;
+  padding-bottom: 15px;
   overflow-y: scroll;
   position: relative;
   /* height: 300px; */
