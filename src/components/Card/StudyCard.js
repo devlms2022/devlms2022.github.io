@@ -16,7 +16,7 @@ import BoxCustom from "../Box";
 import { Label } from "../Text";
 
 const StudyCard = (props) => {
-  const { data, onDelete, onUpdate, roleUser } = props;
+  const { data, onDelete, onUpdate, roleUser, enroll } = props;
   const [thumbnail, setThumbnail] = useState("");
 
   const fetchAvatar = () => {
@@ -112,7 +112,7 @@ const StudyCard = (props) => {
           justify="space-between"
           direction="row"
         >
-          <Button size="small" variant="contained" color="primary">
+          <Button onClick={() => enroll(data.id)} size="small" variant="contained" color="primary">
             Enroll
           </Button>
          

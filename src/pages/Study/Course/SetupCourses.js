@@ -189,7 +189,7 @@ export default class SetupCourses extends Component {
       shownFormAdd,
     } = this.state;
     const menuActive = sideFeature.find((item) => item.isActive === true);
-    console.log(persentaseLoad, isLoading);
+    
     return (
       <Grid container spacing={2}>
         <Grid item xl={3} xs={12} sm={12} md={4}>
@@ -225,7 +225,7 @@ export default class SetupCourses extends Component {
           {!shownFormAdd && (
             <WrapContent>
               {menuActive.name === "listcourse" && (
-                <ListCourses data={coursesData} />
+                <ListCourses coruseSection={coruseSection} data={coursesData} />
               )}
             </WrapContent>
           )}
@@ -241,49 +241,8 @@ const WrapContent = styled(Paper)`
   display: flex;
   flex-direction: column;
 
-  .header {
-    margin-bottom: 20px;
-  }
-  .img-container-thumbnail {
-    width: 100%;
-    position: relative;
-    object-fit: cover;
-    overflow: hidden;
-    /* background : red; */
-    border-radius: 15px;
-    height: 256px;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
   .label-topic {
     margin: 10px 0;
     display: block;
-  }
-  span.title {
-    font-weight: 500;
-    font-size: 18px;
-  }
-  .teacher_name {
-    font-size: 10px;
-    color: #848484;
-  }
-  .user-group {
-    span {
-      font-size: 12px;
-      font-weight: 500;
-    }
-  }
-  .description {
-    margin-top: 10px;
-    div {
-      font-size: 10px;
-      text-align: justify;
-    }
-    p {
-      font-size: 10px;
-      text-align: justify;
-    }
   }
 `;

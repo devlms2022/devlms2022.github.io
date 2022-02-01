@@ -18,7 +18,8 @@ export default class CourseSections extends Component {
       myStudyData: {},
       courseSectionData: [],
       studies: [],
-      paramSectons: {
+      students: [],
+      paramSections: {
         limit: 10,
         page: 0,
         totalDataCourseSections: 0,
@@ -30,8 +31,14 @@ export default class CourseSections extends Component {
         totalDataStudies: 0,
         search: "",
       },
+      paramStudents: {
+        limit: 20,
+        page: 0,
+        totalDataStudents: 0,
+        search: "",
+      },
       thumbnail: "",
-      newCourseSections : ""
+      newCourseSections: "",
     };
     this.masterstudyid = this.props.match.params.studyid;
   }
@@ -60,7 +67,7 @@ export default class CourseSections extends Component {
 
   fetchDataCourseSections = () => {
     const {
-      paramSectons: { limit, page, search },
+      paramSections: { limit, page, search },
     } = this.state;
     Api.post("/courses_sections", {
       limit,
@@ -95,6 +102,30 @@ export default class CourseSections extends Component {
       .catch((err) => alert(err.message));
   };
 
+  fetchDataStudents = async () => {
+    const {
+      paramStudents: { page, limit, search },
+    } = this.state;
+
+    try {
+      const response = await Api.post("/studies", {
+        page,
+        limit,
+        search,
+        filter: {
+          role_id: 3,
+        },
+      });
+      if (response.data.code === 200 && response.status === 200) {
+        this.setState({ students: response.data.data });
+      } else {
+        throw Error(response.data.message);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   async fetchThumbnail(id) {
     try {
       const res = await Api.post(
@@ -117,67 +148,112 @@ export default class CourseSections extends Component {
         }
       });
     } catch (error) {
-     
       alert(error.message);
     }
   }
 
   handleSaveSectionCourse = (value) => {
     const params = {
-      title : value,
-      id_study : this.masterstudyid,
-      created_by : this.state.userSign.id
+      title: value,
+      id_study: this.masterstudyid,
+      created_by: this.state.userSign.id,
     };
-    Api.post("/courses_sections/insert", params).then(response => {
-      if (response.data.code === 200 && response.status === 200) {
-        this.fetchDataCourseSections();
-      }
-    }).catch(err => {
-      alert(err.message);
-    });
-  }
+    Api.post("/courses_sections/insert", params)
+      .then((response) => {
+        if (response.data.code === 200 && response.status === 200) {
+          this.fetchDataCourseSections();
+        }
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
 
-  handleSetCourse = (e,sectionId) => {
-    this.props.history.push("/mystudies/setup/course/"+sectionId);
-  }
+  handleSearchSections = (e) => {
+    if (e.key === "enter") {
+      this.setState({
+        paramSections: {
+          ...this.state.paramSections,
+          search: e.target.value,
+        },
+      });
+    }
+  };
+
+  handleSetCourse = (e, sectionId) => {
+    this.props.history.push("/mystudies/setup/course/" + sectionId);
+  };
 
   componentDidMount = () => {
     const userSign = TokenService.getUser();
     this.fetchDataStudy();
     this.fetchDataCourseSections();
     this.fetchDataStudies();
+    this.fetchDataStudents();
     this.setState({ userSign: userSign.data });
   };
 
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.paramSections.search !== this.state.paramSections.search) {
+      this.fetchDataCourseSections();
+    }
+
+    if (
+      prevState.paramSections.page !== this.state.paramSections.page ||
+      prevState.paramSections.limit !== this.state.paramSections.limit
+    ) {
+      this.fetchDataCourseSections();
+    }
+  };
+
   render() {
-    const { userSign, myStudyData, courseSectionData, thumbnail } = this.state;
+    const {
+      userSign,
+      myStudyData,
+      courseSectionData,
+      paramSections,
+      thumbnail,
+      paramStudents,
+      students,
+    } = this.state;
 
     return (
       <Grid container spacing={3}>
-        <Grid item xl={4} xs={12} sm={12} md={5}>
+        <Grid item xl={3} xs={12} sm={12} md={4}>
           {utilities.objectLength(myStudyData) && (
             <>
               <MyStudyCard
                 myStudyData={myStudyData}
+                sectionTotal={courseSectionData.length}
+                studentTotal={students.length}
+                teacherUserId={userSign.id}
                 thumbnail={thumbnail}
                 goBack={() => this.props.history.goBack()}
               />
             </>
           )}
         </Grid>
-        <Grid item xl={8} xs={12} sm={12} md={7}>
+        <Grid item xl={9} xs={12} sm={12} md={8}>
           <WrapContent>
             <BaseTabs
               tabLabel={["Section", "Students"]}
               tabPanel={[
                 {
                   content: () => {
-                    return <SectionList onClickSetCourse={this.handleSetCourse} onSave={this.handleSaveSectionCourse} data={courseSectionData} />;
+                    return (
+                      <SectionList
+                        onClickSetCourse={this.handleSetCourse}
+                        onSave={this.handleSaveSectionCourse}
+                        data={courseSectionData}
+                        searchValue={paramSections.search}
+                        onSearchEnter={this.handleSearchSections}
+                      />
+                    );
                   },
                 },
                 {
                   content: () => {
-                    return <StudentList />;
+                    return <StudentList students={students} />;
                   },
                 },
               ]}

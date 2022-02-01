@@ -20,7 +20,7 @@ const PoverContent = styled.div`
 `;
 
 const SectionList = (props) => {
-  const { data, onSave, onClickSetCourse } = props;
+  const { data, onSave, onClickSetCourse, onSearchEnter, searchValue } = props;
   const [courseSections, setCoutseSections] = useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -87,7 +87,7 @@ const SectionList = (props) => {
             <Button onClick={handleSave} sx={{ marginLeft: "12px" }}>Save</Button>
           </PoverContent>
         </Popover>
-        <Search placeholder="Enter Search" name="search" width="60%" />
+        <Search placeholder="Enter Keyword"  onKeyDown={onSearchEnter} name="search" width="60%" />
       </BoxCustom>
       <div className="list-secction">
         {data.length > 0 && data.map((item,key) => (<ListSections onClickSetCourse={handleSetCourse} key={key} data={item} />))}

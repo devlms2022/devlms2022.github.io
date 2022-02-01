@@ -1,13 +1,39 @@
+import React, { useEffect, useState } from "react";
 import { Book, Group } from "@mui/icons-material";
 import { Chip } from "@mui/material";
-import React from "react";
 import styled from "styled-components";
 import BoxCustom from "../Box";
 import HeaderContent from "../Header/HeaderContent";
 import Paper from "../Paper";
+import { Api } from "../../services/api";
 
 const MyStudyCard = (props) => {
-  const { shownHeader = true, myStudyData, thumbnail, goBack } = props;
+  const {
+    shownHeader = true,
+    myStudyData,
+    thumbnail,
+    goBack,
+    sectionTotal,
+    teacherUserId, 
+    studentTotal
+  } = props;
+  const [teacherData, setTeacherData] = useState({});
+  
+  useEffect(() => {
+    fetchTeacher();
+  },[]);
+
+  const fetchTeacher = () => {
+    Api.post("/userbyid", {
+      id : teacherUserId
+    }).then(res => {
+      if(res.status === 200 && res.data.code === 200) {
+        setTeacherData(res.data.data);
+      }
+    }).catch(err=>alert(err.message))
+  }
+
+
   return (
     <WrapContent>
       {shownHeader && (
@@ -25,7 +51,7 @@ const MyStudyCard = (props) => {
       </div>
       <span className="title">{myStudyData.title}</span>
       <BoxCustom direction="row" width="80%" justify="space-between">
-        <span className="teacher_name info">By Mr. Bagus Fatwan Alfiat</span>
+        <span className="teacher_name info">By Mr. {teacherData?.profile?.front_name} {teacherData?.profile?.family_name}</span>
         <BoxCustom
           width="12%"
           className="user-group"
@@ -33,7 +59,7 @@ const MyStudyCard = (props) => {
           justify="space-between"
         >
           <Group fontSize="10px" color="secondary" />
-          <span className="count">20</span>
+          <span className="count">{studentTotal}</span>
         </BoxCustom>
         <BoxCustom
           width="9%"
@@ -42,7 +68,7 @@ const MyStudyCard = (props) => {
           justify="space-between"
         >
           <Book fontSize="10px" color="secondary" />
-          <span className="count">5</span>
+          <span className="count">{sectionTotal}</span>
         </BoxCustom>
       </BoxCustom>
       <div
@@ -64,10 +90,11 @@ const WrapContent = styled(Paper)`
   flex-direction: column;
 
   .header {
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
   }
   .img-container-thumbnail {
     width: 100%;
+    margin-top : 5px;
     position: relative;
     object-fit: cover;
     overflow: hidden;

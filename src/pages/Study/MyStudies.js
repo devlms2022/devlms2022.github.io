@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
 import MyStudiesCard from "../../components/Card/MyStudiesCard";
@@ -29,7 +29,6 @@ export default class MyStudies extends Component {
       search,
       filter: {
         id_user: user.id,
-        status_confirm: "accept",
       },
     })
       .then((response) => {
@@ -57,9 +56,10 @@ export default class MyStudies extends Component {
 
     return (
       <WrapContent>
-        <HeaderContent shownGoBack={false} title="Title" />
+        <HeaderContent shownGoBack={false} title="My Studies" />
+       
         <div className="list-mystudies">
-          <Grid sx={{ maxHeight: 520 }} container spacing={2}>
+          <Grid  container spacing={2}>
             {myStudiesData.map((itm, index) => {
               return (
                 <Grid key={index} item xl={3} md={6} xs={12}>
@@ -81,5 +81,8 @@ const WrapContent = styled(Paper)`
   padding: 12px;
   .list-mystudies {
     margin-top: 15px;
+    max-height: 520px;
+    overflow-y: scroll;
+    padding : 5px;
   }
 `;

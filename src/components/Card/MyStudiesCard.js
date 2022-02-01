@@ -1,5 +1,6 @@
 import { FiberManualRecord, Info } from "@mui/icons-material";
 import { Button, Chip, IconButton, Paper, Tooltip } from "@mui/material";
+import { blueGrey } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Avatardefault from "../../assets/images/avatardefault.png";
@@ -70,16 +71,33 @@ const MyStudiesCard = (props) => {
         </Tooltip>
       </BoxCustom>
       <Label>{data.master_studies.title}</Label>
-      <BoxCustom mt="10px" width="100%" justify="space-between" direction="row">
-        <Button size="small" variant="contained" color="success">
-          Active
-        </Button>
-        <BoxCustom direction="row">
-          <Button onClick={(e) => onSetupClicked(e, data.master_studies.id)}>
-            setup
-          </Button>
+      {data.status_confirm === "pendding" && (
+        <BoxCustom
+          mt="10px"
+          width="100%"
+          justify="space-between"
+          direction="row"
+        >
+          <Chip label="Pendding"  size="small" color="secondary" variant="outlined" /> 
         </BoxCustom>
-      </BoxCustom>
+      )}
+      {data.status_confirm === "accept" && (
+        <BoxCustom
+          mt="10px"
+          width="100%"
+          justify="space-between"
+          direction="row"
+        >
+          <Button size="small" variant="contained" color="success">
+            Active
+          </Button>
+          <BoxCustom direction="row">
+            <Button onClick={(e) => onSetupClicked(e, data.master_studies.id)}>
+              setup
+            </Button>
+          </BoxCustom>
+        </BoxCustom>
+      )}
     </PaperStyled>
   );
 };
@@ -91,11 +109,11 @@ const PaperStyled = styled(Paper)`
   padding: 15px;
 
   .imgbackground {
-    background-image: url(${({img}) => img});
+    background-image: url(${({ img }) => img});
     padding: 10px;
     border-radius: 10px;
     min-height: 210px;
-    background-size : cover;
+    background-size: cover;
   }
   .created_at {
     width: 50%;

@@ -1,6 +1,5 @@
 import {
   Button,
-  CircularProgress,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -9,16 +8,15 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import styled from "styled-components";
-import HeaderContent from "../../Header/HeaderContent";
-import Paper from "../../Paper";
-import BaseTabs from "../../Tabs";
-import Input from "../Input";
 import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
-import { Label } from "../../Text";
 import UploadImgDefault from "../../../assets/images/uploadvideo.png";
-import { amber } from "@mui/material/colors";
+import HeaderContent from "../../Header/HeaderContent";
+import Paper from "../../Paper";
 import CircularLabel from "../../Progress/CircularLabel";
+import BaseTabs from "../../Tabs";
+import { Label } from "../../Text";
+import Input from "../Input";
 
 const FormStep1 = ({ handleChange, handleBlur, data }) => {
   return (
@@ -87,7 +85,7 @@ const FormStep2 = (props) => {
           <div className="upload-container">
             {previewVideo && (
               <div className="preview">
-                <video width="100%" controls  >
+                <video width="100%" controls>
                   <source src={previewVideo}></source>
                 </video>
 
@@ -246,6 +244,7 @@ const WrapContent = styled(Paper)`
     .form-control {
       margin-bottom: 15px;
     }
+
     .upload-container {
       display: flex;
       flex-direction: column;
@@ -270,7 +269,10 @@ const WrapContent = styled(Paper)`
         }
       }
       .preview {
-        width: 100%;
+        width: 60%;
+        @media screen and (max-width: 1080px) {
+          width: 100%;
+        }
         display: flex;
         flex-direction: column;
         justify-content: center;

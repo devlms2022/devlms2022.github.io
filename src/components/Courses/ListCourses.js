@@ -7,12 +7,12 @@ import BoxCustom from "../Box";
 import { Subtitle } from "../Text";
 
 const ListCourses = (props) => {
-  const { data } = props;
+  const { data, coruseSection } = props;
   return (
     <Div>
       <div className="head">
-        <Subtitle>What is Javascript</Subtitle>
-        <span className="label-study">Studies of Javascript Beginner</span>
+        <Subtitle>{coruseSection.title}</Subtitle>
+        <span className="label-study">Studies of {coruseSection.master_study?.title}</span>
       </div>
       <div className="contain-list">
         {data.length > 0 &&
