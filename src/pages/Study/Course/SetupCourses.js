@@ -189,7 +189,7 @@ export default class SetupCourses extends Component {
       shownFormAdd,
     } = this.state;
     const menuActive = sideFeature.find((item) => item.isActive === true);
-    
+
     return (
       <Grid container spacing={2}>
         <Grid item xl={3} xs={12} sm={12} md={4}>

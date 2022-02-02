@@ -17,6 +17,7 @@ export default class CourseSections extends Component {
       userSign: {},
       myStudyData: {},
       courseSectionData: [],
+      courseSeactionSelected : {},
       studies: [],
       students: [],
       paramSections: {
@@ -81,6 +82,18 @@ export default class CourseSections extends Component {
         if (response.data.code === 200 && response.status === 200) {
           this.setState({
             courseSectionData: response.data.data,
+          });
+        }
+      })
+      .catch((err) => alert(err.message));
+  };
+
+  fetchCourseSection = (id) => {
+    Api.post(`/courses_sectionsbyid`, {id})
+      .then((response) => {
+        if (response.data.code === 200 && response.status === 200) {
+          this.setState({
+            courseSeactionSelected: response.data.data,
           });
         }
       })
@@ -152,6 +165,10 @@ export default class CourseSections extends Component {
     }
   }
 
+  handleClickEdit = (e,id) => {
+    this.fetchCourseSection(id);
+  }
+
   handleSaveSectionCourse = (value) => {
     const params = {
       title: value,
@@ -215,6 +232,7 @@ export default class CourseSections extends Component {
       thumbnail,
       paramStudents,
       students,
+      courseSeactionSelected
     } = this.state;
 
     return (
@@ -245,7 +263,9 @@ export default class CourseSections extends Component {
                         onClickSetCourse={this.handleSetCourse}
                         onSave={this.handleSaveSectionCourse}
                         data={courseSectionData}
+                        sectionSelected={courseSeactionSelected}
                         searchValue={paramSections.search}
+                        handleClickEdit={this.handleClickEdit}
                         onSearchEnter={this.handleSearchSections}
                       />
                     );

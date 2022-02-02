@@ -1,6 +1,5 @@
 import { FiberManualRecord, Info } from "@mui/icons-material";
 import { Button, Chip, IconButton, Paper, Tooltip } from "@mui/material";
-import { blueGrey } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Avatardefault from "../../assets/images/avatardefault.png";
@@ -40,8 +39,9 @@ const MyStudiesCard = (props) => {
       .catch((err) => alert(err.message));
   };
   useEffect(() => {
+    console.log("useEffect");
     fetchAvatar();
-  }, []);
+  }, [data]);
   return (
     <PaperStyled img={thumbnail ? thumbnail : Avatardefault}>
       <BoxCustom
@@ -107,7 +107,6 @@ export default MyStudiesCard;
 const PaperStyled = styled(Paper)`
   width: "100%";
   padding: 15px;
-
   .imgbackground {
     background-image: url(${({ img }) => img});
     padding: 10px;

@@ -20,13 +20,19 @@ const PoverContent = styled.div`
 `;
 
 const SectionList = (props) => {
-  const { data, onSave, onClickSetCourse, onSearchEnter, searchValue } = props;
+  const { data, onSave, onClickSetCourse, onSearchEnter, searchValue, handleClickEdit, sectionSelected } = props;
   const [courseSections, setCoutseSections] = useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const onClickeEdit = (event, id) => {
+    handleClickEdit(event, id);
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -79,7 +85,7 @@ const SectionList = (props) => {
             <Input
               onChange={handleChange}
               width="320px"
-              value={courseSections}
+              // value={sectionSelected.title}
               size="small"
               placeholder="Enter section of course"
               label="Section of course"
@@ -90,7 +96,7 @@ const SectionList = (props) => {
         <Search placeholder="Enter Keyword"  onKeyDown={onSearchEnter} name="search" width="60%" />
       </BoxCustom>
       <div className="list-secction">
-        {data.length > 0 && data.map((item,key) => (<ListSections onClickSetCourse={handleSetCourse} key={key} data={item} />))}
+        {data.length > 0 && data.map((item,key) => (<ListSections sectionSelected={sectionSelected} onClickSetCourse={handleSetCourse} onClickeEdit={onClickeEdit} key={key} data={item} />))}
         {data.length === 0 && <span>No Course Section Found</span>}
       </div>
     </Div>

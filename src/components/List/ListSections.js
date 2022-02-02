@@ -1,10 +1,25 @@
+import React, { useState } from "react";
 import { Book, Delete, Edit } from "@mui/icons-material";
-import { Button, Grid, IconButton } from "@mui/material";
-import React from "react";
+import { Button, Grid, IconButton, Popover, Popper } from "@mui/material";
 import styled from "styled-components";
+import Input from "../Form/Input";
 
 const ListSections = (props) => {
-  const { data, onClickSetCourse, onClickDelete, onClickeEdit } = props;
+  const { data, onClickSetCourse, onClickDelete, onClickeEdit, sectionSelected } = props;
+  const [openPover, setOpenPover] = useState(null);
+
+  const handleClickEdit = (event, id) => {
+    setOpenPover(event.currentTarget);
+    onClickeEdit(event, id);
+  };
+  const handleCloseEdit = () => {
+    setOpenPover(null);
+  };
+  
+  console.log(openPover);
+  const open = Boolean(openPover);
+  const id = open ? "popover" : undefined;
+
   return (
     <Div>
       <Grid container spacing={1}>
@@ -17,18 +32,43 @@ const ListSections = (props) => {
               size="small"
               variant="contained"
               color="secondary"
+              aria-describedby={id}
               onClick={(e) => onClickSetCourse(e, data.id)}
               startIcon={<Book fontSize="15px" />}
             >
               Set Course
             </Button>
             <IconButton
-              onClick={(e) => onClickeEdit(e, data.id)}
+              onClick={(e) => handleClickEdit(e, data.id)}
               size="small"
               color="primary"
             >
               <Edit fontSize="18px" />
             </IconButton>
+            
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={openPover}
+              onClose={handleCloseEdit}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <PoverContent>
+                <Input
+                  onChange={() => {}}
+                  width="320px"
+                  value={sectionSelected.title}
+                  size="small"
+                  label="Section of course"
+                />
+                <Button onClick={() => {}} sx={{ marginLeft: "12px" }}>
+                  Edit
+                </Button>
+              </PoverContent>
+            </Popover>
             <IconButton
               onClick={(e) => onClickDelete(e, data.id)}
               edge="start"
@@ -66,4 +106,8 @@ const Div = styled.div`
     flex-direction: row;
     justify-content: space-between;
   }
+`;
+
+const PoverContent = styled.div`
+  padding: 20px 10px;
 `;

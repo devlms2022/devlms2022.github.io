@@ -12,9 +12,10 @@ const Search = (props) => {
     placeholder,
     value,
     onKeyDown,
+    mt = 0,
   } = props;
   return (
-    <FormControl sx={{ width }}>
+    <FormControl sx={{ width, marginTop: mt }}>
       <TextField
         size="small"
         InputProps={{
