@@ -39,7 +39,9 @@ const ListStudies = () => {
 const WrapContent = styled(Paper)`
   padding: 12px;
   .list-mystudies {
+    height: 480px;
     margin-top: 15px;
+    overflow-y: scroll;
   }
 `;
 

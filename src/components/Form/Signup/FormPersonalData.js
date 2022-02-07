@@ -13,51 +13,61 @@ import Input from "../Input";
 import { Styling as WrapContent } from "./index";
 
 const FormPersonalData = (props) => {
-  const { onChange, errors, data, disabled, forDetail, listStudies } = props;
+  const {
+    onChange,
+    errors,
+    data,
+    isProfile,
+    disabled,
+    forDetail,
+    listStudies,
+  } = props;
 
   return (
     <Content>
       <WrapContent>
         <Box className="box">
           <Grid spacing={2} container>
-            <Grid className="col" item xs={12} sm={12}>
-              <FormControl
-                error={errors ? (errors.study_master ? true : false) : false}
-                sx={{ width: "100%" }}
-              >
-                <InputLabel>Studies</InputLabel>
-                <Select
-                  onChange={onChange}
-                  autoWidth
-                  value={data.study_master ? data.study_master : ""}
-                  name="study_master"
-                  label="Studies"
-                  inputProps={{
-                    readOnly: disabled
-                      ? disabled.study_master
-                        ? true
-                        : false
-                      : forDetail
-                      ? true
-                      : false,
-                  }}
+            {!isProfile ? (
+              <Grid className="col" item xs={12} sm={12}>
+                <FormControl
+                  error={errors ? (errors.study_master ? true : false) : false}
+                  sx={{ width: "100%" }}
                 >
-                  {listStudies.map((study) => (
-                    <MenuItem value={study.id} key={study.id}>
-                      {study.title}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  <InputLabel>Studies</InputLabel>
+                  <Select
+                    onChange={onChange}
+                    autoWidth
+                    value={data.study_master ? data.study_master : ""}
+                    name="study_master"
+                    label="Studies"
+                    inputProps={{
+                      readOnly: disabled
+                        ? disabled.study_master
+                          ? true
+                          : false
+                        : forDetail
+                        ? true
+                        : false,
+                    }}
+                  >
+                    {listStudies.map((study) => (
+                      <MenuItem value={study.id} key={study.id}>
+                        {study.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
 
-                <FormHelperText>
-                  {errors
-                    ? errors.study_master
+                  <FormHelperText>
+                    {errors
                       ? errors.study_master
-                      : ""
-                    : ""}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
+                        ? errors.study_master
+                        : ""
+                      : ""}
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+            ) : null}
             <Grid className="row" item xs={12} sm={12}>
               <Input
                 className="form-control"
