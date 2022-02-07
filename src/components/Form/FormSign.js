@@ -154,7 +154,7 @@ const Wraplogin = styled.div`
   }
 
   .input {
-    margin-bottom: 30px;
+    margin-bottom: 5px;
     width: 300px;
   }
 
