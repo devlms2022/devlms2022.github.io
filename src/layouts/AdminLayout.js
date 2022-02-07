@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+// import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -166,4 +166,13 @@ const SidebarWrap = styled.div`
 const BreadcrumbWrap = styled.div`
   width: 100%;
   margin-bottom : 35px;
+`;
+
+const Container = styled(Box)`
+  width: 100%;
+  padding : 20px;
+  @media screen and (max-width: 768px) {
+    padding : 0px;
+  }
+  /* padding: 10px; */
 `;

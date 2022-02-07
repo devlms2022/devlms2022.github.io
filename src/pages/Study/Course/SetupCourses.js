@@ -40,6 +40,8 @@ export default class SetupCourses extends Component {
         },
       ],
       shownFormAdd: false,
+      isLoading: false,
+      persentaseLoad: 0,
     };
     this.sectionId = this.props.match.params.sectionId;
   }
@@ -139,15 +141,28 @@ export default class SetupCourses extends Component {
     formdata.append("id_course_section", this.sectionId);
 
     try {
+      this.setState({
+        isLoading: true,
+      });
       const response = await Api.post("/courses/insert", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          const sizeOfFile = progressEvent.total;
+          let loadedData = progressEvent.loaded;
+          let persentase = (loadedData / sizeOfFile) * 100;
+          this.setState({ persentaseLoad: parseInt(persentase.toFixed(0)) });
         },
       });
 
       if (response.status === 200 && response.data.code === 200) {
         this.fetchDataCourse();
-        this.setState({ shownFormAdd: false });
+        this.setState({
+          shownFormAdd: false,
+          isLoading: false,
+          persentaseLoad: 0,
+        });
         Swal.fire("Succesfull!", "The Course has ben created!", "success");
       }
     } catch (error) {
@@ -164,9 +179,17 @@ export default class SetupCourses extends Component {
   };
 
   render() {
-    const { coursesData, coruseSection, study, sideFeature, shownFormAdd } =
-      this.state;
+    const {
+      coursesData,
+      coruseSection,
+      study,
+      persentaseLoad,
+      isLoading,
+      sideFeature,
+      shownFormAdd,
+    } = this.state;
     const menuActive = sideFeature.find((item) => item.isActive === true);
+
     return (
       <Grid container spacing={2}>
         <Grid item xl={3} xs={12} sm={12} md={4}>
@@ -193,6 +216,8 @@ export default class SetupCourses extends Component {
         <Grid item xl={9} xs={12} sm={12} md={8}>
           {shownFormAdd && (
             <FormAddCourse
+              actionDisabled={isLoading}
+              persentaseLoad={persentaseLoad}
               onSave={this.handleSave}
               onCancle={() => this.setState({ shownFormAdd: false })}
             />
@@ -200,7 +225,7 @@ export default class SetupCourses extends Component {
           {!shownFormAdd && (
             <WrapContent>
               {menuActive.name === "listcourse" && (
-                <ListCourses data={coursesData} />
+                <ListCourses coruseSection={coruseSection} data={coursesData} />
               )}
             </WrapContent>
           )}
@@ -216,49 +241,8 @@ const WrapContent = styled(Paper)`
   display: flex;
   flex-direction: column;
 
-  .header {
-    margin-bottom: 20px;
-  }
-  .img-container-thumbnail {
-    width: 100%;
-    position: relative;
-    object-fit: cover;
-    overflow: hidden;
-    /* background : red; */
-    border-radius: 15px;
-    height: 256px;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
   .label-topic {
     margin: 10px 0;
     display: block;
-  }
-  span.title {
-    font-weight: 500;
-    font-size: 18px;
-  }
-  .teacher_name {
-    font-size: 10px;
-    color: #848484;
-  }
-  .user-group {
-    span {
-      font-size: 12px;
-      font-weight: 500;
-    }
-  }
-  .description {
-    margin-top: 10px;
-    div {
-      font-size: 10px;
-      text-align: justify;
-    }
-    p {
-      font-size: 10px;
-      text-align: justify;
-    }
   }
 `;

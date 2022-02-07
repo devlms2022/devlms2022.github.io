@@ -229,7 +229,6 @@ export default class UserRegister extends Component {
   }
 
   handleChangePage = (event, newPage) => {
-    console.log(newPage);
     this.setState({
       page: newPage,
     });

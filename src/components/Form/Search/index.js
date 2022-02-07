@@ -10,9 +10,12 @@ const Search = (props) => {
     className,
     onBlur,
     placeholder,
+    value,
+    onKeyDown,
+    mt = 0,
   } = props;
   return (
-    <FormControl sx={{ width }}>
+    <FormControl sx={{ width, marginTop: mt }}>
       <TextField
         size="small"
         InputProps={{
@@ -27,6 +30,8 @@ const Search = (props) => {
         className={className}
         onBlur={onBlur}
         placeholder={placeholder}
+        value={value}
+        onKeyDown={onKeyDown}
       />
     </FormControl>
   );
