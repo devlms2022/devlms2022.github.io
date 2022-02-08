@@ -6,7 +6,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  useTheme,
 } from "@mui/material";
+import { minWidth } from "@mui/system";
 import React from "react";
 import styled from "styled-components";
 import Input from "../Input";
@@ -22,6 +24,19 @@ const FormPersonalData = (props) => {
     forDetail,
     listStudies,
   } = props;
+
+  const theme = useTheme();
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: "52%",
+      },
+    },
+  };
 
   return (
     <Content>
@@ -50,9 +65,10 @@ const FormPersonalData = (props) => {
                         ? true
                         : false,
                     }}
+                    MenuProps={MenuProps}
                   >
                     {listStudies.map((study) => (
-                      <MenuItem value={study.id} key={study.id}>
+                      <MenuItem value={study.id} key={study.id} style={theme}>
                         {study.title}
                       </MenuItem>
                     ))}
