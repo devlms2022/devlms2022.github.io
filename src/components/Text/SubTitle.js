@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Subtitle = (props) => {
-  let { color, children, variant = "normal" } = props;
+  let { color, children, variant = "normal", bold } = props;
   if (variant == "bold") {
     variant = 600;
   } else if (variant == "light") {

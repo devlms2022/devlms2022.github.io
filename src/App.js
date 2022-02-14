@@ -6,6 +6,8 @@ import LandingLayout from "./layouts/LandingLayout";
 import TokenService from "./services/token.services";
 import utilities from "./utils/utilities";
 
+import { createMemoryHistory } from "history";
+
 const App = (props) => {
   const [user, setUser] = useState({});
   const [inactive, setInactive] = useState(false);
@@ -25,13 +27,7 @@ const App = (props) => {
           utilities.objectLength(user) === 0 ? (
             <LandingLayout signIn={(user) => setUser(user)} {...props} />
           ) : (
-            <AdminLayout
-              onCollapse={(inactive) => {
-                console.log(inactive);
-                setInactive(inactive);
-              }}
-              {...props}
-            />
+            <AdminLayout {...props} />
           )
         }
       />

@@ -5,6 +5,7 @@
   "homepage": "https://devlms2022.github.io",
   "dependencies": {
     "@mui/icons-material": "^5.2.5",
+    "@mui/lab": "^5.0.0-alpha.68",
     "@mui/material": "^5.2.6",
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
     "@mui/styled-engine-sc": "^5.1.0",

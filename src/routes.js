@@ -6,107 +6,120 @@ import FormMasterStudies from "./pages/Masterdata/Form/FormMasterStudies";
 import MasterStudies from "./pages/Masterdata/MasterStudies";
 import MasterTopic from "./pages/Masterdata/MasterTopics";
 import Profile from "./pages/Profile";
-import SetupCourses from "./pages/Study/Course/SetupCourses";
+import AddAssignment from "./pages/Study/Assignment/AddAssignment";
+import { Questions } from "./pages/Study/Assignment/Questions";
 import CourseSections from "./pages/Study/Course/CourseSections";
-import MyStudies from "./pages/Study/MyStudies";
+import SetupCourses from "./pages/Study/Course/SetupCourses";
 import ListStudies from "./pages/Study/ListStudies";
+import MyStudies from "./pages/Study/MyStudies";
 import UserEnroll from "./pages/Study/UserEnroll";
 import UserRegister from "./pages/Users/UserRegister";
+
 // import SignUp from "./"
 
 const routes = [
   {
     path: "/",
     layout: "landing",
-    component: LandingPage,
     basePath: true,
+    component: LandingPage,
   },
   {
     path: "/about",
     layout: "landing",
     component: LandingPage,
-    basePath: true,
   },
   {
     path: "/course",
     layout: "landing",
     component: LandingPage,
-    basePath: true,
   },
   {
     path: "/signup",
-    layout: "auth",
+    layout: "auth", 
     component: Signup,
-    basePath: true,
   },
   {
     path: "/",
+    basePath: true,
     layout: "admin",
     component: Dashboard,
-    basePath: true,
   },
   {
     path: "/profile",
     layout: "admin",
-    basePath: true,
     component: Profile,
   },
   {
-    path: "/user/register",
+    path: "user/register",
     layout: "admin",
     basePath: true,
     component: UserRegister,
   },
   {
-    path: "/master/settopic",
+    path: "master/settopic",
     layout: "admin",
-    basePath: true,
+
     component: MasterTopic,
   },
   {
-    path: "/master/setstudy",
+    path: "master/setstudy",
     layout: "admin",
     basePath: true,
     component: MasterStudies,
   },
   {
-    path: "/master/setstudy/add",
+    path: "master/setstudy/add",
     layout: "admin",
+    parent: "/master/setstudy",
+    basePath: false,
     component: FormMasterStudies,
   },
   {
-    path: "/study/enroll",
+    path: "study/enroll",
     layout: "admin",
-    basePath: true,
     component: UserEnroll,
   },
+
   {
-    path: "/mystudies/setup",
+    path: "studies/list",
+    layout: "admin",
+    component: ListStudies,
+  },
+  {
+    path: "mystudies/setup",
     layout: "admin",
     basePath: true,
     component: MyStudies,
   },
   {
-    path: "/studies/list",
+    path: "mystudies/setup/sections/:studyid",
     layout: "admin",
-    basePath: true,
-    component: ListStudies,
-  },
-  {
-    path: "/mystudies/setup/sections/:studyid",
-    layout: "admin",
+    parent: "/mystudies/setup",
     component: CourseSections,
   },
   {
-    path : "/mystudies/setup/course/:sectionId",
-    layout : "admin",
-    component : SetupCourses
+    path: "mystudies/setup/course/:sectionId",
+    layout: "admin",
+    parent: "/mystudies/setup",
+    component: SetupCourses,
   },
   {
-    path: "/resetpassword",
+    path: "mystudies/setup/addassignment/:sectionId",
+    layout: "admin",
+    parent: "/mystudies/setup",
+    component: AddAssignment,
+  },
+  {
+    path: "mystudies/setup/assignment/questions/:assignmentId",
+    layout: "admin",
+    parent: "/mystudies/setup",
+    component: Questions,
+  },
+  {
+    path: "resetpassword",
     layout: "auth",
     component: ForgotPassword,
-    basePath: true,
   },
 ];
 

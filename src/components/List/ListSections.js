@@ -1,22 +1,41 @@
-import React, { useState } from "react";
 import { Book, Delete, Edit } from "@mui/icons-material";
-import { Button, Grid, IconButton, Popover, Popper } from "@mui/material";
+import { Button, Grid, IconButton } from "@mui/material";
+import React from "react";
 import styled from "styled-components";
-import Input from "../Form/Input";
+import Swal from "sweetalert2";
+import Dialog from "../Dialog";
 
 const ListSections = (props) => {
-  const { data, onClickSetCourse, onClickDelete, onClickeEdit, sectionSelected } = props;
-  const [openPover, setOpenPover] = useState(null);
-
+  const {
+    data,
+    onClickSetCourse,
+    onClickeEdit,
+    onClickDelete,
+    sectionSelected,
+    openPover,
+    onCosePover,
+  } = props;
   const handleClickEdit = (event, id) => {
-    setOpenPover(event.currentTarget);
     onClickeEdit(event, id);
   };
   const handleCloseEdit = () => {
-    setOpenPover(null);
+    onCosePover();
   };
-  
-  console.log(openPover);
+  const handleClickDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "var(--primary-color)",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onClickDelete(id);
+        
+      }
+    });
+  };
+
   const open = Boolean(openPover);
   const id = open ? "popover" : undefined;
 
@@ -32,7 +51,6 @@ const ListSections = (props) => {
               size="small"
               variant="contained"
               color="secondary"
-              aria-describedby={id}
               onClick={(e) => onClickSetCourse(e, data.id)}
               startIcon={<Book fontSize="15px" />}
             >
@@ -42,35 +60,14 @@ const ListSections = (props) => {
               onClick={(e) => handleClickEdit(e, data.id)}
               size="small"
               color="primary"
+              aria-describedby={id}
             >
               <Edit fontSize="18px" />
             </IconButton>
+
             
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={openPover}
-              onClose={handleCloseEdit}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-            >
-              <PoverContent>
-                <Input
-                  onChange={() => {}}
-                  width="320px"
-                  value={sectionSelected.title}
-                  size="small"
-                  label="Section of course"
-                />
-                <Button onClick={() => {}} sx={{ marginLeft: "12px" }}>
-                  Edit
-                </Button>
-              </PoverContent>
-            </Popover>
             <IconButton
-              onClick={(e) => onClickDelete(e, data.id)}
+              onClick={(e) => handleClickDelete(data.id)}
               edge="start"
               size="small"
               color="error"
@@ -80,6 +77,7 @@ const ListSections = (props) => {
           </div>
         </Grid>
       </Grid>
+     
     </Div>
   );
 };

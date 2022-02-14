@@ -87,6 +87,7 @@ export default class MyStudies extends Component {
   render() {
     const { userSign, myStudiesData, totalDataMyStudies, limit, search, page } =
       this.state;
+     
 
     return (
       <WrapContent>

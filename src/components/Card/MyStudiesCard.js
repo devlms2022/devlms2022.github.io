@@ -39,7 +39,6 @@ const MyStudiesCard = (props) => {
       .catch((err) => alert(err.message));
   };
   useEffect(() => {
-    console.log("useEffect");
     fetchAvatar();
   }, [data]);
   return (
