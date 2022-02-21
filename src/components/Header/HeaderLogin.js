@@ -1,4 +1,4 @@
-import { Close } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 import { Box, Button, IconButton } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
@@ -7,21 +7,18 @@ import ButtonCustom from "../Button/Button";
 const HeaderLogin = (props) => {
   const { onClick } = props;
   return (
-    <BoxStyled
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-      }}
-    >
-      <ButtonCustom text="Back to home" variant="outlined" onClick={onClick} />
-    </BoxStyled>
+    <Back onClick={onClick}>
+      <CloseIcon />
+    </Back>
   );
 };
 
-const BoxStyled = styled(Box)`
+const Back = styled.div`
+  margin-top: 10px;
   padding: 5px;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
 `;
 
 export default HeaderLogin;

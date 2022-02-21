@@ -23,6 +23,8 @@ const FormPersonalData = (props) => {
     disabled,
     forDetail,
     listStudies,
+    listCourses,
+    user,
   } = props;
 
   const theme = useTheme();
@@ -44,45 +46,142 @@ const FormPersonalData = (props) => {
         <Box className="box">
           <Grid spacing={2} container>
             {!isProfile ? (
-              <Grid className="col" item xs={12} sm={12}>
-                <FormControl
-                  error={errors ? (errors.study_master ? true : false) : false}
-                  sx={{ width: "100%" }}
-                >
-                  <InputLabel>Studies</InputLabel>
-                  <Select
-                    onChange={onChange}
-                    autoWidth
-                    value={data.study_master ? data.study_master : ""}
-                    name="study_master"
-                    label="Studies"
-                    inputProps={{
-                      readOnly: disabled
-                        ? disabled.study_master
-                          ? true
-                          : false
-                        : forDetail
-                        ? true
-                        : false,
-                    }}
-                    MenuProps={MenuProps}
+              user === 2 ? (
+                <Grid className="col" item xs={12} sm={12}>
+                  <FormControl
+                    error={
+                      errors ? (errors.study_master ? true : false) : false
+                    }
+                    sx={{ width: "100%" }}
                   >
-                    {listStudies.map((study) => (
-                      <MenuItem value={study.id} key={study.id} style={theme}>
-                        {study.title}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                    <InputLabel>Studies</InputLabel>
+                    <Select
+                      onChange={onChange}
+                      autoWidth
+                      value={data.study_master ? data.study_master : ""}
+                      name="study_master"
+                      label="Studies"
+                      MenuProps={MenuProps}
+                      inputProps={{
+                        readOnly: disabled
+                          ? disabled.study_master
+                            ? true
+                            : false
+                          : forDetail
+                          ? true
+                          : false,
+                      }}
+                    >
+                      {listStudies.map((study) => (
+                        <MenuItem value={study.id} key={study.id} style={theme}>
+                          {study.name_study}
+                        </MenuItem>
+                      ))}
+                    </Select>
 
-                  <FormHelperText>
-                    {errors
-                      ? errors.study_master
+                    <FormHelperText>
+                      {errors
                         ? errors.study_master
-                        : ""
-                      : ""}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
+                          ? errors.study_master
+                          : ""
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+              ) : (
+                <Grid className="col" item>
+                  <Grid className="col" item xs={12} sm={6}>
+                    <FormControl
+                      error={
+                        errors ? (errors.study_master ? true : false) : false
+                      }
+                      sx={{ width: "100%" }}
+                    >
+                      <InputLabel>Studies</InputLabel>
+                      <Select
+                        onChange={onChange}
+                        autoWidth
+                        value={data.study_master ? data.study_master : ""}
+                        name="study_master"
+                        label="Studies"
+                        MenuProps={MenuProps}
+                        inputProps={{
+                          readOnly: disabled
+                            ? disabled.study_master
+                              ? true
+                              : false
+                            : forDetail
+                            ? true
+                            : false,
+                        }}
+                      >
+                        {listStudies.map((study) => (
+                          <MenuItem
+                            value={study.id}
+                            key={study.id}
+                            style={theme}
+                          >
+                            {study.name_study}
+                          </MenuItem>
+                        ))}
+                      </Select>
+
+                      <FormHelperText>
+                        {errors
+                          ? errors.study_master
+                            ? errors.study_master
+                            : ""
+                          : ""}
+                      </FormHelperText>
+                    </FormControl>
+                  </Grid>
+                  <Grid className="col" item xs={12} sm={6}>
+                    <FormControl
+                      error={errors ? (errors.clasess ? true : false) : false}
+                      sx={{ width: "100%" }}
+                    >
+                      <InputLabel>Course</InputLabel>
+                      <Select
+                        onChange={onChange}
+                        autoWidth
+                        value={data.classes ? data.classes : ""}
+                        name="classes"
+                        label="Courses"
+                        MenuProps={MenuProps}
+                        inputProps={{
+                          readOnly: disabled
+                            ? disabled.classes
+                              ? true
+                              : false
+                            : forDetail
+                            ? true
+                            : false,
+                        }}
+                      >
+                        {data.study_master ? (
+                          listCourses.map((course) =>
+                            data.study_master === course.id_study ? (
+                              <MenuItem
+                                value={course.id}
+                                key={course.id}
+                                style={theme}
+                              >
+                                {course.title_course}
+                              </MenuItem>
+                            ) : null
+                          )
+                        ) : (
+                          <MenuItem>Choose Course</MenuItem>
+                        )}
+                      </Select>
+
+                      <FormHelperText>
+                        {errors ? (errors.classes ? errors.classes : "") : ""}
+                      </FormHelperText>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              )
             ) : null}
             <Grid className="row" item xs={12} sm={12}>
               <Input

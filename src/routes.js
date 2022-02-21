@@ -12,6 +12,7 @@ import MyStudies from "./pages/Study/MyStudies";
 import ListStudies from "./pages/Study/ListStudies";
 import UserEnroll from "./pages/Study/UserEnroll";
 import UserRegister from "./pages/Users/UserRegister";
+import Studies from "./pages/Landing/Studies";
 // import SignUp from "./"
 
 const routes = [
@@ -30,7 +31,7 @@ const routes = [
   {
     path: "/course",
     layout: "landing",
-    component: LandingPage,
+    component: Studies,
     basePath: true,
   },
   {
@@ -98,9 +99,9 @@ const routes = [
     component: CourseSections,
   },
   {
-    path : "/mystudies/setup/course/:sectionId",
-    layout : "admin",
-    component : SetupCourses
+    path: "/mystudies/setup/course/:sectionId",
+    layout: "admin",
+    component: SetupCourses,
   },
   {
     path: "/resetpassword",

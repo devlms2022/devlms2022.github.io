@@ -1,4 +1,13 @@
-import { Box, Container, Grid, Modal } from "@mui/material";
+import {
+  Box,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Modal,
+  Slide,
+} from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
@@ -87,6 +96,10 @@ function App(props) {
     navigate.push("/signup");
   };
 
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
   return (
     <>
       {pathname === "/signup" || pathname === "/resetpassword" ? (
@@ -123,14 +136,16 @@ function App(props) {
           })}
         </Switch>
       </Container>
-      <Modal
+      <Dialog
         open={modalShown}
+        TransitionComponent={Transition}
+        keepMounted
         onClose={() => setModalShown(!modalShown)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-describedby="alert-dialog-slide-description"
+        maxWidth="lg"
       >
-        <BoxStyled>
-          <HeaderLogin onClick={() => setModalShown(false)} />
+        <HeaderLogin onClick={() => setModalShown(false)} />
+        <DialogContent>
           <Grid container spacing={2}>
             <Grid item sm={7}>
               <Box className="warplogo">
@@ -150,8 +165,24 @@ function App(props) {
               />
             </Grid>
           </Grid>
+        </DialogContent>
+      </Dialog>
+      {/* <Modal
+        open={modalShown}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <BoxStyled>
+          <Grid container spacing={2}>
+            <Grid item sm={7}>
+              <Box className="warplogo">
+                <img src={ImageLogin} />
+              </Box>
+            </Grid>
+            <Grid item sm={5}></Grid>
+          </Grid>
         </BoxStyled>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
