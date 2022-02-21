@@ -2,6 +2,8 @@ import { Grid } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
 import MyStudyCard from "../../../components/Card/MyStudyCard";
+import DialogCustome from "../../../components/Dialog";
+import Input from "../../../components/Form/Input";
 import Paper from "../../../components/Paper";
 import BaseTabs from "../../../components/Tabs";
 import { Api } from "../../../services/api";
@@ -17,7 +19,7 @@ export default class CourseSections extends Component {
       userSign: {},
       myStudyData: {},
       courseSectionData: [],
-      courseSeactionSelected : {},
+      courseSeactionSelected: {},
       studies: [],
       students: [],
       paramSections: {
@@ -40,6 +42,7 @@ export default class CourseSections extends Component {
       },
       thumbnail: "",
       newCourseSections: "",
+      openDialog: false,
     };
     this.masterstudyid = this.props.match.params.studyid;
   }
@@ -89,7 +92,7 @@ export default class CourseSections extends Component {
   };
 
   fetchCourseSection = (id) => {
-    Api.post(`/courses_sectionsbyid`, {id})
+    Api.post(`/courses_sectionsbyid`, { id })
       .then((response) => {
         if (response.data.code === 200 && response.status === 200) {
           this.setState({
@@ -165,9 +168,31 @@ export default class CourseSections extends Component {
     }
   }
 
-  handleClickEdit = (e,id) => {
+  handleClickEdit = (e, id) => {
     this.fetchCourseSection(id);
-  }
+    this.setState({ openDialog: true });
+  };
+  handleClickSaveEdit = () => {
+    const { id, title } = this.state.courseSeactionSelected;
+    Api.post("/courses_sections/update", { id, title })
+      .then((response) => {
+        if (response.data.code === 200 && response.status === 200) {
+          this.fetchDataCourseSections();
+          this.setState({ openDialog: false });
+        }
+      })
+      .catch((err) => alert(err.message));
+  };
+
+  handleClickDelete = (id) => {
+    Api.post(`/courses_sections/delete`, { id })
+      .then((response) => {
+        if (response.data.code === 200 && response.status === 200) {
+          this.fetchDataCourseSections();
+        }
+      })
+      .catch((err) => alert(err.message));
+  };
 
   handleSaveSectionCourse = (value) => {
     const params = {
@@ -232,7 +257,8 @@ export default class CourseSections extends Component {
       thumbnail,
       paramStudents,
       students,
-      courseSeactionSelected
+      openDialog,
+      courseSeactionSelected,
     } = this.state;
 
     return (
@@ -265,7 +291,12 @@ export default class CourseSections extends Component {
                         data={courseSectionData}
                         sectionSelected={courseSeactionSelected}
                         searchValue={paramSections.search}
+                        handleClickDelete={this.handleClickDelete}
                         handleClickEdit={this.handleClickEdit}
+                        handleCloseEdit={() =>
+                          this.setState({ openPoverEdit: null })
+                        }
+                        poverEdit={this.state.openPoverEdit}
                         onSearchEnter={this.handleSearchSections}
                       />
                     );
@@ -278,6 +309,31 @@ export default class CourseSections extends Component {
                 },
               ]}
             />
+            <DialogCustome
+              open={openDialog}
+              onClose={() => this.setState({ openDialog: false })}
+              showSaveButton={true}
+              onSave={this.handleClickSaveEdit}
+              title="Update Section"
+            >
+              {courseSeactionSelected?.title && (
+                <Input
+                  onChange={({ target }) => {
+                    this.setState({
+                      courseSeactionSelected: {
+                        ...courseSeactionSelected,
+                        title: target.value.trim(),
+                      },
+                    });
+                  }}
+                  size="small"
+                  label="Section"
+                  value={courseSeactionSelected.title}
+                  name="section"
+                  fullWidth
+                />
+              )}
+            </DialogCustome>
           </WrapContent>
         </Grid>
       </Grid>

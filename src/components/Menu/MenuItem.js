@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useRouteMatch } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -54,7 +54,12 @@ const DropdownLink = styled(Link)`
 
 const MenuItem = ({ item }) => {
   const [subnav, setSubnav] = useState(false);
-  const { pathname } = useLocation();
+  const [basePath, setbasePath] = useState('');
+  let pathname = useLocation();
+  
+  // console.log(item);
+  // console.log(useRouteMatch());
+  pathname = pathname.pathname;
 
   const submenuActive =
     item.subNav && item.subNav.find((item) => item.path === pathname);

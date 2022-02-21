@@ -12,7 +12,7 @@ import BoxCustom from "../Box";
 import Avatar from "@mui/material/Avatar";
 import ProfileNav from "./ProfileNav";
 
-const AppBarAdmin2 = (props) => {
+const AppBarAdmin = (props) => {
   const drawerWidth = 240;
   const { window, handleDrawerToggle, userSign, pathname } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -89,4 +89,4 @@ const AppBarAdmin2 = (props) => {
   );
 };
 
-export default AppBarAdmin2;
+export default AppBarAdmin;

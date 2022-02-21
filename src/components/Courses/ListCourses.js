@@ -7,12 +7,14 @@ import BoxCustom from "../Box";
 import { Subtitle } from "../Text";
 
 const ListCourses = (props) => {
-  const { data, coruseSection } = props;
+  const { data, coruseSection, onClickDelete, onClickEdit, onClickDetail } = props;
   return (
     <Div>
       <div className="head">
         <Subtitle>{coruseSection.title}</Subtitle>
-        <span className="label-study">Studies of {coruseSection.master_study?.title}</span>
+        <span className="label-study">
+          Studies of {coruseSection.master_study?.title}
+        </span>
       </div>
       <div className="contain-list">
         {data.length > 0 &&
@@ -26,7 +28,9 @@ const ListCourses = (props) => {
                         <div className="title">
                           <Book fontSize="18px" /> {item.title_course}
                         </div>
-                        <div className="date">Created at {moment(item.created_at).format('ll')}</div>
+                        <div className="date">
+                          Created at {moment(item.created_at).format("ll")}
+                        </div>
                       </BoxCustom>
                     </Grid>
                     <Grid item xl={4} sm={12} xs={12} md={5}>
@@ -41,13 +45,17 @@ const ListCourses = (props) => {
                             Active
                           </Button>
                           <div className="button-group">
-                            <IconButton size="small" color="info">
+                            <IconButton onClick={() => onClickDetail(item.id)} size="small" color="info">
                               <Visibility fontSize="18px" />
                             </IconButton>
-                            <IconButton size="small" color="primary">
+                            <IconButton onClick={() => onClickEdit(item.id) } size="small" color="primary">
                               <Edit fontSize="18px" />
                             </IconButton>
-                            <IconButton size="small" color="error">
+                            <IconButton
+                              onClick={() => onClickDelete(item.id)}
+                              size="small"
+                              color="error"
+                            >
                               <Delete fontSize="18px" />
                             </IconButton>
                           </div>

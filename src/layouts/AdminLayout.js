@@ -5,7 +5,7 @@ import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation, useRouteMatch, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import AppBarAdmin from "../components/Appbar/AppBarAdmin";
 import Breadcrumb from "../components/Breadcrump";
@@ -22,6 +22,9 @@ function AdminLayout(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userSign, setUserSign] = useState({});
   const { pathname } = useLocation();
+  const match = useRouteMatch();
+  const history  = useHistory();
+
 
   const handleProfileClicked = (nav) => {
     if (nav === "logout") {
@@ -125,7 +128,7 @@ function AdminLayout(props) {
         }}
       >
         <Toolbar />
-        <Container  maxWidth="xl">
+        <Container maxWidth="xl">
           <BreadcrumbWrap>
             <Breadcrumb />
           </BreadcrumbWrap>
@@ -134,10 +137,11 @@ function AdminLayout(props) {
               if (item.layout === "admin") {
                 const { component } = item;
                 const Component = component;
+             
                 return (
                   <Route
-                    path={`${item.path}`}
-                    component={(props) => <Component {...props} />}
+                    path={`${match.url}${item.path}`}
+                    component={(props) => <Component  basePath={item.parent} {...props} />}
                     key={key}
                     exact={item.basePath}
                   />
@@ -165,14 +169,14 @@ const SidebarWrap = styled.div`
 
 const BreadcrumbWrap = styled.div`
   width: 100%;
-  margin-bottom : 35px;
+  margin-bottom: 35px;
 `;
 
 const Container = styled(Box)`
   width: 100%;
-  padding : 20px;
+  padding: 20px;
   @media screen and (max-width: 768px) {
-    padding : 0px;
+    padding: 0px;
   }
   /* padding: 10px; */
 `;

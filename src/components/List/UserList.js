@@ -1,15 +1,12 @@
-import * as React from "react";
+import ImageIcon from "@mui/icons-material/Image";
+import { Button, Grid } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ImageIcon from "@mui/icons-material/Image";
-import WorkIcon from "@mui/icons-material/Work";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import { Button, Grid } from "@mui/material";
-import BoxCustom from "../Box";
+import * as React from "react";
 import styled from "styled-components";
+import BoxCustom from "../Box";
 
 export default function UserList(props) {
   const { users } = props;

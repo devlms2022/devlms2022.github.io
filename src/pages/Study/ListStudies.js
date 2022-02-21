@@ -10,7 +10,8 @@ import Paper from "../../components/Paper";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
 
-const ListStudies = () => {
+const ListStudies = ({basePath}) => {
+  // console.log(basePath);
   const [loading, setLoading] = useState(true);
   const [listMasterStudy, setListMasterStudy] = useState([]);
   const [totalDataMasterStudy, setTotalDataMasterStudy] = useState(0);

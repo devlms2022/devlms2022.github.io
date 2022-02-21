@@ -11,7 +11,6 @@ const Div = styled.div`
     margin-top: 40px;
     max-height: 470px;
     overflow-y: scroll;
-
   }
 `;
 
@@ -20,37 +19,50 @@ const PoverContent = styled.div`
 `;
 
 const SectionList = (props) => {
-  const { data, onSave, onClickSetCourse, onSearchEnter, searchValue, handleClickEdit, sectionSelected } = props;
-  const [courseSections, setCoutseSections] = useState('');
+  const {
+    data,
+    onSave,
+    onClickSetCourse,
+    onSearchEnter,
+    searchValue,
+    handleClickEdit,
+    handleClickDelete,
+    handleCloseEdit,
+    sectionSelected,
+    poverEdit,
+  } = props;
+  const [courseSections, setCoutseSections] = useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-
+  // const [anchorElEdit, setAnchorElEdit] = React.useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const onClickeEdit = (event, id) => {
+    // setAnchorElEdit(event.currentTarget);
     handleClickEdit(event, id);
-  }
+  };
+  const onClickDelete = (id) => handleClickDelete(id);
 
   const handleClose = () => {
     setAnchorEl(null);
+    handleCloseEdit();
   };
 
   const handleChange = (e) => {
-    const {value} = e.target;
+    const { value } = e.target;
     setCoutseSections(value);
   };
 
   const handleSave = () => {
     onSave(courseSections);
-    setCoutseSections('');
-  }
+    setCoutseSections("");
+  };
 
   const handleSetCourse = (e, id) => {
-    onClickSetCourse(e,id);
-  }
+    onClickSetCourse(e, id);
+  };
 
   const open = Boolean(anchorEl);
 
@@ -90,13 +102,32 @@ const SectionList = (props) => {
               placeholder="Enter section of course"
               label="Section of course"
             />
-            <Button onClick={handleSave} sx={{ marginLeft: "12px" }}>Save</Button>
+            <Button onClick={handleSave} sx={{ marginLeft: "12px" }}>
+              Save
+            </Button>
           </PoverContent>
         </Popover>
-        <Search placeholder="Enter Keyword"  onKeyDown={onSearchEnter} name="search" width="60%" />
+        <Search
+          placeholder="Enter Keyword"
+          onKeyDown={onSearchEnter}
+          name="search"
+          width="60%"
+        />
       </BoxCustom>
       <div className="list-secction">
-        {data.length > 0 && data.map((item,key) => (<ListSections sectionSelected={sectionSelected} onClickSetCourse={handleSetCourse} onClickeEdit={onClickeEdit} key={key} data={item} />))}
+        {data.length > 0 &&
+          data.map((item, key) => (
+            <ListSections
+              sectionSelected={sectionSelected}
+              onClickSetCourse={handleSetCourse}
+              onClickeEdit={onClickeEdit}
+              onCosePover={handleClose}
+              openPover={poverEdit}
+              onClickDelete={onClickDelete}
+              key={key}
+              data={item}
+            />
+          ))}
         {data.length === 0 && <span>No Course Section Found</span>}
       </div>
     </Div>
