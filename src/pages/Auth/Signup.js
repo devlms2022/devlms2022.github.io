@@ -6,11 +6,9 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
-import { Box, spacing, typography } from "@mui/system";
 import axios from "axios";
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import SimpleReactValidator from "simple-react-validator";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import StudentsImg from "../../assets/images/students.png";
@@ -19,13 +17,13 @@ import Button from "../../components/Button/Button";
 import {
   FormEmailPasss,
   FormPersonalData,
-  FormStudentPersonalData,
   FormStudentUploadDoc,
   FormTeachUploadDoc,
 } from "../../components/Form/Signup";
 import Title from "../../components/Text/Tittle";
-import utilities from "../../utils/utilities";
 import { Api } from "../../services/api";
+
+import QueryString from "query-string";
 
 const RegistStep0 = (props) => {
   const { handleClicked } = props;
@@ -68,6 +66,7 @@ export class Signup extends Component {
       data: {
         role_id: 0,
         study_master: "",
+        classes: "",
         burger_service_nummer: "",
         family_name: "",
         front_name: "",
@@ -93,15 +92,47 @@ export class Signup extends Component {
         "Email & Password",
       ],
       errors: {},
+      isLoading: true,
     };
+    this.param = QueryString.parse(window.location.search);
   }
 
-  async componentDidMount() {
-    const response = await Api.post("/master_studies", {
+  getStudies = () => {
+    Api.post("/master_study", {
       limit: 1000,
-    });
+    })
+      .then((res) => {
+        this.setState({ studies: res.data.data });
+        this.getCourses();
+      })
+      .catch((err) => console.log(err));
+  };
 
-    this.setState({ studies: response.data.data });
+  getCourses = () => {
+    Api.post("/master_course", {
+      limit: 1000,
+    })
+      .then((res) =>
+        this.setState({ courses: res.data.data, isLoading: false })
+      )
+      .catch((err) => console.log(err));
+  };
+
+  async componentDidMount() {
+    await this.getStudies();
+
+    if (this.param.role_id) {
+      this.setState({
+        registerType: this.param.role_id,
+        stepActive: this.state.stepActive + 1,
+        data: {
+          ...this.state.data,
+          study_master: this.param.id_study,
+          classes: this.param.id_course,
+          role_id: this.param.role_id,
+        },
+      });
+    }
   }
 
   handleChangeFile = (event) => {
@@ -151,7 +182,8 @@ export class Signup extends Component {
   handleNext = () => {
     const { stepActive, steps, data } = this.state;
     let isFormValid = true;
-    if (stepActive === 2) {
+
+    if (stepActive === 2 && data.role_id === 2) {
       if (
         !(
           data.study_master &&
@@ -167,6 +199,38 @@ export class Signup extends Component {
         this.setState({
           errors: {
             ["study_master"]: "*Please choose your study",
+            ["burger_service_nummer"]:
+              "*Please Enter your Burger Service Number.",
+            ["address"]: "*Please Enter your address.",
+            ["family_name"]: "*Please Enter your family name.",
+            ["front_name"]: "*Please Enter your front name",
+            ["gender"]: "*Please Enter your gender.",
+            ["birthday"]: "*Please Enter your birthday",
+            ["postal_code"]: "*Please Enter your postal code.",
+          },
+        });
+        isFormValid = false;
+      }
+    }
+
+    if (stepActive === 2 && data.role_id === 3) {
+      if (
+        !(
+          data.study_master &&
+          data.classes &&
+          data.burger_service_nummer &&
+          data.address &&
+          data.birthday &&
+          data.family_name &&
+          data.front_name &&
+          data.gender &&
+          data.postal_code
+        )
+      ) {
+        this.setState({
+          errors: {
+            ["study_master"]: "*Please choose your study",
+            ["classes"]: "*Please choose your course",
             ["burger_service_nummer"]:
               "*Please Enter your Burger Service Number.",
             ["address"]: "*Please Enter your address.",
@@ -319,6 +383,7 @@ export class Signup extends Component {
       steps,
       isRedirect,
       errors,
+      isLoading,
     } = this.state;
 
     if (isRedirect) {
@@ -354,15 +419,26 @@ export class Signup extends Component {
             <RegistStep0 handleClicked={this.handleChangeOption} />
           )}
           <div className="form-input">
-            {stepActive === 1 && (
+            {stepActive === 1 && registerType == 2 && (
               <FormPersonalData
                 data={data}
                 errors={errors}
                 onChange={this.handleChange}
                 listStudies={this.state.studies}
+                user={registerType}
               />
             )}
-            {stepActive === 2 && registerType === 2 && (
+            {!isLoading && stepActive === 1 && registerType == 3 && (
+              <FormPersonalData
+                data={data}
+                errors={errors}
+                onChange={this.handleChange}
+                listStudies={this.state.studies}
+                listCourses={this.state.courses}
+                user={registerType}
+              />
+            )}
+            {stepActive === 2 && registerType == 2 && (
               <FormTeachUploadDoc
                 validator={this.validator2}
                 proofTeacherGrade={proof_teacher_grade}
@@ -371,7 +447,7 @@ export class Signup extends Component {
                 onChangeFile={this.handleChangeFile}
               />
             )}
-            {stepActive === 2 && registerType === 3 && (
+            {stepActive === 2 && registerType == 3 && (
               <FormStudentUploadDoc
                 validator={this.validator2}
                 grades={grades}

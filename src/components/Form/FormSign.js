@@ -4,14 +4,9 @@ import {
   FormControlLabel,
   FormGroup,
   Alert,
-  AlertTitle,
 } from "@mui/material";
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Signup from "../../pages/Auth/Signup";
-import utilities from "../../utils/utilities";
 import Button from "../Button/Button";
 import ButtonLink from "../Button/ButtonLink";
 import Tittle from "../Text/Tittle";
@@ -21,12 +16,8 @@ const FormSign = (props) => {
   const {
     onChange,
     onSignin,
-    onSignup,
-    data,
     alertShown,
-    validator,
     onOpenSignUp,
-    validation,
     onClickForgotPassword,
   } = props;
 
@@ -154,7 +145,7 @@ const Wraplogin = styled.div`
   }
 
   .input {
-    margin-bottom: 30px;
+    margin-bottom: 5px;
     width: 300px;
   }
 

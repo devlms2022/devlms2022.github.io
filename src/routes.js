@@ -19,6 +19,7 @@ import StudyJoin from "./pages/Study/StudyJoin";
 import ManageUser from "./pages/Users/ManageUser";
 import UserRegister from "./pages/Users/UserRegister";
 
+import Course from "./pages/Landing/Course";
 // import SignUp from "./"
 
 const routes = [
@@ -36,11 +37,12 @@ const routes = [
   {
     path: "/course",
     layout: "landing",
-    component: LandingPage,
+    component: Course,
+    basePath: true,
   },
   {
     path: "/signup",
-    layout: "auth", 
+    layout: "auth",
     component: Signup,
   },
   {
@@ -95,7 +97,6 @@ const routes = [
     layout: "admin",
     component: CourseEnrollment,
   },
-
   {
     path: "course/list",
     layout: "admin",

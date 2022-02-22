@@ -19,6 +19,7 @@ class Profile extends Component {
     this._isMounted = false;
     this.state = {
       data: {
+        study_master: "",
         burger_service_nummer: "",
         family_name: "",
         front_name: "",
@@ -212,6 +213,7 @@ class Profile extends Component {
               postal_code: data.profile.postal_code,
               gender: data.profile.gender,
               profile_id: data.profile.id,
+              is_profile: data.is_profile,
             },
           });
         this.fetchAvatar(data.profile.id);
@@ -271,9 +273,10 @@ class Profile extends Component {
               data={data}
               disabled={disabled}
               onChange={(e) => this.handleChange(e)}
+              isProfile={true}
             />
           </Grid>
-          <Grid item sm={4} xs={12} className="wrap-profile">
+          <Grid item sm={4} xs={12} className="col wrap-profile">
             <BoxCustom mb={1} direction="row" justify="space-between">
               <Subtitle>
                 <span>My Account</span>

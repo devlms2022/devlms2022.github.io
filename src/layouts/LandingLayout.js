@@ -1,4 +1,13 @@
-import { Box, Container, Grid, Modal } from "@mui/material";
+import {
+  Box,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Modal,
+  Slide,
+} from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
@@ -87,6 +96,10 @@ function App(props) {
     navigate.push("/signup");
   };
 
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
   return (
     <>
       {pathname === "/signup" || pathname === "/resetpassword" ? (
@@ -122,36 +135,52 @@ function App(props) {
             }
           })}
         </Switch>
+        <Dialog
+          open={modalShown}
+          onClose={() => setModalShown(!modalShown)}
+          aria-describedby="alert-dialog-slide-description"
+          maxWidth="lg"
+        >
+          <HeaderLogin onClick={() => setModalShown(false)} />
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item sm={7}>
+                <Box className="warplogo">
+                  <img src={ImageLogin} />
+                </Box>
+              </Grid>
+              <Grid item sm={5}>
+                <FormSign
+                  onSignin={(validation) => submitHandler(validation)}
+                  onClickForgotPassword={() => setModalShown(!modalShown)}
+                  onChange={changHandler}
+                  alertShown={alertShown}
+                  validator={validator}
+                  data={{ email, password }}
+                  onSignup={(param) => setModalShown(!param)}
+                  onOpenSignUp={onOpenSignUp}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+        </Dialog>
       </Container>
-      <Modal
+      {/* <Modal
         open={modalShown}
-        onClose={() => setModalShown(!modalShown)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <BoxStyled>
-          <HeaderLogin onClick={() => setModalShown(false)} />
           <Grid container spacing={2}>
             <Grid item sm={7}>
               <Box className="warplogo">
                 <img src={ImageLogin} />
               </Box>
             </Grid>
-            <Grid item sm={5}>
-              <FormSign
-                onSignin={(validation) => submitHandler(validation)}
-                onClickForgotPassword={() => setModalShown(!modalShown)}
-                onChange={changHandler}
-                alertShown={alertShown}
-                validator={validator}
-                data={{ email, password }}
-                onSignup={(param) => setModalShown(!param)}
-                onOpenSignUp={onOpenSignUp}
-              />
-            </Grid>
+            <Grid item sm={5}></Grid>
           </Grid>
         </BoxStyled>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

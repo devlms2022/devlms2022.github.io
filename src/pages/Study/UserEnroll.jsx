@@ -30,7 +30,7 @@ export default class UserEnroll extends Component {
       search,
       filter: {
         role_id: roleSwitch,
-        status_confirm: "pendding",
+        status_confirm: "pending",
       },
     })
       .then((resp) => {
