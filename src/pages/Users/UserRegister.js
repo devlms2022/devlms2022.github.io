@@ -8,19 +8,12 @@ import {
 } from "@mui/material";
 import React, { Component, useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  CourseIcon,
-  DiscussionIcon,
-  StudentIcon,
-  TeacherWhiteIcon,
-} from "../../assets/icons";
 import Modal from "../../components/Modal";
 import Paper from "../../components/Paper";
 import { Label } from "../../components/Text";
 import FormPersonalData from "../../components/Form/Signup/FormPersonalData";
 import { TableUser } from "../../components/Table";
 import { Api } from "../../services/api";
-// import { Api as api} from "../../services/api";
 import TokenService from "../../services/token.services";
 import Input from "../../components/Form/Input";
 import BoxCustom from "../../components/Box";
@@ -28,6 +21,10 @@ import DefContainerImg from "../../assets/images/imgcontainer.png";
 import ButtonCustom from "../../components/Button/Button";
 import Swal from "sweetalert2";
 import util from "../../utils/utilities";
+import Navtab from "../../components/Navtab";
+import Search from "../../components/Form/Search";
+import { Box } from "@mui/system";
+import InputSelect from "../../components/Form/Select";
 
 function CardImageRegister(props) {
   const { role, data, profileid } = props;
@@ -161,7 +158,8 @@ export default class UserRegister extends Component {
         grades: undefined,
         identity_card: undefined,
       },
-      listStudies : [],
+      listStudies: [],
+      navIndexActive: 0,
     };
   }
 
@@ -216,17 +214,17 @@ export default class UserRegister extends Component {
   };
 
   getStudyMaster = async () => {
-    const response = await Api.post("/master_studies", {
-      limit : 1000
+    const response = await Api.post("/master_study", {
+      limit: 1000,
     });
     const {
       data: { data },
     } = response;
 
     this.setState({
-      listStudies : data
+      listStudies: data,
     });
-  }
+  };
 
   handleChangePage = (event, newPage) => {
     this.setState({
@@ -311,155 +309,167 @@ export default class UserRegister extends Component {
   }
 
   render() {
-    const { users, page, limit, totalData, shownModalDetail, registerDetail, listStudies } =
-      this.state;
+    const {
+      users,
+      page,
+      limit,
+      totalData,
+      shownModalDetail,
+      registerDetail,
+      listStudies,
+      navIndexActive,
+    } = this.state;
 
-    const boardData = [
+    const tabs = [
       {
-        label: "Teacher",
-        icon: TeacherWhiteIcon,
-        value: 50,
+        label: "Students",
+        name: "student",
       },
       {
-        label: "Student",
-        icon: StudentIcon,
-        value: 200,
-      },
-      {
-        label: "Course",
-        icon: CourseIcon,
-        value: 20,
-      },
-      {
-        label: "Discussion",
-        icon: DiscussionIcon,
-        value: 8,
+        label: "Teachers",
+        name: "teacher",
       },
     ];
 
-    const col = 12 / boardData.length;
-
     return (
-      <>
-        <WrapContent>
-          <TableUser
-            onSwitch={this.handleSwitch}
-            actionClicked={this.handleAction}
-            data={users}
-            onSearch={this.handleSearch}
-            total={totalData}
-            page={page}
-            limit={limit}
-            onChangePage={this.handleChangePage}
-            onChangeRowPerpage={this.handleChangeRowsPerPage}
-            onClickDetail={(id) => this.handleDetailClicked(id)}
-          />
-          <Modal
-            title="Detail Data Register"
-            open={shownModalDetail}
-            onClose={() =>
-              this.setState({ shownModalDetail: !shownModalDetail })
-            }
-          >
-            <Grid sx={{ width: "100%" }} container spacing={4}>
-              <Grid item sm={12} md={5}>
-                <FormControl sx={{ width: "100%", marginBottom: "10px" }}>
-                  <InputLabel>Registrant</InputLabel>
-                  <Select
-                    autoWidth
-                    value={registerDetail.role_id}
-                    label="Registrant"
-                    inputProps={{
-                      readOnly: true,
-                    }}
-                  >
-                    <MenuItem value="0">Select</MenuItem>
-                    <MenuItem value="2">Teacher</MenuItem>
-                    <MenuItem value="3">Student</MenuItem>
-                  </Select>
-                </FormControl>
-                <FormPersonalData forDetail listStudies={listStudies} data={registerDetail} />
-              </Grid>
-              <Grid item md={7} sm={12}>
-                <Grid style={{ marginBottom: "9px" }} container spacing={2}>
-                  <Grid item xs={12} md={6}>
-                    <Input
-                      width="100%"
-                      label="Email"
-                      value={registerDetail.email}
-                      inputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Input
-                      width="100%"
-                      label="Study"
-                      value="Study"
-                      inputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                </Grid>
-                <CardImageRegister
-                  data={{
-                    reg_code_branch: registerDetail.reg_code_branch,
+      <WrapContent>
+        <Grid className="filter" container spacing={3}>
+          <Grid sm={12} md={3} xl={3} lg={3} item>
+            <Box>
+              <Navtab
+                navIndexActive={navIndexActive}
+                tabsData={tabs}
+                onClick={(e, indexNav) => {
+                  this.setState({ navIndexActive: indexNav });
+                  this.handleSwitch(e.target.name);
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item sm={12} md={4} lg={4} xl={4}>
+            {/* <InputSelect
+              name="filter"
+              label="Filter"
+              width="210px"
+              className="filter-input"
+              data={[
+                {
+                  name: "Register",
+                  value: "register",
+                },
+                {
+                  name: "Riject",
+                  value: "reject",
+                },
+              ]}
+              value="register"
+            /> */}
+          </Grid>
+          <Grid sm={12} md={5} xl={5} lg={5} item>
+            <Search
+              onChange={this.handleSearch}
+              width="100%"
+              placeholder="Search..."
+            />
+          </Grid>
+        </Grid>
+        <TableUser
+          actionClicked={this.handleAction}
+          data={users}
+          total={totalData}
+          page={page}
+          limit={limit}
+          onChangePage={this.handleChangePage}
+          onChangeRowPerpage={this.handleChangeRowsPerPage}
+          onClickDetail={(id) => this.handleDetailClicked(id)}
+        />
+        <Modal
+          title="Detail Data Register"
+          open={shownModalDetail}
+          onClose={() => this.setState({ shownModalDetail: !shownModalDetail })}
+        >
+          <Grid sx={{ width: "100%" }} container spacing={4}>
+            <Grid item sm={12} md={5}>
+              <FormControl sx={{ width: "100%", marginBottom: "10px" }}>
+                <InputLabel>Registrant</InputLabel>
+                <Select
+                  autoWidth
+                  value={registerDetail.role_id}
+                  label="Registrant"
+                  inputProps={{
+                    readOnly: true,
                   }}
-                  role={registerDetail.role_id}
-                  profileid={registerDetail.profile_id}
-                />
-                <BoxCustom
-                  height="6rem"
-                  justify="space-between"
-                  px="2.8rem"
-                  width="100%"
                 >
-                  <ButtonCustom
-                    fullWidth
-                    name="accept"
-                    onClick={(e) =>
-                      this.handleActionDetail(e, registerDetail.id)
-                    }
-                  >
-                    Accept
-                  </ButtonCustom>
-                  <Button
-                    fullWidth
-                    color="error"
-                    name="reject"
-                    onClick={(e) =>
-                      this.handleActionDetail(e, registerDetail.id)
-                    }
-                    variant="contained"
-                  >
-                    Reject
-                  </Button>
-                </BoxCustom>
-              </Grid>
+                  <MenuItem value="0">Select</MenuItem>
+                  <MenuItem value="2">Teacher</MenuItem>
+                  <MenuItem value="3">Student</MenuItem>
+                </Select>
+              </FormControl>
+              <FormPersonalData
+                forDetail
+                listStudies={listStudies}
+                data={registerDetail}
+              />
             </Grid>
-          </Modal>
-        </WrapContent>
-      </>
+            <Grid item md={7} sm={12}>
+              <Grid style={{ marginBottom: "9px" }} container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <Input
+                    width="100%"
+                    label="Email"
+                    value={registerDetail.email}
+                    inputProps={{ readOnly: true }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Input
+                    width="100%"
+                    label="Study"
+                    value="Study"
+                    inputProps={{ readOnly: true }}
+                  />
+                </Grid>
+              </Grid>
+              <CardImageRegister
+                data={{
+                  reg_code_branch: registerDetail.reg_code_branch,
+                }}
+                role={registerDetail.role_id}
+                profileid={registerDetail.profile_id}
+              />
+              <BoxCustom
+                height="6rem"
+                justify="space-between"
+                px="2.8rem"
+                width="100%"
+              >
+                <ButtonCustom
+                  fullWidth
+                  name="accept"
+                  onClick={(e) => this.handleActionDetail(e, registerDetail.id)}
+                >
+                  Accept
+                </ButtonCustom>
+                <Button
+                  fullWidth
+                  color="error"
+                  name="reject"
+                  onClick={(e) => this.handleActionDetail(e, registerDetail.id)}
+                  variant="contained"
+                >
+                  Reject
+                </Button>
+              </BoxCustom>
+            </Grid>
+          </Grid>
+        </Modal>
+      </WrapContent>
     );
   }
 }
 
-const WrapContent = styled.div`
-  .paper {
-    padding: 25px 0;
-    display: block;
-    margin-bottom: 50px;
-    .box {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .value {
-        display: flex;
-        flex-direction: column;
-        span {
-          font-size: 40px;
-        }
-      }
-    }
-  }
+const WrapContent = styled(Paper)`
+  padding: 15px;
 `;
 
 const ImgContainer = styled.div`

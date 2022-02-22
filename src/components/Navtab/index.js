@@ -5,13 +5,12 @@ import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
 import * as React from "react";
 import styled from "styled-components";
 
-
 const Tab = styled(TabUnstyled)`
   color: white;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: bold;
-  background-color: ${(props)=>props.active ? "white" : "transparent"};
+  background-color: ${(props) => (props.active ? "white" : "transparent")};
   width: 100%;
   padding: 5px 6px;
   margin: 6px 6px;
@@ -25,7 +24,7 @@ const Tab = styled(TabUnstyled)`
   }
 
   &.${tabUnstyledClasses.selected} {
-    background-color:white;
+    background-color: white;
     color: var(--primary-color);
   }
 
@@ -34,8 +33,6 @@ const Tab = styled(TabUnstyled)`
     cursor: not-allowed;
   }
 `;
-
-
 
 const TabsList = styled(TabsListUnstyled)`
   min-width: 150px;
@@ -49,14 +46,18 @@ const TabsList = styled(TabsListUnstyled)`
 `;
 
 const Navtab = (props) => {
-  const { tabsData , onClick, navIndexActive } = props;
+  const { tabsData, onClick, navIndexActive } = props;
 
   return (
-    <TabsUnstyled value={navIndexActive} >
-      <TabsList >
-        {tabsData.map((tab,index) => {
+    <TabsUnstyled value={navIndexActive}>
+      <TabsList>
+        {tabsData.map((tab, index) => {
           return (
-            <Tab key={tab.name} onClick={(e) => onClick(e,index)} name={tab.name}>
+            <Tab
+              key={tab.name}
+              onClick={(e) => onClick(e, index)}
+              name={tab.name}
+            >
               {tab.label}
             </Tab>
           );

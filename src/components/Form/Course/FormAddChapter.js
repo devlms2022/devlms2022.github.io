@@ -20,10 +20,10 @@ const FormStep1 = ({ handleChange, handleBlur, data }) => {
     <div className="form">
       <Input
         className="form-control"
-        placeholder="Enter Title Course"
+        placeholder="Enter Chapter Title"
         label="Title"
-        value={data?.title_course}
-        name="title_course"
+        value={data?.chapter_title}
+        name="chapter_title"
         onChange={handleChange}
         fullWidth
       />
@@ -50,7 +50,7 @@ const FormStep2 = (props) => {
 
   return (
     <div className="form">
-      <div  className="form-control">
+      <div className="form-control">
         <Label>Video Introduction</Label>
       </div>
       <FormControl fullWidth className="form-control">
@@ -58,10 +58,9 @@ const FormStep2 = (props) => {
         <Select
           onChange={handleChange}
           fullWidth
-          name="is_embed_video"
+          name="is_video_embed"
           label="Type Video"
-          value={data?.is_embed_video}
-          
+          value={data?.is_video_embed}
         >
           <MenuItem value={1}>Embed</MenuItem>
           <MenuItem value={0}>Upload</MenuItem>
@@ -72,17 +71,17 @@ const FormStep2 = (props) => {
         </FormHelperText>
       </FormControl>
       <div>
-        {data?.is_embed_video === 1 && (
+        {data?.is_video_embed === 1 && (
           <Input
             label="Url Video"
             fullWidth
-            value={data?.intro_video}
+            value={data?.video}
             onChange={handleChange}
-            name="intro_video"
+            name="video"
             placeholder="eg. https://www.youtube.com/watch?v=CNbmVEEW-mA&list=RDfhn3VE7G06g&index=11"
           />
         )}
-        {data?.is_embed_video === 0 && (
+        {data?.is_video_embed === 0 && (
           <div className="upload-container">
             {data.blobVideo && (
               <div className="preview">
@@ -107,7 +106,7 @@ const FormStep2 = (props) => {
                   id={"video"}
                   style={{ display: "none" }}
                   type={"file"}
-                  name="intro_video"
+                  name="video"
                   onChange={handleChange}
                 />
                 <label htmlFor={"video"} className="upload">
@@ -123,14 +122,14 @@ const FormStep2 = (props) => {
   );
 };
 
-const FormAddCourse = (props) => {
+const FormAddChapter = (props) => {
   //   const [field, setField] = useState({});
-  const {  data, handleChange, handleBlur,  persentaseLoading } = props;
+  const { data, handleChange, handleBlur, persentaseLoading } = props;
 
   return (
     <WrapContent>
       <BaseTabs
-        tabLabel={["Course", "Video (optional)"]}
+        tabLabel={["Chapter", "Video (optional)"]}
         tabPanel={[
           {
             content: (
@@ -156,7 +155,7 @@ const FormAddCourse = (props) => {
   );
 };
 
-export default FormAddCourse;
+export default FormAddChapter;
 
 const WrapContent = styled.div`
   display: flex;

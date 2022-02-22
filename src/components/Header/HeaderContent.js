@@ -63,7 +63,7 @@ const Div = styled(BoxCustom)`
     margin-right: 10px;
   }
   span {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
   }
 `;

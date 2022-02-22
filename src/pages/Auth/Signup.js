@@ -146,7 +146,6 @@ export class Signup extends Component {
         role_id: registerType,
       },
     });
-
   };
 
   handleNext = () => {

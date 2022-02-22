@@ -1,18 +1,22 @@
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Signup from "./pages/Auth/Signup";
+import CourseDetail from "./pages/Course/CourseDetail";
+import CourseEnrollment from "./pages/Course/CourseEnrollment";
+import CourseList from "./pages/Course/CourseList";
+import CoursePorposeList from "./pages/Course/CoursePorposeList";
 import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/Landing";
 import FormMasterStudies from "./pages/Masterdata/Form/FormMasterStudies";
+import MasterFaculty from "./pages/Masterdata/MasterFaculty";
 import MasterStudies from "./pages/Masterdata/MasterStudies";
-import MasterTopic from "./pages/Masterdata/MasterTopics";
 import Profile from "./pages/Profile";
 import AddAssignment from "./pages/Study/Assignment/AddAssignment";
 import { Questions } from "./pages/Study/Assignment/Questions";
 import CourseSections from "./pages/Study/Course/CourseSections";
 import SetupCourses from "./pages/Study/Course/SetupCourses";
-import ListStudies from "./pages/Study/ListStudies";
 import MyStudies from "./pages/Study/MyStudies";
-import UserEnroll from "./pages/Study/UserEnroll";
+import StudyJoin from "./pages/Study/StudyJoin";
+import ManageUser from "./pages/Users/ManageUser";
 import UserRegister from "./pages/Users/UserRegister";
 
 // import SignUp from "./"
@@ -57,16 +61,27 @@ const routes = [
     component: UserRegister,
   },
   {
-    path: "master/settopic",
+    path: "user/list",
     layout: "admin",
-
-    component: MasterTopic,
+    basePath: true,
+    component: ManageUser,
   },
   {
-    path: "master/setstudy",
+    path: "Faculty",
+    layout: "admin",
+    component: MasterFaculty,
+  },
+  {
+    path: "studies",
     layout: "admin",
     basePath: true,
     component: MasterStudies,
+  },
+  {
+    path: "study-join",
+    layout: "admin",
+    basePath: true,
+    component: StudyJoin,
   },
   {
     path: "master/setstudy/add",
@@ -76,21 +91,33 @@ const routes = [
     component: FormMasterStudies,
   },
   {
-    path: "study/enroll",
+    path: "course/enroll",
     layout: "admin",
-    component: UserEnroll,
+    component: CourseEnrollment,
   },
 
   {
-    path: "studies/list",
+    path: "course/list",
     layout: "admin",
-    component: ListStudies,
+    basePath : true,
+    component: CourseList,
   },
   {
-    path: "mystudies/setup",
+    path: "course/detail/:id",
+    layout: "admin",
+    component: CourseDetail,
+  },
+  {
+    path: "course/setup",
     layout: "admin",
     basePath: true,
     component: MyStudies,
+  },
+  {
+    path: "course/propose",
+    layout: "admin",
+    basePath: true,
+    component: CoursePorposeList,
   },
   {
     path: "mystudies/setup/sections/:studyid",

@@ -8,6 +8,9 @@ import {
   Report,
   KeyboardArrowUp,
   KeyboardArrowDown,
+  School,
+  LocalLibrary,
+  GroupAdd
 } from "@mui/icons-material";
 
 export const Menuadmin = [
@@ -26,12 +29,12 @@ export const Menuadmin = [
     iconOpened: <KeyboardArrowUp />,
     subNav: [
       {
-        title: "Setup Topic",
-        path: "/master/settopic",
+        title: "Faculty",
+        path: "/faculty",
       },
       {
-        title: "Setup Study",
-        path: "/master/setstudy",
+        title: "Studies",
+        path: "/studies",
       },
     ],
   },
@@ -44,7 +47,7 @@ export const Menuadmin = [
     subNav: [
       {
         title: "User Active",
-        path: "/user/active",
+        path: "/user/list",
       },
       {
         title: "User Register",
@@ -53,17 +56,30 @@ export const Menuadmin = [
     ],
   },
   {
-    title: "Studies",
+    title: "Course",
     path: "#",
     icon: <SchoolIcon />,
     iconClosed: <KeyboardArrowDown />,
     iconOpened: <KeyboardArrowUp />,
     subNav: [
       {
-        title: "User Enroll",
-        path: "/study/enroll",
+        title: "Course List",
+        path: "/course/list",
+      },
+      {
+        title: "Course Enrollment",
+        path: "/course/enroll",
+      },
+      {
+        title: "Course Propose",
+        path: "/course/propose",
       },
     ],
+  },
+  {
+    title: "Study Join",
+    path: "/study-join",
+    icon: <GroupAdd/>
   },
   {
     title: "Dsicussion",
@@ -79,19 +95,24 @@ export const MenuTeacher = [
     icon: <DashboardIcon />,
   },
   {
-    title: "My Studies",
+    title: "Studies",
+    path: "/studies",
+    icon: <LocalLibrary />,
+  },
+  {
+    title: "Course",
     path: "#",
-    icon: <FeedIcon />,
+    icon: <School />,
     iconClosed: <KeyboardArrowDown />,
     iconOpened: <KeyboardArrowUp />,
     subNav: [
       {
-        title: "Setup Course",
-        path: "/mystudies/setup",
+        title: "Set Course",
+        path: "/course/setup",
       },
       {
-        title: "List Studies",
-        path: "/studies/list",
+        title: "My Course",
+        path: "/course/list",
       },
     ],
   },

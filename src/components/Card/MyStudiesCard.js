@@ -49,12 +49,7 @@ const MyStudiesCard = (props) => {
         direction="row"
       >
         <FiberManualRecord color="success" />
-        {/* <Chip
-          label={data.master_studies.topic.name}
-          color="primary"
-          size="small"
-          variant="outlined"
-        /> */}
+       
       </BoxCustom>
       <BoxCustom
         mt="10px"

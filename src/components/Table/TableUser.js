@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,13 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import moment from "moment";
-import React, { useState } from "react";
-import styled from "styled-components";
-import CustomeBox from "../Box";
 import ButtonCustom from "../Button/Button";
-import Search from "../Form/Search";
-import Navtab from "../Navtab";
-import Paper from "../Paper";
+import { Box } from "@mui/system";
 
 export default function TableUser(props) {
   const {
@@ -23,12 +18,8 @@ export default function TableUser(props) {
     page,
     onChangePage,
     onChangeRowPerpage,
-    onSearch,
-    onSwitch,
     onClickDetail,
   } = props;
-
-  const [navIndexActive, setNavIndexActive] = useState(0);
 
   const columns = [
     { id: "no", label: "No", maxWidth: 12 },
@@ -81,38 +72,9 @@ export default function TableUser(props) {
     };
   });
 
-  const tabs = [
-    {
-      label: "Students",
-      name: "student",
-    },
-    {
-      label: "Teachers",
-      name: "teacher",
-    },
-  ];
-
   return (
-    <ContainTable>
-      <Grid className="filter" container spacing={1}>
-        <Grid sm={12} md={6} xl={6} item>
-          <CustomeBox width="50%">
-            <Navtab
-              navIndexActive={navIndexActive}
-              tabsData={tabs}
-              onClick={(e, indexNav) => {
-                setNavIndexActive(indexNav);
-                onSwitch(e.target.name);
-              }}
-            />
-          </CustomeBox>
-        </Grid>
-        <Grid sm={12} md={6} xl={6} item>
-          <Search onChange={onSearch} width="100%" placeholder="Search..." />
-        </Grid>
-      </Grid>
-      {/* </BoxCustom> */}
-      <TableContainer sx={{ maxHeight: 440 }}>
+    <>
+      <TableContainer  sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -127,7 +89,7 @@ export default function TableUser(props) {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody   >
             {rows.map((row) => {
               return (
                 <TableRow hover tabIndex={-1} key={row.no}>
@@ -139,6 +101,7 @@ export default function TableUser(props) {
                       </TableCell>
                     );
                   })}
+                  
                 </TableRow>
               );
             })}
@@ -154,13 +117,6 @@ export default function TableUser(props) {
         onPageChange={onChangePage}
         onRowsPerPageChange={onChangeRowPerpage}
       />
-    </ContainTable>
+    </>
   );
 }
-
-const ContainTable = styled(Paper)`
-  padding: 15px;
-  .filter {
-    margin-bottom: 15px;
-  }
-`;

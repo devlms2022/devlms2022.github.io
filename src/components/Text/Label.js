@@ -14,11 +14,11 @@ const LavbelStyled = styled.label`
   color: ${(props) =>
     props.color ? `var(${props.color})` : "var(--font-dark-color)"};
   font-weight: 300;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 143%;
   text-align : justify;
   span {
-      font-size : 16px;
+      font-size : 12px;
       font-weight : bold;
   }
 `;

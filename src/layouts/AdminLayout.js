@@ -129,9 +129,9 @@ function AdminLayout(props) {
       >
         <Toolbar />
         <Container maxWidth="xl">
-          <BreadcrumbWrap>
+          {/* <BreadcrumbWrap>
             <Breadcrumb />
-          </BreadcrumbWrap>
+          </BreadcrumbWrap> */}
           <Switch>
             {routes.map((item, key) => {
               if (item.layout === "admin") {

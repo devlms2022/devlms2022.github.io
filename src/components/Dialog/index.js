@@ -5,6 +5,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import PropTypes from 'prop-types';
 
 export default function DialogCustome(props) {
   const {
@@ -16,7 +17,8 @@ export default function DialogCustome(props) {
     children,
     showSaveButton,
     btnSaveLabel,
-    onSave
+    onSave,
+    isLoading=false
   } = props;
 
   return (
@@ -42,10 +44,23 @@ export default function DialogCustome(props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          {showSaveButton && <Button onClick={onSave} variant="contained" color="primary">{btnSaveLabel?btnSaveLabel : "Save"}</Button>}
-          <Button onClick={onClose}>Close</Button>
+          {showSaveButton && <Button disabled={isLoading} onClick={onSave} variant="contained" color="primary">{btnSaveLabel?btnSaveLabel : "Save"}</Button>}
+          <Button disabled={isLoading} onClick={onClose}>Close</Button>
         </DialogActions>
       </Dialog>
     </>
   );
 }
+
+DialogCustome.propTypes = {
+  fullWidth: PropTypes.bool,
+  maxWidth: PropTypes.string,
+  open: PropTypes.bool,
+  onClose: PropTypes.func,
+  title: PropTypes.string,
+  children: PropTypes.node,
+  showSaveButton: PropTypes.bool,
+  btnSaveLabel: PropTypes.string,
+  onSave: PropTypes.func,
+  isLoading: PropTypes.bool
+};

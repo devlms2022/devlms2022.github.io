@@ -26,7 +26,7 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         margin: 0;
         box-sizing: border-box;
-        font-size: 16px;
+        font-size: 14px;
         list-style: none;
         /* line-height: 150%; */
         letter-spacing: 0.15px;
@@ -71,6 +71,9 @@ const GlobalStyle = createGlobalStyle`
 
     .box-shadow {
         box-shadow: 0px 25px 50px rgba(129, 129, 129, 0.1);
+    }
+    .swal2-container {
+        z-index: 99999;
     }
 `;
 

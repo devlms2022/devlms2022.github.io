@@ -31,7 +31,6 @@ const ListSections = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         onClickDelete(id);
-        
       }
     });
   };
@@ -64,8 +63,6 @@ const ListSections = (props) => {
             >
               <Edit fontSize="18px" />
             </IconButton>
-
-            
             <IconButton
               onClick={(e) => handleClickDelete(data.id)}
               edge="start"
@@ -77,7 +74,6 @@ const ListSections = (props) => {
           </div>
         </Grid>
       </Grid>
-     
     </Div>
   );
 };

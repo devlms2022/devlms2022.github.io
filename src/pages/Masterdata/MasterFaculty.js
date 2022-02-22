@@ -1,5 +1,5 @@
 import { AddCircle as AddIcon, Close } from "@mui/icons-material";
-import { Grid, IconButton } from "@mui/material";
+import { Button, Grid, IconButton } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
 import BoxCustom from "../../components/Box";
@@ -21,8 +21,9 @@ const FormAddTopic = (props) => {
         <Input
           onChange={onChange}
           fullWidth
-          placeholder="Enter name of topic"
-          name="topic"
+          placeholder="Enter name of Faculty"
+          name="faculty"
+          size="small"
         />
       </BoxCustom>
       <BoxCustom
@@ -31,22 +32,22 @@ const FormAddTopic = (props) => {
         align="center"
         width="35%"
       >
-        <ButtonCustom onClick={onSave} variant="text" size="small">
+        <Button onClick={onSave}  variant="contained" size="small">
           Save
-        </ButtonCustom>
+        </Button>
         <IconButton onClick={onCancel} size="small">
-          <Close />
+          <Close fontSize="14px" />
         </IconButton>
       </BoxCustom>
     </BoxCustom>
   );
 };
 
-export default class MasterTopic extends Component {
+export default class MasterFaculty extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      topicData: [],
+      facultyData: [],
       userSign: {},
       role_id: 3,
       search: "",
@@ -54,7 +55,7 @@ export default class MasterTopic extends Component {
       limit: 10,
       totalData: 0,
       shownAdd: false,
-      topic: "",
+      faculty: "",
       edit: {},
     };
   }
@@ -62,12 +63,13 @@ export default class MasterTopic extends Component {
   componentDidMount = () => {
     const userSign = TokenService.getUser();
     this.setState({ userSign: userSign.data });
-    this.fetchDataTopic();
+    this.fetchDataFaculty();
   };
+  
 
-  fetchDataTopic = () => {
+  fetchDataFaculty = () => {
     const { limit, page, search } = this.state;
-    Api.post("/topic", {
+    Api.post("/faculty", {
       limit,
       page,
       sortby: "DESC",
@@ -75,7 +77,7 @@ export default class MasterTopic extends Component {
     })
       .then((response) => {
         this.setState({
-          topicData: response.data.data,
+          facultyData: response.data.data,
           totalData: response.data.total,
         });
       })
@@ -85,17 +87,17 @@ export default class MasterTopic extends Component {
   };
 
   handleSaveTopic = async () => {
-    const { topic, userSign } = this.state;
+    const { faculty, userSign } = this.state;
     try {
-      const response = await Api.post("/topic/insert", {
-        name: topic,
+      const response = await Api.post("/faculty/insert", {
+        name: faculty,
         created_by: userSign.id,
       });
       if (response.data.code === 200 && response.status === 200) {
         this.setState({
           shownAdd: false,
         });
-        this.fetchDataTopic();
+        this.fetchDataFaculty();
       }
     } catch (error) {
       alert(error.message);
@@ -138,15 +140,15 @@ export default class MasterTopic extends Component {
     });
   };
 
-  handelUpdateTopic = () => {
+  handelUpdateFaculty = () => {
     const { name, id } = this.state.edit;
-    Api.post("/topic/update", {
+    Api.post("/faculty/update", {
       id,
       name,
     })
       .then((response) => {
         if (response.status === 200 && response.data.code === 200) {
-          this.fetchDataTopic();
+          this.fetchDataFaculty();
           this.setState({ edit: {} });
         }
       })
@@ -158,16 +160,16 @@ export default class MasterTopic extends Component {
   handleAction = async (e, action, id) => {
     try {
       if (action === "delete") {
-        const response = await Api.post("/topic/delete", {
+        const response = await Api.post("/faculty/delete", {
           id,
         });
         if (response.data.code === 200 && response.status === 200) {
-          this.fetchDataTopic();
+          this.fetchDataFaculty();
         } else if (response.data.code === 110) {
           throw new Error(response.data.message);
         }
       } else if (action === "edit") {
-        const response = await Api.post("/topicbyid", {
+        const response = await Api.post("/facultybyid", {
           id,
         });
 
@@ -182,21 +184,21 @@ export default class MasterTopic extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.search !== this.state.search) {
-      this.fetchDataTopic();
+      this.fetchDataFaculty();
     }
     if (prevState.search !== this.state.search) {
-      this.fetchDataTopic();
+      this.fetchDataFaculty();
     }
     if (
       prevState.page !== this.state.page ||
       prevState.limit !== this.state.limit
     ) {
-      this.fetchDataTopic();
+      this.fetchDataFaculty();
     }
   }
 
   render() {
-    const { topicData, page, limit, totalData, shownAdd, edit } = this.state;
+    const { facultyData, page, limit, totalData, shownAdd, edit } = this.state;
 
     return (
       <>
@@ -211,12 +213,13 @@ export default class MasterTopic extends Component {
                 />
               ) : (
                 <>
-                  <ButtonCustom
+                  <Button
+                    size="small"
                     onClick={() => this.setState({ shownAdd: true })}
-                    startIcon={<AddIcon />}
+                    startIcon={<AddIcon fontSize="14px" />}
                   >
-                    Add
-                  </ButtonCustom>
+                    Add Faculty
+                  </Button>
                 </>
               )}
             </Grid>
@@ -224,13 +227,13 @@ export default class MasterTopic extends Component {
               <Search
                 onChange={this.handleSearch}
                 width="100%"
-                placeholder="Search..."
+                placeholder="Enter keyword..."
               />
             </Grid>
           </Grid>
           <TableTopic
             actionClicked={this.handleAction}
-            data={topicData}
+            data={facultyData}
             total={totalData}
             page={page}
             limit={limit}
@@ -238,7 +241,7 @@ export default class MasterTopic extends Component {
             onChangePage={this.handleChangePage}
             onChangeRowPerpage={this.handleChangeRowsPerPage}
             edit={edit}
-            onSaveEdit={this.handelUpdateTopic}
+            onSaveEdit={this.handelUpdateFaculty}
           />
         </ContainContent>
       </>

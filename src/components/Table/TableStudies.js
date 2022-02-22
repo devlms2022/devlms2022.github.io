@@ -1,8 +1,9 @@
 import {
   Delete as DeleteIcon,
   ModeEdit as EditIcon,
+  RemoveRedEye,
 } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,12 +11,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import PropsType from "prop-types";
 import React from "react";
 import util from "../../utils/utilities";
 import { default as BoxCustom } from "../Box";
-import Input from "../Form/Input";
 
-export default function TableFaculty(props) {
+export default function TableStudies(props) {
   const {
     data,
     total,
@@ -24,42 +25,32 @@ export default function TableFaculty(props) {
     onChangePage,
     onChangeRowPerpage,
     actionClicked,
-    edit,
-    onChangeEdit,
-    onSaveEdit,
+    roleId,
   } = props;
-
-  const rowdata = (column, value, id) => {
-    let result = column.format ? column.format(value) : value;
-    if (edit.id) {
-      if (edit.id === id) {
-        if (column.id === "name")
-          result = (
-            <Input
-              size="small"
-              onBlur={onSaveEdit}
-              autoFocus
-              onChange={onChangeEdit}
-              value={edit.name}
-              name="name"
-            />
-          );
-      }
-    }
-    return result;
-  };
 
   const columns = [
     { id: "no", label: "No", minWidth: 10 },
     {
-      id: "name",
+      id: "name_study",
+      label: "title",
+      minWidth: 100,
+      align: "left",
+    },
+    {
+      id: "faculty",
       label: "Faculty",
       minWidth: 100,
       align: "left",
     },
     {
+      id: "total_courses",
+      label: "Total Courses",
+      minWidth: 100,
+      align: "left",
+    },
+    {
       id: "created_at",
-      label: "Date Input",
+      label: "Created At",
       minWidth: 100,
       align: "left",
     },
@@ -69,24 +60,45 @@ export default function TableFaculty(props) {
       minWidth: 20,
       align: "center",
       format: (id) => {
-        return (
-          <BoxCustom direction="row" width="100%" justify="center">
-            <IconButton
-              onClick={(e) => actionClicked(e, "edit", id)}
-              color="primary"
-              size="small"
-            >
-              <EditIcon fontSize="12px" />
-            </IconButton>
-            <IconButton
-              onClick={(e) => actionClicked(e, "delete", id)}
-              color="error"
-              size="small"
-            >
-              <DeleteIcon fontSize="12px" />
-            </IconButton>
-          </BoxCustom>
-        );
+        if (roleId === "1") {
+          return (
+            <BoxCustom direction="row" width="100%" justify="center">
+              <Tooltip title="See More">
+                <IconButton
+                  onClick={(e) => actionClicked(e, "detail", id)}
+                  color="secondary"
+                  size="small"
+                >
+                  <RemoveRedEye fontSize="12px" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit">
+                <IconButton
+                  onClick={(e) => actionClicked(e, "edit", id)}
+                  color="primary"
+                  size="small"
+                >
+                  <EditIcon fontSize="12px" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton
+                  onClick={(e) => actionClicked(e, "delete", id)}
+                  color="error"
+                  size="small"
+                >
+                  <DeleteIcon fontSize="12px" />
+                </IconButton>
+              </Tooltip>
+            </BoxCustom>
+          );
+        } else if(roleId === "2") {
+          return (
+            <BoxCustom direction="row" width="100%" justify="center">
+              <Button onClick={(e) => actionClicked(e, "join", id)} size="small" variant="outlined"  >JOIN</Button>
+            </BoxCustom>
+          );
+        }
       },
     },
   ];
@@ -99,14 +111,19 @@ export default function TableFaculty(props) {
     return {
       id: item.id,
       no: number,
-      name: item.name,
+      name_study: item.name_study,
+      faculty: item.faculty.name,
       created_at: util.moment(item.created_at),
+      total_courses: 0,
       action: item.id,
     };
   });
 
+  // console.log("rows",rows);
+
   return (
     <>
+      {/* </BoxCustom> */}
       <TableContainer sx={{ maxHeight: 378 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -130,8 +147,7 @@ export default function TableFaculty(props) {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {/* {column.format ? column.format(value) : value} */}
-                        {rowdata(column, value, row.id)}
+                        {column.format ? column.format(value) : value}
                       </TableCell>
                     );
                   })}
@@ -153,3 +169,16 @@ export default function TableFaculty(props) {
     </>
   );
 }
+
+TableStudies.propTypes = {
+  data: PropsType.array,
+  total: PropsType.number,
+  limit: PropsType.number,
+  page: PropsType.number,
+  onChangePage: PropsType.func,
+  onChangeRowPerpage: PropsType.func,
+  actionClicked: PropsType.func,
+  edit: PropsType.object,
+  onChangeEdit: PropsType.func,
+  onSaveEdit: PropsType.func,
+};

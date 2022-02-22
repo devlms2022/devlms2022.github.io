@@ -1,8 +1,11 @@
 import {
+  AppRegistration,
   Delete as DeleteIcon,
   ModeEdit as EditIcon,
+  Badge,
+  Settings,
 } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import {  IconButton, Tooltip } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,12 +13,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import PropsType from "prop-types";
 import React from "react";
 import util from "../../utils/utilities";
 import { default as BoxCustom } from "../Box";
-import Input from "../Form/Input";
 
-export default function TableFaculty(props) {
+export default function TableClasses(props) {
   const {
     data,
     total,
@@ -24,42 +27,44 @@ export default function TableFaculty(props) {
     onChangePage,
     onChangeRowPerpage,
     actionClicked,
-    edit,
-    onChangeEdit,
-    onSaveEdit,
+    role_id,
   } = props;
-
-  const rowdata = (column, value, id) => {
-    let result = column.format ? column.format(value) : value;
-    if (edit.id) {
-      if (edit.id === id) {
-        if (column.id === "name")
-          result = (
-            <Input
-              size="small"
-              onBlur={onSaveEdit}
-              autoFocus
-              onChange={onChangeEdit}
-              value={edit.name}
-              name="name"
-            />
-          );
-      }
-    }
-    return result;
-  };
 
   const columns = [
     { id: "no", label: "No", minWidth: 10 },
     {
-      id: "name",
+      id: "study",
+      label: "Study",
+      minWidth: 100,
+      align: "left",
+    },
+    {
+      id: "faculty",
       label: "Faculty",
       minWidth: 100,
       align: "left",
     },
     {
+      id: "name",
+      label: "Name",
+      minWidth: 100,
+      align: "left",
+    },
+    {
+      id: "email",
+      label: "Email Enrollment",
+      minWidth: 100,
+      align: "left",
+    },
+    {
+      id: "role",
+      label: "Role",
+      minWidth: 100,
+      align: "left",
+    },
+    {
       id: "created_at",
-      label: "Date Input",
+      label: "Registered At",
       minWidth: 100,
       align: "left",
     },
@@ -68,23 +73,37 @@ export default function TableFaculty(props) {
       label: "Action",
       minWidth: 20,
       align: "center",
-      format: (id) => {
+      format: ({id, id_study, id_user}) => {
         return (
           <BoxCustom direction="row" width="100%" justify="center">
-            <IconButton
-              onClick={(e) => actionClicked(e, "edit", id)}
-              color="primary"
-              size="small"
-            >
-              <EditIcon fontSize="12px" />
-            </IconButton>
-            <IconButton
-              onClick={(e) => actionClicked(e, "delete", id)}
-              color="error"
-              size="small"
-            >
-              <DeleteIcon fontSize="12px" />
-            </IconButton>
+            {role_id === "1" && (
+              <>
+              
+                <Tooltip placement="top" title="See Profile">
+                  <IconButton
+                    onClick={(e) => actionClicked(e, "detail", id, id_user)}
+                    color="info"
+                  
+                    size="small"
+                  >
+                     <Badge />
+                  </IconButton>
+                </Tooltip>
+              </>
+            )}
+            {role_id === "2" && (
+              <>
+                <Tooltip title="Set Course">
+                  <IconButton
+                    onClick={(e) => actionClicked(e, "setup", id, id_study)}
+                    color="secondary"
+                    size="small"
+                  >
+                    <AppRegistration />
+                  </IconButton>
+                </Tooltip>
+              </>
+            )}
           </BoxCustom>
         );
       },
@@ -99,14 +118,25 @@ export default function TableFaculty(props) {
     return {
       id: item.id,
       no: number,
-      name: item.name,
+      study: item.master_study.name_study,
+      faculty: item.master_study.faculty.name,
+      name: item.user.profile.fullname || "-",
+      email: item.user.email,
+      role: item.user.role_id === "2" ? "Teacher" : "Student",
       created_at: util.moment(item.created_at),
-      action: item.id,
+      action: {
+        id: item.id,
+        id_study: item.id_study,
+        id_user : item.id_user,
+      }
     };
   });
 
+  // console.log("rows",rows);
+
   return (
     <>
+      {/* </BoxCustom> */}
       <TableContainer sx={{ maxHeight: 378 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -130,8 +160,7 @@ export default function TableFaculty(props) {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {/* {column.format ? column.format(value) : value} */}
-                        {rowdata(column, value, row.id)}
+                        {column.format ? column.format(value) : value}
                       </TableCell>
                     );
                   })}
@@ -153,3 +182,16 @@ export default function TableFaculty(props) {
     </>
   );
 }
+
+TableClasses.propTypes = {
+  data: PropsType.array,
+  total: PropsType.number,
+  limit: PropsType.number,
+  page: PropsType.number,
+  onChangePage: PropsType.func,
+  onChangeRowPerpage: PropsType.func,
+  actionClicked: PropsType.func,
+  edit: PropsType.object,
+  onChangeEdit: PropsType.func,
+  onSaveEdit: PropsType.func,
+};
