@@ -19,8 +19,6 @@ const ForgotPassword = () => {
 
   const param = QueryString.parse(window.location.search);
 
-  console.log(param);
-
   const redirect = useHistory();
 
   const handleChange = (param) => {

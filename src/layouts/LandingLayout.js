@@ -135,38 +135,36 @@ function App(props) {
             }
           })}
         </Switch>
+        <Dialog
+          open={modalShown}
+          onClose={() => setModalShown(!modalShown)}
+          aria-describedby="alert-dialog-slide-description"
+          maxWidth="lg"
+        >
+          <HeaderLogin onClick={() => setModalShown(false)} />
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item sm={7}>
+                <Box className="warplogo">
+                  <img src={ImageLogin} />
+                </Box>
+              </Grid>
+              <Grid item sm={5}>
+                <FormSign
+                  onSignin={(validation) => submitHandler(validation)}
+                  onClickForgotPassword={() => setModalShown(!modalShown)}
+                  onChange={changHandler}
+                  alertShown={alertShown}
+                  validator={validator}
+                  data={{ email, password }}
+                  onSignup={(param) => setModalShown(!param)}
+                  onOpenSignUp={onOpenSignUp}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+        </Dialog>
       </Container>
-      <Dialog
-        open={modalShown}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={() => setModalShown(!modalShown)}
-        aria-describedby="alert-dialog-slide-description"
-        maxWidth="lg"
-      >
-        <HeaderLogin onClick={() => setModalShown(false)} />
-        <DialogContent>
-          <Grid container spacing={2}>
-            <Grid item sm={7}>
-              <Box className="warplogo">
-                <img src={ImageLogin} />
-              </Box>
-            </Grid>
-            <Grid item sm={5}>
-              <FormSign
-                onSignin={(validation) => submitHandler(validation)}
-                onClickForgotPassword={() => setModalShown(!modalShown)}
-                onChange={changHandler}
-                alertShown={alertShown}
-                validator={validator}
-                data={{ email, password }}
-                onSignup={(param) => setModalShown(!param)}
-                onOpenSignUp={onOpenSignUp}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-      </Dialog>
       {/* <Modal
         open={modalShown}
         aria-labelledby="modal-modal-title"

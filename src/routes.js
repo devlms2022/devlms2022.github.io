@@ -15,7 +15,7 @@ import MyStudies from "./pages/Study/MyStudies";
 import UserEnroll from "./pages/Study/UserEnroll";
 import UserRegister from "./pages/Users/UserRegister";
 
-import Studies from "./pages/Landing/Studies";
+import Course from "./pages/Landing/Course";
 // import SignUp from "./"
 
 const routes = [
@@ -33,12 +33,12 @@ const routes = [
   {
     path: "/course",
     layout: "landing",
-    component: Studies,
+    component: Course,
     basePath: true,
   },
   {
     path: "/signup",
-    layout: "auth", 
+    layout: "auth",
     component: Signup,
   },
   {
@@ -82,7 +82,6 @@ const routes = [
     layout: "admin",
     component: UserEnroll,
   },
-
   {
     path: "studies/list",
     layout: "admin",

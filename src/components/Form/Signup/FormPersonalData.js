@@ -35,7 +35,7 @@ const FormPersonalData = (props) => {
     PaperProps: {
       style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: "52%",
+        width: "auto",
       },
     },
   };
@@ -57,7 +57,7 @@ const FormPersonalData = (props) => {
                     <InputLabel>Studies</InputLabel>
                     <Select
                       onChange={onChange}
-                      autoWidth
+                      fullWidth
                       value={data.study_master ? data.study_master : ""}
                       name="study_master"
                       label="Studies"
@@ -89,7 +89,7 @@ const FormPersonalData = (props) => {
                   </FormControl>
                 </Grid>
               ) : (
-                <Grid className="col" item>
+                <React.Fragment>
                   <Grid className="col" item xs={12} sm={6}>
                     <FormControl
                       error={
@@ -100,7 +100,7 @@ const FormPersonalData = (props) => {
                       <InputLabel>Studies</InputLabel>
                       <Select
                         onChange={onChange}
-                        autoWidth
+                        fullWidth
                         value={data.study_master ? data.study_master : ""}
                         name="study_master"
                         label="Studies"
@@ -143,7 +143,7 @@ const FormPersonalData = (props) => {
                       <InputLabel>Course</InputLabel>
                       <Select
                         onChange={onChange}
-                        autoWidth
+                        fullWidth
                         value={data.classes ? data.classes : ""}
                         name="classes"
                         label="Courses"
@@ -180,7 +180,7 @@ const FormPersonalData = (props) => {
                       </FormHelperText>
                     </FormControl>
                   </Grid>
-                </Grid>
+                </React.Fragment>
               )
             ) : null}
             <Grid className="row" item xs={12} sm={12}>
@@ -269,10 +269,11 @@ const FormPersonalData = (props) => {
                 <InputLabel>Gender</InputLabel>
                 <Select
                   onChange={onChange}
-                  autoWidth
+                  fullWidth
                   value={data.gender ? data.gender : ""}
                   name="gender"
                   label="Gender"
+                  MenuProps={MenuProps}
                   inputProps={{
                     readOnly: disabled
                       ? disabled.gender

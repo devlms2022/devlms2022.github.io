@@ -23,6 +23,8 @@ import {
 import Title from "../../components/Text/Tittle";
 import { Api } from "../../services/api";
 
+import QueryString from "query-string";
+
 const RegistStep0 = (props) => {
   const { handleClicked } = props;
 
@@ -90,30 +92,47 @@ export class Signup extends Component {
         "Email & Password",
       ],
       errors: {},
+      isLoading: true,
     };
+    this.param = QueryString.parse(window.location.search);
   }
-
-  getCourses = () => {
-    Api.post("/master_course", {
-      limit: 1000,
-    })
-      .then((res) => this.setState({ courses: res.data.data }))
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   getStudies = () => {
     Api.post("/master_study", {
       limit: 1000,
     })
-      .then((res) => this.setState({ studies: res.data.data }))
+      .then((res) => {
+        this.setState({ studies: res.data.data });
+        this.getCourses();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  getCourses = () => {
+    Api.post("/master_course", {
+      limit: 1000,
+    })
+      .then((res) =>
+        this.setState({ courses: res.data.data, isLoading: false })
+      )
       .catch((err) => console.log(err));
   };
 
   async componentDidMount() {
     await this.getStudies();
-    await this.getCourses();
+
+    if (this.param.role_id) {
+      this.setState({
+        registerType: this.param.role_id,
+        stepActive: this.state.stepActive + 1,
+        data: {
+          ...this.state.data,
+          study_master: this.param.id_study,
+          classes: this.param.id_course,
+          role_id: this.param.role_id,
+        },
+      });
+    }
   }
 
   handleChangeFile = (event) => {
@@ -364,6 +383,7 @@ export class Signup extends Component {
       steps,
       isRedirect,
       errors,
+      isLoading,
     } = this.state;
 
     if (isRedirect) {
@@ -399,7 +419,7 @@ export class Signup extends Component {
             <RegistStep0 handleClicked={this.handleChangeOption} />
           )}
           <div className="form-input">
-            {stepActive === 1 && registerType === 2 && (
+            {stepActive === 1 && registerType == 2 && (
               <FormPersonalData
                 data={data}
                 errors={errors}
@@ -408,7 +428,7 @@ export class Signup extends Component {
                 user={registerType}
               />
             )}
-            {stepActive === 1 && registerType === 3 && (
+            {!isLoading && stepActive === 1 && registerType == 3 && (
               <FormPersonalData
                 data={data}
                 errors={errors}
@@ -418,7 +438,7 @@ export class Signup extends Component {
                 user={registerType}
               />
             )}
-            {stepActive === 2 && registerType === 2 && (
+            {stepActive === 2 && registerType == 2 && (
               <FormTeachUploadDoc
                 validator={this.validator2}
                 proofTeacherGrade={proof_teacher_grade}
@@ -427,7 +447,7 @@ export class Signup extends Component {
                 onChangeFile={this.handleChangeFile}
               />
             )}
-            {stepActive === 2 && registerType === 3 && (
+            {stepActive === 2 && registerType == 3 && (
               <FormStudentUploadDoc
                 validator={this.validator2}
                 grades={grades}

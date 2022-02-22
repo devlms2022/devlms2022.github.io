@@ -95,7 +95,7 @@ const AppBarLanding = (props) => {
                 </Typography>
                 <Typography sx={{ my: 2, display: "block" }}>
                   <Link className="link" to="/course">
-                    Studies
+                    Course
                   </Link>
                 </Typography>
                 <Button

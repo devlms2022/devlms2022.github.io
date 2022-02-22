@@ -6,49 +6,55 @@ import InfoIcon from "@mui/icons-material/Info";
 import ButtonCustom from "../../components/Button/Button";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Api } from "../../services/api";
+import QueryString from "query-string";
 
-const Studies = () => {
-  const [study, setStudy] = useState([]);
+const Course = () => {
+  const [courses, setCourse] = useState([]);
   const redirect = useHistory();
 
-  const onClick = () => {
-    redirect.push("/");
+  const onClick = (study, course) => {
+    redirect.push(`/signup?role_id=3&id_study=${study}&id_course=${course}`);
   };
 
-  const getStudies = async () => {
-    await Api.post("/studies")
+  const param = QueryString.parse(window.location.search);
+
+  console.log(param);
+
+  const getCourse = async () => {
+    await Api.post("/master_course")
       .then((res) => {
         console.log(res.data.data);
-        setStudy(res.data.data);
+        setCourse(res.data.data);
       })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    getStudies();
+    getCourse();
   }, []);
 
   return (
     <ListStudies>
       <Typography variant="h4" mb={5}>
-        Choose your studies
+        Choose your course
       </Typography>
       <Grid container spacing={2}>
-        {study.map((study) => (
-          <Grid item xs={6} md={3} key={study.study_master}>
+        {courses.map((course) => (
+          <Grid item xs={6} md={3} key={course.id}>
             <Paper className="course">
-              <img
-                className="img_course"
-                src={study.master_studies.thumbnail}
-              />
+              <img className="img_course" src={course.thumbnail} />
               <div className="title_course">
-                <h5>{study.master_studies.title}</h5>
+                <h5>{course.title_course}</h5>
                 <IconButton aria-label="info">
                   <InfoIcon />
                 </IconButton>
               </div>
-              <ButtonCustom variant="outlined" height="20" onClick={onClick}>
-                Apply Studies
+              <ButtonCustom
+                variant="outlined"
+                height="20"
+                onClick={() => onClick(course.id_study, course.id)}
+              >
+                Apply Course
               </ButtonCustom>
             </Paper>
           </Grid>
@@ -91,4 +97,4 @@ const ListStudies = styled.div`
   }
 `;
 
-export default Studies;
+export default Course;
