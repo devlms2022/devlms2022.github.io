@@ -22,8 +22,8 @@ export default class Dashboard extends Component {
 
     return (
       <>
-        {userSign.role_id === "1" && <AdminDashboard userSign={userSign} />}
-        {userSign.role_id === "3" && <StudentDashboard userSign={userSign} />}
+        {userSign.role_id === "1" && <AdminDashboard {...this.props} userSign={userSign} />}
+        {userSign.role_id === "3" && <StudentDashboard {...this.props} userSign={userSign} />}
       </>
     );
   }

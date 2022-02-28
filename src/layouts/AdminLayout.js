@@ -9,12 +9,10 @@ import {
   Route,
   Switch,
   useLocation,
-  useRouteMatch,
-  useHistory,
+  useRouteMatch
 } from "react-router-dom";
 import styled from "styled-components";
 import AppBarAdmin from "../components/Appbar/AppBarAdmin";
-import Breadcrumb from "../components/Breadcrump";
 import MenuItem from "../components/Menu/MenuItem";
 import { Menuadmin, MenuStudent, MenuTeacher } from "../data/sidebarmenu";
 import routes from "../routes";
@@ -29,7 +27,6 @@ function AdminLayout(props) {
   const [userSign, setUserSign] = useState({});
   const { pathname } = useLocation();
   const match = useRouteMatch();
-  const history = useHistory();
 
   const handleProfileClicked = (nav) => {
     if (nav === "logout") {

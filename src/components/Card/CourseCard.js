@@ -16,6 +16,7 @@ const CourseCard = (props) => {
     teacherName,
     totalCh,
     totalStudent,
+    idCourse
   } = props;
   return (
     <WrapCard>
@@ -86,7 +87,7 @@ const CourseCard = (props) => {
                   variant="outlined"
                   size="small"
                   color="secondary"
-                  onClick={onClick}
+                  onClick={() => onClick(idCourse)}
                 >
                   View Course
                 </Button>
@@ -124,9 +125,11 @@ const WrapCard = styled(Paper)`
     .chip {
       display: flex;
       width: 100%;
+      flex-wrap: wrap;
       flex-direction: row;
       margin-bottom: 8px;
       .chip-item {
+        margin-top : 3px;
         margin-right: 5px;
       }
     }
@@ -166,6 +169,7 @@ const WrapCard = styled(Paper)`
 
 CourseCard.propTypes = {
   onClick: PropTypes.func,
+  idCourse : PropTypes.string,
   isLoding: PropTypes.bool,
   img: PropTypes.string,
   faculty: PropTypes.string.isRequired,

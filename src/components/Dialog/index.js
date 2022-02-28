@@ -18,7 +18,8 @@ export default function DialogCustome(props) {
     showSaveButton,
     btnSaveLabel,
     onSave,
-    isLoading=false
+    isLoading=false,
+    p = "12px"
   } = props;
 
   return (
@@ -32,11 +33,11 @@ export default function DialogCustome(props) {
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <Box
-            component="form"
+            component="div"
             sx={{
               display: "flex",
               width : "100%",
-              padding: "12px",
+              padding: p,
               flexDirection: "column"
             }}
           >
@@ -62,5 +63,6 @@ DialogCustome.propTypes = {
   showSaveButton: PropTypes.bool,
   btnSaveLabel: PropTypes.string,
   onSave: PropTypes.func,
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
+  p : PropTypes.string
 };
