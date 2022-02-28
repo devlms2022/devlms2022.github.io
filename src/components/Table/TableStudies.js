@@ -98,8 +98,6 @@ export default function TableStudies(props) {
             (item) => item.id_user === userId
           );
 
-          console.log(cekStatus);
-
           return (
             <BoxCustom direction="row" width="100%" justify="center">
               {cekStatus ? (

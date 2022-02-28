@@ -100,21 +100,9 @@ export const MenuTeacher = [
     icon: <LocalLibrary />,
   },
   {
-    title: "Course",
-    path: "#",
+    title: "Courses",
+    path: "/course/list",
     icon: <School />,
-    iconClosed: <KeyboardArrowDown />,
-    iconOpened: <KeyboardArrowUp />,
-    subNav: [
-      {
-        title: "Set Course",
-        path: "/course/setup",
-      },
-      {
-        title: "My Course",
-        path: "/course/list",
-      },
-    ],
   },
   {
     title: "Discussion",
@@ -138,7 +126,5 @@ export const MenuStudent = [
     title: "My Course",
     path: "/mycourse",
     icon: <LocalLibrary />,
-
   },
-
 ];

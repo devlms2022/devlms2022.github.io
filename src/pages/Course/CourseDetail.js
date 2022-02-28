@@ -39,6 +39,13 @@ class CourseDetail extends Component {
         limit: 10,
         page: 0,
       },
+      courseEnrolled: {
+        data: [],
+        total: 0,
+        limit: 10,
+        page: 0,
+        loading: false,
+      },
       persentaseLoading: 0,
       openDialog: false,
       loading: true,
@@ -51,41 +58,13 @@ class CourseDetail extends Component {
     this.setState({ loading: true });
     try {
       const course = await Api.post("/master_coursebyid", {
-       id : this.courseId
+        id: this.courseId,
       });
       this.setState({ course: course.data.data, loading: false });
     } catch (error) {
       this.setState({ loading: false });
       alert(error.message);
     }
-  };
-
-  fetchVideo = (id) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await Api.get(
-          "/chapter/video/" + id,
-
-          { responseType: "blob" }
-        );
-
-        utilities.readBlobAsText(res.data, (string) => {
-          const isJSON = utilities.isJsonString(string);
-          if (isJSON) {
-            const response = JSON.parse(string);
-            if (response.code === 404) {
-              return null;
-            }
-          } else {
-            utilities.readFileBlob(res.data, (response) => {
-              resolve(response);
-            });
-          }
-        });
-      } catch (error) {
-        reject(error);
-      }
-    });
   };
 
   fetchDataChapter = async () => {
@@ -104,6 +83,35 @@ class CourseDetail extends Component {
         },
         loading: false,
       });
+    } catch (error) {
+      this.setState({ loading: false });
+      alert(error.message);
+    }
+  };
+
+  fetchCourseEnrolled = async () => {
+    const { page, limit } = this.state.courseEnrolled;
+    this.setState({ loading: true });
+    try {
+      const res = await Api.post("/classes", {
+        page,
+        limit,
+        filter: {
+          id_course: this.courseId,
+        },
+      });
+      if(res.data.code === 200 && res.status === 200) {
+        this.setState({
+          courseEnrolled: {
+            ...this.state.courseEnrolled,
+            data: res.data.data,
+            total: res.data.total,
+          },
+          loading: false,
+        });
+      } else {
+        throw new Error(res.data.message);
+      }
     } catch (error) {
       this.setState({ loading: false });
       alert(error.message);
@@ -366,8 +374,6 @@ class CourseDetail extends Component {
     }
   };
 
-
-
   handleCloseDialog = () => {
     const { openDialog } = this.state;
     if (openDialog) {
@@ -396,6 +402,7 @@ class CourseDetail extends Component {
     this._isMounted = true;
     this.fetchDataCourse();
     this.fetchDataChapter();
+    this.fetchCourseEnrolled();
   };
 
   componentWillUnmount() {
@@ -411,6 +418,7 @@ class CourseDetail extends Component {
       chapterForm,
       persentaseLoading,
       selectedChapter,
+      courseEnrolled,
     } = this.state;
 
     return (
@@ -471,14 +479,20 @@ class CourseDetail extends Component {
                         course.created.profile.fullname || "Bagus Fatwan A"
                       )}
                     </Typography>
-                    <div className="number">
-                      <div className="number-item">
-                        <Book color="info" fontSize="small" /> 0
+                    {loading ? (
+                      <Skeleton />
+                    ) : (
+                      <div className="number">
+                        <div className="number-item">
+                          <Book color="info" fontSize="small" />{" "}
+                          {chapters.data.length}
+                        </div>
+                        <div className="number-item">
+                          <Group color="secondary" fontSize="small" />{" "}
+                          {courseEnrolled.data.length}
+                        </div>
                       </div>
-                      <div className="number-item">
-                        <Group color="secondary" fontSize="small" /> 0
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
                 <div className="desc">
@@ -487,7 +501,9 @@ class CourseDetail extends Component {
                   ) : (
                     <Typography
                       dangerouslySetInnerHTML={{
-                        __html: course?.description.slice(0, 280) + (course?.description.length > 280 ? "..." : ""),
+                        __html:
+                          course?.description.slice(0, 280) +
+                          (course?.description.length > 280 ? "..." : ""),
                       }}
                       variant="caption"
                       component="span"
@@ -523,7 +539,10 @@ class CourseDetail extends Component {
                   <Skeleton width={"100%"} height="34px" />
                 ) : (
                   <>
-                    <HeaderContent2 subtitle={course?.master_study.name_study} title={course?.title_course} />
+                    <HeaderContent2
+                      subtitle={course?.master_study.name_study}
+                      title={course?.title_course}
+                    />
                     {this.user.role_id === "2" && (
                       <Button
                         onClick={() =>
@@ -733,11 +752,11 @@ const WrapContent = styled(Paper)`
     }
     .desc {
       margin-top: 10px;
-      height: 130px;
-      max-height: 130px;
+      min-height: 130px;
+      max-height: 180px;
       span {
         p {
-          font-size : 12px;
+          font-size: 12px;
         }
       }
     }

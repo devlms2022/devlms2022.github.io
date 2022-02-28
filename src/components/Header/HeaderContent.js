@@ -4,6 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import BoxCustom from "../Box";
 import PropTypes from "prop-types";
+import { Subtitle } from "../Text";
 
 const HeaderContent = (props) => {
   const {
@@ -34,7 +35,9 @@ const HeaderContent = (props) => {
               <ArrowBack />
             </IconButton>
           )}
-          <span>{title}</span>
+          <Subtitle>
+            <span>{title}</span>
+          </Subtitle>
         </BoxCustom>
         {shownBtn && (
           <Button variant="contained" color="primary" onClick={onClickButton}>
@@ -64,6 +67,6 @@ const Div = styled(BoxCustom)`
   }
   span {
     font-size: 14px;
-    font-weight: 500;
+    /* font-weight: 500; */
   }
 `;

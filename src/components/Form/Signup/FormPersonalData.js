@@ -178,13 +178,13 @@ const FormPersonalData = (props) => {
                       <Select
                         onChange={onChange}
                         fullWidth
-                        value={data.classes ? data.classes : ""}
-                        name="classes"
+                        value={data.id_course ? data.id_course : ""}
+                        name="id_course"
                         label="Courses"
                         MenuProps={MenuProps}
                         inputProps={{
                           readOnly: disabled
-                            ? disabled.classes
+                            ? disabled.id_course
                               ? true
                               : false
                             : forDetail
@@ -210,7 +210,7 @@ const FormPersonalData = (props) => {
                       </Select>
 
                       <FormHelperText>
-                        {errors ? (errors.classes ? errors.classes : "") : ""}
+                        {errors ? (errors.id_course ? errors.id_course : "") : ""}
                       </FormHelperText>
                     </FormControl>
                   </Grid>

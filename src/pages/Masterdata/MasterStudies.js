@@ -136,7 +136,7 @@ export default class MasterStudies extends Component {
   };
 
   joinStudy = (id) => {
-    Api.post("/classes/insert", {
+    Api.post("/teacher_study/join", {
       id_study: id,
       id_user: this.userSign.id,
       status_confirm: "pending",

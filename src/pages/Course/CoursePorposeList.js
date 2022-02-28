@@ -66,7 +66,7 @@ class CoursePorposeList extends Component {
     const { courseData, isLoading } = this.state;
     return (
       <WrapContent>
-        <HeaderContent2 shownGoBack={false} title="Course" subtitle="Teacher Course Porpose" />
+        <HeaderContent2 shownGoBack={false} title="Course" subtitle="Teacher Course Propose" />
         <Grid sx={{ marginTop: "5px" }} spacing={1} container>
           <Grid item lg={2} sm={12} md={2} xl={2}/>
           

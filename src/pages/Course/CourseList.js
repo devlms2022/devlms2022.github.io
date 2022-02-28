@@ -252,7 +252,7 @@ class CourseList extends Component {
       this.state;
     return (
       <WrapContent>
-        <HeaderContent shownGoBack={false} title="My Course" />
+        <HeaderContent shownGoBack={false} title={this.userSign.role_id === "1" ? "Course List" :"My Course"} />
         <Grid sx={{ marginTop: "5px" }} spacing={1} container>
           <Grid item lg={2} sm={12} md={2} xl={2}>
             {this.userSign.role_id === "2" && (

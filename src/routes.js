@@ -21,6 +21,7 @@ import UserRegister from "./pages/Users/UserRegister";
 
 import Course from "./pages/Landing/Course";
 import MyCourseList from "./pages/MyCourse/MyCourseList";
+import CourseLearning from "./pages/MyCourse/CourseLearning";
 // import SignUp from "./"
 
 const routes = [
@@ -53,6 +54,13 @@ const routes = [
     basePath: true,
     component: MyCourseList,
   },
+  {
+    path: "mycourse/:id",
+    layout: "admin",
+    basePath: true,
+    component: CourseLearning,
+  },
+
   {
     path: "/",
     basePath: true,

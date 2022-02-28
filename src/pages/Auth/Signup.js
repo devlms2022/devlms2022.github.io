@@ -101,29 +101,37 @@ export class Signup extends Component {
     this.param = QueryString.parse(window.location.search);
   }
 
-  getStudies = () => {
+  getStudies = async () => {
     const filter = {};
-    if (this.state.data.id_faculty) {
-      filter.id_faculty = this.state.data.id_faculty;
+    this.setState({ isLoading: true });
+    try {
+      if (this.state.data.id_faculty) {
+        filter.id_faculty = this.state.data.id_faculty;
+      }
+      const res = await Api.post("/master_study", {
+        limit: 1000,
+        filter,
+      });
+      this.setState({ studies: res.data.data });
+      this.getCourses();
+    } catch (err) {
+      alert(err.message);
     }
-    Api.post("/master_study", {
-      limit: 1000,
-      filter,
-    })
-      .then((res) => {
-        this.setState({ studies: res.data.data, isLoading: false });
-        this.getCourses();
-      })
-      .catch((err) => console.log(err));
   };
 
   getCourses = () => {
+    const filter = {};
+    if(this.param.id_study) {
+      filter.id_study = this.param.id_study;
+    } else if(this.state.data.id_study) {
+      filter.id_study = this.state.data.id_study;
+    }
     Api.post("/master_course", {
-      id_study: this.state.data.id_study,
       status: "accept",
       limit: 1000,
+      filter 
     })
-      .then((res) => this.setState({ courses: res.data.data }))
+      .then((res) => this.setState({ courses: res.data.data, isLoading : false }))
       .catch((err) => console.log(err));
   };
 
@@ -140,11 +148,10 @@ export class Signup extends Component {
   };
 
   async componentDidMount() {
-  
-
+    await this.getStudies();
     if (this.param.role_id) {
       this.setState({
-        registerType: this.param.role_id,
+        registerType: parseInt(this.param.role_id),
         stepActive: this.state.stepActive + 1,
         data: {
           ...this.state.data,
@@ -399,8 +406,8 @@ export class Signup extends Component {
     if (prevState.data.id_faculty !== this.state.data.id_faculty) {
       this.getStudies();
     }
-    if (prevState.data.id_course !== this.state.data.id_course) {
-      this.getStudies();
+    if (prevState.data.id_study !== this.state.data.id_study) {
+      this.getCourses();
     }
   }
 
@@ -429,6 +436,8 @@ export class Signup extends Component {
       );
     }
 
+
+
     return (
       <Container>
         <div className="title">
@@ -452,7 +461,7 @@ export class Signup extends Component {
             <RegistStep0 handleClicked={this.handleChangeOption} />
           )}
           <div className="form-input">
-            {stepActive === 1 && registerType == 2 && (
+            {stepActive === 1 && registerType === 2 && (
               <FormPersonalData
                 data={data}
                 errors={errors}
@@ -462,7 +471,7 @@ export class Signup extends Component {
                 user={registerType}
               />
             )}
-            {!isLoading && stepActive === 1 && registerType == 3 && (
+            {!isLoading && stepActive === 1 && registerType === 3 && (
               <FormPersonalData
                 data={data}
                 errors={errors}
@@ -472,7 +481,7 @@ export class Signup extends Component {
                 user={registerType}
               />
             )}
-            {stepActive === 2 && registerType == 2 && (
+            {stepActive === 2 && registerType === 2 && (
               <FormTeachUploadDoc
                 proofTeacherGrade={proof_teacher_grade}
                 onChange={this.handleChange}
@@ -480,7 +489,7 @@ export class Signup extends Component {
                 onChangeFile={this.handleChangeFile}
               />
             )}
-            {stepActive === 2 && registerType == 3 && (
+            {stepActive === 2 && registerType === 3 && (
               <FormStudentUploadDoc
                 grades={grades}
                 errors={errors}

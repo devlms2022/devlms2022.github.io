@@ -105,7 +105,7 @@ export default MyCourseCard;
 
 const WrapCard = styled(Paper)`
   border-radius: 14px;
-  padding: 15px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -128,8 +128,10 @@ const WrapCard = styled(Paper)`
       display: flex;
       width: 100%;
       flex-direction: row;
+      flex-wrap: wrap;
       margin-bottom: 8px;
       .chip-item {
+        margin-top : 3px;
         margin-right: 5px;
       }
     }
