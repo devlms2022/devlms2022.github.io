@@ -3,10 +3,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import DialogCustome from "../../components/Dialog";
-import FormAddCourse from "../../components/Form/Course/FormAddCourse";
 import Search from "../../components/Form/Search";
 import SelectChip from "../../components/Form/Select/SelectChip";
-import HeaderContent from "../../components/Header/HeaderContent";
 import HeaderContent2 from "../../components/Header/HeaderContent2";
 import Paper from "../../components/Paper";
 import { TableClasses } from "../../components/Table";
@@ -57,7 +55,7 @@ export default class StudyJoin extends Component {
       confirmButtonColor: "var(--primary-color)",
     }).then((res) => {
       if (res.isConfirmed) {
-        Api.post("/classes/update", {
+        Api.post("/teacher_study/update", {
           id: this.state.idClassSelect,
           status_confirm: name,
         })
@@ -82,13 +80,12 @@ export default class StudyJoin extends Component {
 
   fetchData = () => {
     const { limit, page, search } = this.state;
-    Api.post("/classes", {
+    Api.post("/teacher_study", {
       limit,
       page,
       search,
       filter: {
         status_confirm: "pending",
-        id_course: null,
       },
     })
       .then((response) => {

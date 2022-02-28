@@ -10,7 +10,7 @@ import {
   KeyboardArrowDown,
   School,
   LocalLibrary,
-  GroupAdd
+  GroupAdd,
 } from "@mui/icons-material";
 
 export const Menuadmin = [
@@ -79,7 +79,7 @@ export const Menuadmin = [
   {
     title: "Study Join",
     path: "/study-join",
-    icon: <GroupAdd/>
+    icon: <GroupAdd />,
   },
   {
     title: "Dsicussion",
@@ -126,4 +126,19 @@ export const MenuTeacher = [
     path: "/report",
     icon: <Report />,
   },
+];
+
+export const MenuStudent = [
+  {
+    title: "Dashboard",
+    path: "/",
+    icon: <DashboardIcon />,
+  },
+  {
+    title: "My Course",
+    path: "/mycourse",
+    icon: <LocalLibrary />,
+
+  },
+
 ];

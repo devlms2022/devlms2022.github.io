@@ -14,8 +14,9 @@ import CircularLabel from "../../Progress/CircularLabel";
 import BaseTabs from "../../Tabs";
 import { Label } from "../../Text";
 import Input from "../Input";
+import TextEditor from "../TextEditor";
 
-const FormStep1 = ({ handleChange, handleBlur, data }) => {
+const FormStep1 = ({ handleChange, data }) => {
   return (
     <div className="form">
       <Input
@@ -29,16 +30,10 @@ const FormStep1 = ({ handleChange, handleBlur, data }) => {
       />
       <div className="form-control">
         <Label>Description</Label>
-        <SunEditor
-          width="100%"
-          setOptions={{
-            buttonList: buttonList.formatting,
-          }}
-          value={data?.description}
-          height="270"
+        <TextEditor
           name="description"
-          onBlur={handleBlur}
-          //   onChange={handleChange}
+          value={data?.description}
+          onChange={handleChange}
         />
       </div>
     </div>
@@ -90,7 +85,7 @@ const FormStep2 = (props) => {
                   <source src={data.blobVideo}></source>
                 </video>
 
-                {persentaseLoading !== 0 && (
+                {persentaseLoading && (
                   <div className="circular-container">
                     <CircularLabel
                       variant="determinate"
@@ -125,7 +120,7 @@ const FormStep2 = (props) => {
 
 const FormAddCourse = (props) => {
   //   const [field, setField] = useState({});
-  const {  data, handleChange, handleBlur,  persentaseLoading } = props;
+  const {  data, handleChange,  persentaseLoading } = props;
 
   return (
     <WrapContent>
@@ -136,7 +131,6 @@ const FormAddCourse = (props) => {
             content: (
               <FormStep1
                 handleChange={handleChange}
-                handleBlur={handleBlur}
                 data={data}
               />
             ),

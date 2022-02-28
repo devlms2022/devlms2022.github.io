@@ -63,10 +63,14 @@ export class Signup extends Component {
       registerType: 0,
       stepActive: 0,
       isRedirect: false,
+      studies: [],
+      faculties: [],
+      courses: [],
       data: {
+        id_faculty: "",
         role_id: 0,
-        study_master: "",
-        classes: "",
+        id_study: "",
+        id_course: "",
         burger_service_nummer: "",
         family_name: "",
         front_name: "",
@@ -98,11 +102,16 @@ export class Signup extends Component {
   }
 
   getStudies = () => {
+    const filter = {};
+    if (this.state.data.id_faculty) {
+      filter.id_faculty = this.state.data.id_faculty;
+    }
     Api.post("/master_study", {
       limit: 1000,
+      filter,
     })
       .then((res) => {
-        this.setState({ studies: res.data.data });
+        this.setState({ studies: res.data.data, isLoading: false });
         this.getCourses();
       })
       .catch((err) => console.log(err));
@@ -110,16 +119,28 @@ export class Signup extends Component {
 
   getCourses = () => {
     Api.post("/master_course", {
+      id_study: this.state.data.id_study,
+      status: "accept",
       limit: 1000,
     })
-      .then((res) =>
-        this.setState({ courses: res.data.data, isLoading: false })
-      )
+      .then((res) => this.setState({ courses: res.data.data }))
       .catch((err) => console.log(err));
   };
 
+  getFaculty = async () => {
+    this.setState({ isLoading: true });
+    try {
+      const res = await Api.post("/faculty", {
+        limit: 1000,
+      });
+      this.setState({ faculties: res.data.data, isLoading: false });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   async componentDidMount() {
-    await this.getStudies();
+  
 
     if (this.param.role_id) {
       this.setState({
@@ -127,11 +148,13 @@ export class Signup extends Component {
         stepActive: this.state.stepActive + 1,
         data: {
           ...this.state.data,
-          study_master: this.param.id_study,
-          classes: this.param.id_course,
+          id_study: this.param.id_study,
+          id_course: this.param.id_course,
           role_id: this.param.role_id,
         },
       });
+    } else {
+      await this.getFaculty();
     }
   }
 
@@ -155,6 +178,7 @@ export class Signup extends Component {
 
   handleChange = (event) => {
     const { name, value } = event.target;
+
     this.setState({
       data: {
         ...this.state.data,
@@ -186,7 +210,7 @@ export class Signup extends Component {
     if (stepActive === 2 && data.role_id === 2) {
       if (
         !(
-          data.study_master &&
+          data.id_study &&
           data.burger_service_nummer &&
           data.address &&
           data.birthday &&
@@ -198,7 +222,7 @@ export class Signup extends Component {
       ) {
         this.setState({
           errors: {
-            ["study_master"]: "*Please choose your study",
+            ["id_study"]: "*Please choose your study",
             ["burger_service_nummer"]:
               "*Please Enter your Burger Service Number.",
             ["address"]: "*Please Enter your address.",
@@ -216,8 +240,8 @@ export class Signup extends Component {
     if (stepActive === 2 && data.role_id === 3) {
       if (
         !(
-          data.study_master &&
-          data.classes &&
+          data.id_study &&
+          data.id_course &&
           data.burger_service_nummer &&
           data.address &&
           data.birthday &&
@@ -229,8 +253,8 @@ export class Signup extends Component {
       ) {
         this.setState({
           errors: {
-            ["study_master"]: "*Please choose your study",
-            ["classes"]: "*Please choose your course",
+            ["id_study"]: "*Please choose your study",
+            ["id_course"]: "*Please choose your course",
             ["burger_service_nummer"]:
               "*Please Enter your Burger Service Number.",
             ["address"]: "*Please Enter your address.",
@@ -274,7 +298,7 @@ export class Signup extends Component {
 
   handleSubmit = async () => {
     const { REACT_APP_API_URL } = process.env;
-    const { stepActive, steps, data } = this.state;
+    const { data } = this.state;
     let cekEmail = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
     let isFormValid = true;
 
@@ -326,7 +350,6 @@ export class Signup extends Component {
       });
       formdata.append("status", "waiting");
       formdata.append("is_login", 0);
-      formdata.append("master_study", data.study_master);
       try {
         const response = await axios({
           url: `${REACT_APP_API_URL}/register`,
@@ -372,6 +395,15 @@ export class Signup extends Component {
     });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.data.id_faculty !== this.state.data.id_faculty) {
+      this.getStudies();
+    }
+    if (prevState.data.id_course !== this.state.data.id_course) {
+      this.getStudies();
+    }
+  }
+
   render() {
     const {
       stepActive,
@@ -384,6 +416,7 @@ export class Signup extends Component {
       isRedirect,
       errors,
       isLoading,
+      faculties,
     } = this.state;
 
     if (isRedirect) {
@@ -424,6 +457,7 @@ export class Signup extends Component {
                 data={data}
                 errors={errors}
                 onChange={this.handleChange}
+                listFaculties={faculties}
                 listStudies={this.state.studies}
                 user={registerType}
               />
@@ -440,7 +474,6 @@ export class Signup extends Component {
             )}
             {stepActive === 2 && registerType == 2 && (
               <FormTeachUploadDoc
-                validator={this.validator2}
                 proofTeacherGrade={proof_teacher_grade}
                 onChange={this.handleChange}
                 errors={errors}
@@ -449,7 +482,6 @@ export class Signup extends Component {
             )}
             {stepActive === 2 && registerType == 3 && (
               <FormStudentUploadDoc
-                validator={this.validator2}
                 grades={grades}
                 errors={errors}
                 identityCard={identity_card}

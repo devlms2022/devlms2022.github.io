@@ -1,29 +1,27 @@
 import {
-  Button,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
-  Select,
+  Select
 } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { Component, useEffect, useState } from "react";
 import styled from "styled-components";
-import Modal from "../../components/Modal";
-import Paper from "../../components/Paper";
-import { Label } from "../../components/Text";
+import Swal from "sweetalert2";
+import DefContainerImg from "../../assets/images/imgcontainer.png";
+import BoxCustom from "../../components/Box";
+import DialogCustome from "../../components/Dialog";
+import Input from "../../components/Form/Input";
+import Search from "../../components/Form/Search";
 import FormPersonalData from "../../components/Form/Signup/FormPersonalData";
+import Navtab from "../../components/Navtab";
+import Paper from "../../components/Paper";
 import { TableUser } from "../../components/Table";
+import { Label } from "../../components/Text";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
-import Input from "../../components/Form/Input";
-import BoxCustom from "../../components/Box";
-import DefContainerImg from "../../assets/images/imgcontainer.png";
-import ButtonCustom from "../../components/Button/Button";
-import Swal from "sweetalert2";
 import util from "../../utils/utilities";
-import Navtab from "../../components/Navtab";
-import Search from "../../components/Form/Search";
-import { Box } from "@mui/system";
 
 function CardImageRegister(props) {
   const { role, data, profileid } = props;
@@ -170,13 +168,16 @@ export default class ManageUser extends Component {
   };
 
   getUsers = async () => {
-    const { page, limit } = this.state;
+    const { page, limit, search, role_id } = this.state;
     const response = await Api.post("/user", {
       filter: {
-        status: "waiting",
-        role_id: this.state.role_id,
+        status: "accept",
+        role_id: {
+          not: 1,
+        },
+        role_id,
       },
-      search: this.state.search,
+      search,
       page,
       limit,
     });
@@ -332,10 +333,21 @@ export default class ManageUser extends Component {
 
     return (
       <WrapContent>
-        <Grid className="filter" container spacing={1}>
-          <Grid sm={12} md={7} xl={7} item />
-
-          <Grid sm={12} md={5} xl={5} item>
+        <Grid className="filter" container spacing={3}>
+          <Grid sm={12} md={3} xl={3} lg={3} item>
+            <Box>
+              <Navtab
+                navIndexActive={navIndexActive}
+                tabsData={tabs}
+                onClick={(e, indexNav) => {
+                  this.setState({ navIndexActive: indexNav });
+                  this.handleSwitch(e.target.name);
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item sm={12} md={4} lg={4} xl={4}></Grid>
+          <Grid sm={12} md={5} xl={5} lg={5} item>
             <Search
               onChange={this.handleSearch}
               width="100%"
@@ -349,32 +361,19 @@ export default class ManageUser extends Component {
           total={totalData}
           page={page}
           limit={limit}
-          onChangePage={() => {}}
-          onChangeRowPerpage={() => {}}
-          onClickDetail={(id) => {}}
+          onChangePage={this.handleChangePage}
+          onChangeRowPerpage={this.handleChangeRowsPerPage}
+          onClickDetail={(id) => this.handleDetailClicked(id)}
         />
-        <Modal
-          title="Detail Data Register"
+        <DialogCustome
+          maxWidth="lg"
+          title="Detail User Register"
           open={shownModalDetail}
+          showSaveButton={false}
           onClose={() => this.setState({ shownModalDetail: !shownModalDetail })}
         >
           <Grid sx={{ width: "100%" }} container spacing={4}>
             <Grid item sm={12} md={5}>
-              <FormControl sx={{ width: "100%", marginBottom: "10px" }}>
-                <InputLabel>Registrant</InputLabel>
-                <Select
-                  autoWidth
-                  value={registerDetail.role_id}
-                  label="Registrant"
-                  inputProps={{
-                    readOnly: true,
-                  }}
-                >
-                  <MenuItem value="0">Select</MenuItem>
-                  <MenuItem value="2">Teacher</MenuItem>
-                  <MenuItem value="3">Student</MenuItem>
-                </Select>
-              </FormControl>
               <FormPersonalData
                 forDetail
                 listStudies={listStudies}
@@ -382,57 +381,54 @@ export default class ManageUser extends Component {
               />
             </Grid>
             <Grid item md={7} sm={12}>
-              <Grid style={{ marginBottom: "9px" }} container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    width="100%"
-                    label="Email"
-                    value={registerDetail.email}
-                    inputProps={{ readOnly: true }}
-                  />
+              <WrapContent>
+                <Grid style={{ marginBottom: "9px" }} container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <FormControl sx={{ width: "100%", marginBottom: "10px" }}>
+                      <InputLabel>Role</InputLabel>
+                      <Select
+                        autoWidth
+                        value={registerDetail.role_id}
+                        label="Role"
+                        inputProps={{
+                          readOnly: true,
+                        }}
+                      >
+                        <MenuItem value="0">Select</MenuItem>
+                        <MenuItem value="2">Teacher</MenuItem>
+                        <MenuItem value="3">Student</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Input
+                      width="100%"
+                      label="Email"
+                      value={registerDetail.email}
+                      inputProps={{ readOnly: true }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Input
+                      width="100%"
+                      label="Study"
+                      value="Study"
+                      inputProps={{ readOnly: true }}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    width="100%"
-                    label="Study"
-                    value="Study"
-                    inputProps={{ readOnly: true }}
-                  />
-                </Grid>
-              </Grid>
-              <CardImageRegister
-                data={{
-                  reg_code_branch: registerDetail.reg_code_branch,
-                }}
-                role={registerDetail.role_id}
-                profileid={registerDetail.profile_id}
-              />
-              <BoxCustom
-                height="6rem"
-                justify="space-between"
-                px="2.8rem"
-                width="100%"
-              >
-                <ButtonCustom
-                  fullWidth
-                  name="accept"
-                  onClick={(e) => this.handleActionDetail(e, registerDetail.id)}
-                >
-                  Accept
-                </ButtonCustom>
-                <Button
-                  fullWidth
-                  color="error"
-                  name="reject"
-                  onClick={(e) => this.handleActionDetail(e, registerDetail.id)}
-                  variant="contained"
-                >
-                  Reject
-                </Button>
-              </BoxCustom>
+
+                <CardImageRegister
+                  data={{
+                    reg_code_branch: registerDetail.reg_code_branch,
+                  }}
+                  role={registerDetail.role_id}
+                  profileid={registerDetail.profile_id}
+                />
+              </WrapContent>
             </Grid>
           </Grid>
-        </Modal>
+        </DialogCustome>
       </WrapContent>
     );
   }
@@ -440,22 +436,7 @@ export default class ManageUser extends Component {
 
 const WrapContent = styled(Paper)`
   padding: 15px;
-  .paper {
-    display: block;
-    margin-bottom: 50px;
-    .box {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .value {
-        display: flex;
-        flex-direction: column;
-        span {
-          font-size: 40px;
-        }
-      }
-    }
-  }
+  margin-bottom: 15px;
 `;
 
 const ImgContainer = styled.div`

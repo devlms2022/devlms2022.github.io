@@ -16,12 +16,14 @@ import utilities from "../../utils/utilities";
 import ChapterList from "./ChapterList";
 
 class CourseDetail extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
 
     this.state = {
       course: {},
       clases: {},
+      selectedChapter: "",
       chapterForm: {
         id_course: "",
         chapter_title: "",
@@ -48,10 +50,8 @@ class CourseDetail extends Component {
   fetchDataCourse = async () => {
     this.setState({ loading: true });
     try {
-      const course = await Api.post("/master_course", {
-        find: {
-          id_course: this.courseId,
-        },
+      const course = await Api.post("/master_coursebyid", {
+       id : this.courseId
       });
       this.setState({ course: course.data.data, loading: false });
     } catch (error) {
@@ -104,6 +104,75 @@ class CourseDetail extends Component {
         },
         loading: false,
       });
+    } catch (error) {
+      this.setState({ loading: false });
+      alert(error.message);
+    }
+  };
+
+  blobVideo = (data) => {};
+
+  fetchChapterById = async (id) => {
+    this.setState({ loading: true });
+    try {
+      const chapter = await Api.post("/chapterbyid", {
+        id,
+      });
+      if (chapter.data.code === 200) {
+        if (chapter.data.data.is_video_embed === 1) {
+          this.setState({
+            chapterForm: {
+              ...this.state.chapterForm,
+              id_course: this.courseId,
+              chapter_title: chapter.data.data.chapter_title,
+              description: chapter.data.data.description,
+              video: chapter.data.data.video,
+              blobVideo: undefined,
+              videoFile: undefined,
+            },
+            selectedChapter: id,
+            openDialog: true,
+            loading: false,
+          });
+        } else {
+          utilities.readBlobAsText(chapter.data.data.video, (string) => {
+            const isJSON = utilities.isJsonString(string);
+            if (isJSON) {
+              const response = JSON.parse(string);
+              if (response.code === 404) {
+                this.setState({
+                  chapterForm: {
+                    ...this.state.chapterForm,
+                    id_course: this.courseId,
+                    chapter_title: chapter.data.data.chapter_title,
+                    description: chapter.data.data.description,
+                    is_video_embed: chapter.data.data.is_video_embed,
+                    video: response.data.data.video,
+                    blobVideo: undefined,
+                    videoFile: undefined,
+                  },
+                });
+              } else {
+              }
+            } else {
+              this.setState({
+                chapterForm: {
+                  ...this.state.chapterForm,
+                  id_course: this.courseId,
+                  chapter_title: chapter.data.data.chapter_title,
+                  description: chapter.data.data.description,
+                  is_video_embed: chapter.data.data.is_video_embed,
+                  video: chapter.data.data.video,
+                  blobVideo: undefined,
+                  videoFile: undefined,
+                },
+              });
+            }
+          });
+        }
+      } else {
+        throw new Error(chapter.data.message);
+      }
     } catch (error) {
       this.setState({ loading: false });
       alert(error.message);
@@ -261,11 +330,50 @@ class CourseDetail extends Component {
     });
   };
 
+  handleDeleteChapter = (chapterId) => {
+    Api.post("/chapter/delete", {
+      id: chapterId,
+    })
+      .then((res) => {
+        if (res.data.code === 200) {
+          this.fetchDataChapter();
+          Swal.fire("Succesfull!", "Chapter has ben Deleted!", "success");
+        } else {
+          throw new Error(res.data.message);
+        }
+      })
+      .catch((err) => {
+        Swal.fire("Error!", err.message, "error");
+      });
+  };
+
+  handelActionChapterList = (e, action, chapterId) => {
+    if (action === "delete") {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You want to delete this chapter?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "var(--primary-color)",
+        confirmButtonText: "Yes, Delete!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.handleDeleteChapter(chapterId);
+        }
+      });
+    } else if (action === "edit") {
+      this.fetchChapterById(chapterId);
+    }
+  };
+
+
+
   handleCloseDialog = () => {
     const { openDialog } = this.state;
     if (openDialog) {
       this.setState({
         openDialog: !openDialog,
+        selectedChapter: "",
         chapterForm: {
           id_course: "",
           chapter_title: "",
@@ -285,9 +393,14 @@ class CourseDetail extends Component {
   };
 
   componentDidMount = () => {
+    this._isMounted = true;
     this.fetchDataCourse();
     this.fetchDataChapter();
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     const {
@@ -297,6 +410,7 @@ class CourseDetail extends Component {
       openDialog,
       chapterForm,
       persentaseLoading,
+      selectedChapter,
     } = this.state;
 
     return (
@@ -313,9 +427,8 @@ class CourseDetail extends Component {
                     goBack={() => this.props.history.goBack()}
                     title="Back"
                   />
-                  <div >
+                  <div>
                     <Chip
-                     
                       label={
                         course.status === "accept" ? "publish" : course.status
                       }
@@ -327,7 +440,7 @@ class CourseDetail extends Component {
                           ? "primary"
                           : "info"
                       }
-                    >{course.status === "accept" ? "publish" : course.status}</Chip>
+                    />
                   </div>
                 </div>
               )}
@@ -370,11 +483,11 @@ class CourseDetail extends Component {
                 </div>
                 <div className="desc">
                   {loading ? (
-                    <Skeleton />
+                    <Skeleton width={"100%"} height="130px" />
                   ) : (
                     <Typography
                       dangerouslySetInnerHTML={{
-                        __html: course?.description,
+                        __html: course?.description.slice(0, 280) + (course?.description.length > 280 ? "..." : ""),
                       }}
                       variant="caption"
                       component="span"
@@ -397,6 +510,7 @@ class CourseDetail extends Component {
                   >
                     {course.status === "propose" && "Proposed"}
                     {course.status === "accept" && "Published"}
+                    {course.status === "progress" && "Propose My Course"}
                   </Button>
                 )}
               </div>
@@ -409,7 +523,7 @@ class CourseDetail extends Component {
                   <Skeleton width={"100%"} height="34px" />
                 ) : (
                   <>
-                    <HeaderContent2 title={course?.title_course} />
+                    <HeaderContent2 subtitle={course?.master_study.name_study} title={course?.title_course} />
                     {this.user.role_id === "2" && (
                       <Button
                         onClick={() =>
@@ -462,6 +576,8 @@ class CourseDetail extends Component {
                         page={chapters.page}
                         total={chapters.total}
                         limit={chapters.limit}
+                        clickEdit={this.handelActionChapterList}
+                        clickDelete={this.handelActionChapterList}
                         handleChangePage={() => {}}
                         handleChangeRowsPerPage={() => {}}
                       />
@@ -476,7 +592,11 @@ class CourseDetail extends Component {
           open={openDialog}
           maxWidth="md"
           onClose={this.handleCloseDialog}
-          title={"Add Chapter - " + course?.title_course}
+          title={
+            (selectedChapter ? "Edit" : "Add") +
+            " Chapter - " +
+            course?.title_course
+          }
           showSaveButton
           onSave={this.handleSaveChapter}
           isLoading={loading}
@@ -485,7 +605,7 @@ class CourseDetail extends Component {
             data={chapterForm}
             persentaseLoading={persentaseLoading}
             handleChange={this.handleChange}
-            handleBlur={this.handleBlur}
+            // handleBlur={this.handleBlur}
           />
         </DialogCustome>
       </>
@@ -615,6 +735,11 @@ const WrapContent = styled(Paper)`
       margin-top: 10px;
       height: 130px;
       max-height: 130px;
+      span {
+        p {
+          font-size : 12px;
+        }
+      }
     }
   }
 `;

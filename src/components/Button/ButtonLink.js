@@ -6,7 +6,12 @@ const ButtonLink = (props) => {
   const { text, to, height, className, isActive = false, onClick } = props;
 
   return (
-    <ButtonStyled onClick={onClick} isactive={isActive.toString()} className={className} to={to}>
+    <ButtonStyled
+      onClick={onClick}
+      isactive={isActive.toString()}
+      className={className}
+      to={to}
+    >
       {text ? text : props.children}
       {isActive && <span className="activenav"></span>}
     </ButtonStyled>

@@ -1,27 +1,14 @@
 import { Book } from "@mui/icons-material";
 import {
-  Button,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
+  Button
 } from "@mui/material";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import SunEditor, { buttonList } from "suneditor-react";
-import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
-import UploadImgDefault from "../../../assets/images/uploadvideo.png";
-import { Api } from "../../../services/api";
-import utilities from "../../../utils/utilities";
 import BoxCustom from "../../Box";
 import HeaderContent from "../../Header/HeaderContent";
 import Paper from "../../Paper";
-import CircularLabel from "../../Progress/CircularLabel";
-import BaseTabs from "../../Tabs";
-import { Label, Subtitle, TextLight } from "../../Text";
-import Input from "../Input";
+import { Subtitle, TextLight } from "../../Text";
 
 const DetailCourse = (props) => {
   const { data, persentaseLoad, onClose } = props;
@@ -30,41 +17,6 @@ const DetailCourse = (props) => {
     data.is_video_embed ? data.video_materials : ""
   );
 
-  const getVideo = () => {
-    Api.post(
-      "/courses/getfile",
-      {
-        id: data.id,
-        file: "video_materials",
-      },
-      { responseType: "blob" }
-    )
-      .then((res) => {
-        if (res.status === 200) {
-          utilities.readBlobAsText(res.data, (string) => {
-            const isJSON = utilities.isJsonString(string);
-            if (isJSON) {
-              const response = JSON.parse(string);
-              if (response.code === 404) {
-                setBlob("");
-              }
-            } else {
-              utilities.readFileBlob(res.data, (response) => {
-                setBlob(response);
-              });
-            }
-          });
-        }
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
-  };
-  useEffect(() => {
-    if (!data.is_video_embed) {
-      getVideo();
-    }
-  }, []);
 
   const video = data.is_video_embed ? videoUrl : blobvideo;
 

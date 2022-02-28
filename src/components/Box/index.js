@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import React from "react";
-import styled from "styled-components";
 
 const BoxCustom = (props) => {
   const {
@@ -42,6 +41,5 @@ const BoxCustom = (props) => {
   );
 };
 
-const boxStyled = styled(Box)``;
 
 export default BoxCustom;

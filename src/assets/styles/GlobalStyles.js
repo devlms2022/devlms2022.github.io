@@ -40,6 +40,10 @@ const GlobalStyle = createGlobalStyle`
         /* transition: all .4s ease-in-out; */
     }
 
+    .MuiChip-label {
+        font-size : 12px !important;
+    }
+
     a {
         font-family: inherit;
         color: inherit;

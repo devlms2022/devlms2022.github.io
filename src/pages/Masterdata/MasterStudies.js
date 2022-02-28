@@ -137,20 +137,24 @@ export default class MasterStudies extends Component {
 
   joinStudy = (id) => {
     Api.post("/classes/insert", {
-      id_study : id,
-      id_user : this.userSign.id,
-      status_confirm : "pending"
+      id_study: id,
+      id_user: this.userSign.id,
+      status_confirm: "pending",
     })
       .then((response) => {
         if (response.data.code === 200 && response.status === 200) {
-          Swal.fire("Request Sending!", "Your request to join the study has been sent", "success");
+          Swal.fire(
+            "Request Sending!",
+            "Your request to join the study has been sent",
+            "success"
+          );
           this.fetchStudies();
         } else {
           throw new Error(response.message);
         }
       })
       .catch((error) => alert(error.message));
-  }
+  };
 
   handleClickAction = (e, action, id) => {
     if (action === "edit") {
@@ -169,7 +173,7 @@ export default class MasterStudies extends Component {
           this.deleteStudy(id);
         }
       });
-    } else if(action === "join") {
+    } else if (action === "join") {
       this.joinStudy(id);
     }
   };
@@ -225,16 +229,18 @@ export default class MasterStudies extends Component {
       <WrapContent>
         <Grid spacing={2} className="head" container>
           <Grid item md={6} xl={6} xs={12}>
-            <WrapButton>
-              <Button
-                size="small"
-                variant="contained"
-                onClick={this.openDialog.bind(this, openDialog)}
-                startIcon={<AddCircle size="14px" />}
-              >
-                ADD STUDY
-              </Button>
-            </WrapButton>
+            {this.userSign.role_id === "1" && (
+              <WrapButton>
+                <Button
+                  size="small"
+                  variant="contained"
+                  onClick={this.openDialog.bind(this, openDialog)}
+                  startIcon={<AddCircle size="14px" />}
+                >
+                  ADD STUDY
+                </Button>
+              </WrapButton>
+            )}
           </Grid>
           <Grid item md={6} xl={6} xs={12}>
             <Search width="100%" placeholder="Enter keyword" />
@@ -249,6 +255,7 @@ export default class MasterStudies extends Component {
             actionClicked={this.handleClickAction}
             onChangePage={this.handleChangePage}
             roleId={this.userSign.role_id}
+            userId={this.userSign.id}
             onChangeRowPerpage={this.handleChangeRowsPerPage}
           />
         </WrapStudy>

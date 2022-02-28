@@ -5,12 +5,18 @@ import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Route, Switch, useLocation, useRouteMatch, useHistory } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  useLocation,
+  useRouteMatch,
+  useHistory,
+} from "react-router-dom";
 import styled from "styled-components";
 import AppBarAdmin from "../components/Appbar/AppBarAdmin";
 import Breadcrumb from "../components/Breadcrump";
 import MenuItem from "../components/Menu/MenuItem";
-import { Menuadmin, MenuTeacher } from "../data/sidebarmenu";
+import { Menuadmin, MenuStudent, MenuTeacher } from "../data/sidebarmenu";
 import routes from "../routes";
 import { Api } from "../services/api";
 import TokenService from "../services/token.services";
@@ -23,8 +29,7 @@ function AdminLayout(props) {
   const [userSign, setUserSign] = useState({});
   const { pathname } = useLocation();
   const match = useRouteMatch();
-  const history  = useHistory();
-
+  const history = useHistory();
 
   const handleProfileClicked = (nav) => {
     if (nav === "logout") {
@@ -55,6 +60,8 @@ function AdminLayout(props) {
     menus = MenuTeacher;
   } else if (userSign.role_id === "1") {
     menus = Menuadmin;
+  } else if (userSign.role_id === "3") {
+    menus = MenuStudent;
   }
 
   const drawer = (
@@ -129,19 +136,17 @@ function AdminLayout(props) {
       >
         <Toolbar />
         <Container maxWidth="xl">
-          {/* <BreadcrumbWrap>
-            <Breadcrumb />
-          </BreadcrumbWrap> */}
           <Switch>
             {routes.map((item, key) => {
               if (item.layout === "admin") {
                 const { component } = item;
                 const Component = component;
-             
                 return (
                   <Route
                     path={`${match.url}${item.path}`}
-                    component={(props) => <Component  basePath={item.parent} {...props} />}
+                    component={(props) => (
+                      <Component basePath={item.parent} {...props} />
+                    )}
                     key={key}
                     exact={item.basePath}
                   />

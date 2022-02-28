@@ -3,12 +3,13 @@ import {
   IconButton,
   TablePagination,
   Tooltip,
-  Typography
+  Typography,
 } from "@mui/material";
 import PropsType from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import ControlledAccordions from "../../components/Accordion";
+import TokenService from "../../services/token.services";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -22,11 +23,13 @@ const ChapterList = (props) => {
     handleChangePage,
     limit = 10,
     handleChangeRowsPerPage,
+    clickEdit,
+    clickDelete,
     data,
   } = props;
   const [isLoading, setIsLoading] = useState(false);
 
-  
+  const userSign = TokenService.getUser().data;
 
   return (
     <Wrapper>
@@ -37,7 +40,7 @@ const ChapterList = (props) => {
       )}
 
       {data.length > 0 &&
-        data.map( (item, index) => {
+        data.map((item, index) => {
           return (
             <ControlledAccordions
               name={item.chapter_title}
@@ -46,36 +49,44 @@ const ChapterList = (props) => {
               index={index}
             >
               <ContentAccordion>
-                <div className="action">
-                  <Tooltip placement="top" className="action-item" title="Edit">
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => {}}
-                      color="primary"
+                {userSign.role_id === "2" && (
+                  <div className="action">
+                    <Tooltip
+                      placement="top"
+                      className="action-item"
+                      title="Edit"
                     >
-                      <Edit />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip
-                    placement="top"
-                    className="action-item"
-                    title="Delete"
-                  >
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => {}}
-                      color="error"
+                      <IconButton
+                        aria-label="delete"
+                        onClick={(e) => clickEdit(e, "edit", item.id)}
+                        color="primary"
+                      >
+                        <Edit />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      placement="top"
+                      className="action-item"
+                      title="Delete"
                     >
-                      <Delete />
-                    </IconButton>
-                  </Tooltip>
-                </div>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={(e) => clickDelete(e, "delete", item.id)}
+                        color="error"
+                      >
+                        <Delete />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                )}
+
                 <div className="desc">
                   <div className={item.video ? "video" : "no-display"}>
                     <iframe
                       width="100%"
                       height="480"
-                      src={""}
+                      src={item.video}
+                      hidden={item.is_video_embed === 1 ? false : true}
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
@@ -130,7 +141,6 @@ const ContentAccordion = styled.div`
     .desc-item {
       p {
         font-size: 12px;
-        
       }
     }
     .no-display {

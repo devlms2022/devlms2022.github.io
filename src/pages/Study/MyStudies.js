@@ -162,9 +162,9 @@ export default class MyStudies extends Component {
           .catch((err) => {
             throw new Error(err.message);
           });
-          this.setState({
-            isLoading: false,
-          });
+        this.setState({
+          isLoading: false,
+        });
       }
     } catch (error) {
       this.setState({
@@ -207,15 +207,6 @@ export default class MyStudies extends Component {
         },
       });
     }
-  };
-
-  handleBlur = (e, text) => {
-    this.setState({
-      formCourse: {
-        ...this.state.formCourse,
-        description: text,
-      },
-    });
   };
 
   componentDidMount = () => {
@@ -295,7 +286,6 @@ export default class MyStudies extends Component {
             data={formCourse}
             persentaseLoading={persentaseLoading}
             handleChange={this.handleChange}
-            handleBlur={this.handleBlur}
           />
         </DialogCustome>
       </WrapContent>

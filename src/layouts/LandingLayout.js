@@ -2,11 +2,7 @@ import {
   Box,
   Container,
   Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  Modal,
-  Slide,
+  DialogContent, Grid, Slide
 } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";

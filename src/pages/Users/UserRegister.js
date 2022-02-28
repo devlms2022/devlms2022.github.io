@@ -4,27 +4,26 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Select,
+  Select
 } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { Component, useEffect, useState } from "react";
 import styled from "styled-components";
-import Modal from "../../components/Modal";
-import Paper from "../../components/Paper";
-import { Label } from "../../components/Text";
+import Swal from "sweetalert2";
+import DefContainerImg from "../../assets/images/imgcontainer.png";
+import BoxCustom from "../../components/Box";
+import ButtonCustom from "../../components/Button/Button";
+import DialogCustome from "../../components/Dialog";
+import Input from "../../components/Form/Input";
+import Search from "../../components/Form/Search";
 import FormPersonalData from "../../components/Form/Signup/FormPersonalData";
+import Navtab from "../../components/Navtab";
+import Paper from "../../components/Paper";
 import { TableUser } from "../../components/Table";
+import { Label } from "../../components/Text";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
-import Input from "../../components/Form/Input";
-import BoxCustom from "../../components/Box";
-import DefContainerImg from "../../assets/images/imgcontainer.png";
-import ButtonCustom from "../../components/Button/Button";
-import Swal from "sweetalert2";
 import util from "../../utils/utilities";
-import Navtab from "../../components/Navtab";
-import Search from "../../components/Form/Search";
-import { Box } from "@mui/system";
-import InputSelect from "../../components/Form/Select";
 
 function CardImageRegister(props) {
   const { role, data, profileid } = props;
@@ -32,44 +31,48 @@ function CardImageRegister(props) {
   const [grades, set_grades] = useState(null);
   const [identity_card, set_identity_card] = useState(null);
 
-  useEffect(async () => {
-    if (role === "2") {
-      const proofTeacherGrade = await Api.post(
-        "/profile/getFile",
-        {
-          id: profileid,
-          file: "proof_teacher_grade",
-        },
-        { responseType: "blob" }
-      );
-
-      util.cekFile(proofTeacherGrade.data, (response) => {
-        if (response) set_proof_teacher_grade(response);
-      });
-    } else if (role === "3") {
-      const identity_card = await Api.post(
-        "/profile/getFile",
-        {
-          id: profileid,
-          file: "identity_card",
-        },
-        { responseType: "blob" }
-      );
-      util.cekFile(identity_card.data, (response) => {
-        if (response) set_identity_card(response);
-      });
-      const grades = await Api.post(
-        "/profile/getFile",
-        {
-          id: profileid,
-          file: "grades",
-        },
-        { responseType: "blob" }
-      );
-      util.cekFile(grades.data, (response) => {
-        if (response) set_grades(response);
-      });
+  useEffect(() => {
+    async function getData() {
+      if (role === "2") {
+        const proofTeacherGrade = await Api.post(
+          "/profile/getFile",
+          {
+            id: profileid,
+            file: "proof_teacher_grade",
+          },
+          { responseType: "blob" }
+        );
+  
+        util.cekFile(proofTeacherGrade.data, (response) => {
+          if (response) set_proof_teacher_grade(response);
+        });
+      } else if (role === "3") {
+        const identity_card = await Api.post(
+          "/profile/getFile",
+          {
+            id: profileid,
+            file: "identity_card",
+          },
+          { responseType: "blob" }
+        );
+        util.cekFile(identity_card.data, (response) => {
+          if (response) set_identity_card(response);
+        });
+        const grades = await Api.post(
+          "/profile/getFile",
+          {
+            id: profileid,
+            file: "grades",
+          },
+          { responseType: "blob" }
+        );
+        util.cekFile(grades.data, (response) => {
+          if (response) set_grades(response);
+        });
+      }
     }
+    getData();
+   
   }, [role]);
 
   if (role === "2") {
@@ -243,6 +246,7 @@ export default class UserRegister extends Component {
     Api.post("/activate", {
       id,
       status,
+      id_role : this.state.registerDetail.role_id, 
     })
       .then((res) => {
         if (res.status === 200 && res.data.code === 200) {
@@ -346,25 +350,7 @@ export default class UserRegister extends Component {
               />
             </Box>
           </Grid>
-          <Grid item sm={12} md={4} lg={4} xl={4}>
-            {/* <InputSelect
-              name="filter"
-              label="Filter"
-              width="210px"
-              className="filter-input"
-              data={[
-                {
-                  name: "Register",
-                  value: "register",
-                },
-                {
-                  name: "Riject",
-                  value: "reject",
-                },
-              ]}
-              value="register"
-            /> */}
-          </Grid>
+          <Grid item sm={12} md={4} lg={4} xl={4}></Grid>
           <Grid sm={12} md={5} xl={5} lg={5} item>
             <Search
               onChange={this.handleSearch}
@@ -383,28 +369,15 @@ export default class UserRegister extends Component {
           onChangeRowPerpage={this.handleChangeRowsPerPage}
           onClickDetail={(id) => this.handleDetailClicked(id)}
         />
-        <Modal
-          title="Detail Data Register"
+        <DialogCustome
+          maxWidth="lg"
+          title="Detail User Register"
           open={shownModalDetail}
+          showSaveButton={false}
           onClose={() => this.setState({ shownModalDetail: !shownModalDetail })}
         >
           <Grid sx={{ width: "100%" }} container spacing={4}>
             <Grid item sm={12} md={5}>
-              <FormControl sx={{ width: "100%", marginBottom: "10px" }}>
-                <InputLabel>Registrant</InputLabel>
-                <Select
-                  autoWidth
-                  value={registerDetail.role_id}
-                  label="Registrant"
-                  inputProps={{
-                    readOnly: true,
-                  }}
-                >
-                  <MenuItem value="0">Select</MenuItem>
-                  <MenuItem value="2">Teacher</MenuItem>
-                  <MenuItem value="3">Student</MenuItem>
-                </Select>
-              </FormControl>
               <FormPersonalData
                 forDetail
                 listStudies={listStudies}
@@ -412,31 +385,51 @@ export default class UserRegister extends Component {
               />
             </Grid>
             <Grid item md={7} sm={12}>
-              <Grid style={{ marginBottom: "9px" }} container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    width="100%"
-                    label="Email"
-                    value={registerDetail.email}
-                    inputProps={{ readOnly: true }}
-                  />
+              <WrapContent>
+                <Grid style={{ marginBottom: "9px" }} container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <FormControl sx={{ width: "100%", marginBottom: "10px" }}>
+                      <InputLabel>Role</InputLabel>
+                      <Select
+                        autoWidth
+                        value={registerDetail.role_id}
+                        label="Role"
+                        inputProps={{
+                          readOnly: true,
+                        }}
+                      >
+                        <MenuItem value="0">Select</MenuItem>
+                        <MenuItem value="2">Teacher</MenuItem>
+                        <MenuItem value="3">Student</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Input
+                      width="100%"
+                      label="Email"
+                      value={registerDetail.email}
+                      inputProps={{ readOnly: true }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Input
+                      width="100%"
+                      label="Study"
+                      value="Study"
+                      inputProps={{ readOnly: true }}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    width="100%"
-                    label="Study"
-                    value="Study"
-                    inputProps={{ readOnly: true }}
-                  />
-                </Grid>
-              </Grid>
-              <CardImageRegister
-                data={{
-                  reg_code_branch: registerDetail.reg_code_branch,
-                }}
-                role={registerDetail.role_id}
-                profileid={registerDetail.profile_id}
-              />
+
+                <CardImageRegister
+                  data={{
+                    reg_code_branch: registerDetail.reg_code_branch,
+                  }}
+                  role={registerDetail.role_id}
+                  profileid={registerDetail.profile_id}
+                />
+              </WrapContent>
               <BoxCustom
                 height="6rem"
                 justify="space-between"
@@ -462,7 +455,7 @@ export default class UserRegister extends Component {
               </BoxCustom>
             </Grid>
           </Grid>
-        </Modal>
+        </DialogCustome>
       </WrapContent>
     );
   }
@@ -470,6 +463,7 @@ export default class UserRegister extends Component {
 
 const WrapContent = styled(Paper)`
   padding: 15px;
+  margin-bottom: 15px;
 `;
 
 const ImgContainer = styled.div`

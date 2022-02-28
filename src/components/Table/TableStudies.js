@@ -26,6 +26,7 @@ export default function TableStudies(props) {
     onChangeRowPerpage,
     actionClicked,
     roleId,
+    userId,
   } = props;
 
   const columns = [
@@ -59,7 +60,7 @@ export default function TableStudies(props) {
       label: "Action",
       minWidth: 20,
       align: "center",
-      format: (id) => {
+      format: ({ id, teacher_study }) => {
         if (roleId === "1") {
           return (
             <BoxCustom direction="row" width="100%" justify="center">
@@ -92,10 +93,47 @@ export default function TableStudies(props) {
               </Tooltip>
             </BoxCustom>
           );
-        } else if(roleId === "2") {
+        } else if (roleId === "2") {
+          const cekStatus = teacher_study.find(
+            (item) => item.id_user === userId
+          );
+
+          console.log(cekStatus);
+
           return (
             <BoxCustom direction="row" width="100%" justify="center">
-              <Button onClick={(e) => actionClicked(e, "join", id)} size="small" variant="outlined"  >JOIN</Button>
+              {cekStatus ? (
+                <>
+                  <Button
+                    size="small"
+                    variant="text"
+                    color={
+                      cekStatus.status_confirm === "reject"
+                        ? "error"
+                        : "primary"
+                    }
+                    disabled={
+                      cekStatus.status_confirm === "reject" ? false : true
+                    }
+                  >
+                    {cekStatus.status_confirm === "pending"
+                      ? "Waiting Confirm"
+                      : cekStatus.status_confirm === "accept"
+                      ? "JOINED"
+                      : "REJECTED"}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={(e) => actionClicked(e, "join", id)}
+                    size="small"
+                    variant="contained"
+                  >
+                    JOIN
+                  </Button>
+                </>
+              )}
             </BoxCustom>
           );
         }
@@ -115,7 +153,10 @@ export default function TableStudies(props) {
       faculty: item.faculty.name,
       created_at: util.moment(item.created_at),
       total_courses: 0,
-      action: item.id,
+      action: {
+        id: item.id,
+        teacher_study: item.teacher_study,
+      },
     };
   });
 
@@ -181,4 +222,5 @@ TableStudies.propTypes = {
   edit: PropsType.object,
   onChangeEdit: PropsType.func,
   onSaveEdit: PropsType.func,
+  userId: PropsType.string,
 };

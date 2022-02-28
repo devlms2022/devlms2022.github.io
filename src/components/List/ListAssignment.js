@@ -1,8 +1,4 @@
-import {
-  Assignment,
-  Delete,
-  Edit, Visibility
-} from "@mui/icons-material";
+import { Assignment, Delete, Edit, Visibility } from "@mui/icons-material";
 import { Grid, IconButton, Tooltip } from "@mui/material";
 import moment from "moment";
 import React from "react";
@@ -21,7 +17,7 @@ const ListAssignment = (props) => {
     openPover,
     onCosePover,
     item,
-    onClickEdit
+    onClickEdit,
   } = props;
   const handleClickEdit = (event, id) => {
     onClickeEdit(event, id);
@@ -75,7 +71,11 @@ const ListAssignment = (props) => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Edit" placement="top">
-                  <IconButton onClick={() => onClickEdit(item.id)} size="small" color="primary">
+                  <IconButton
+                    onClick={() => onClickEdit(item.id)}
+                    size="small"
+                    color="primary"
+                  >
                     <Edit fontSize="18px" />
                   </IconButton>
                 </Tooltip>
@@ -109,8 +109,8 @@ const List = styled.li`
   .label {
     .title {
       display: flex;
-      flex-direction : 'row';
-      align-items : center;
+      flex-direction: "row";
+      align-items: center;
       span {
         font-size: 16px;
         font-weight: 500;

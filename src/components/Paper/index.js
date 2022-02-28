@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Paper = (props) => {
-    const {className} = props;
-  return <PaperStyled className={className} >{props.children}</PaperStyled>;
+  return <PaperStyled {...props}>{props.children}</PaperStyled>;
 };
 
 const PaperStyled = styled.div`

@@ -1,32 +1,17 @@
 import { Menu as MenuIcon } from "@mui/icons-material";
-import {
-  AppBar,
-  Grid,
-  IconButton,
-  Menu,
-  Toolbar,
-  Tooltip,
-} from "@mui/material";
+import { AppBar, IconButton, Menu, Toolbar, Tooltip } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import React from "react";
 import BoxCustom from "../Box";
-import Avatar from "@mui/material/Avatar";
 import ProfileNav from "./ProfileNav";
 
 const AppBarAdmin = (props) => {
   const drawerWidth = 240;
-  const { window, handleDrawerToggle, userSign, pathname } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const { handleDrawerToggle } = props;
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-
-
 
   const onProfileClick = (setting) => {
     props.onProfileClick(setting.toLowerCase());
@@ -35,8 +20,6 @@ const AppBarAdmin = (props) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-
 
   return (
     <AppBar

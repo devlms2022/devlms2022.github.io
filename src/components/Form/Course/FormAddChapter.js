@@ -5,15 +5,15 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import UploadImgDefault from "../../../assets/images/uploadvideo.png";
 import CircularLabel from "../../Progress/CircularLabel";
 import BaseTabs from "../../Tabs";
 import { Label } from "../../Text";
 import Input from "../Input";
+import TextEditor from "../TextEditor";
 
 const FormStep1 = ({ handleChange, handleBlur, data }) => {
   return (
@@ -29,16 +29,11 @@ const FormStep1 = ({ handleChange, handleBlur, data }) => {
       />
       <div className="form-control">
         <Label>Description</Label>
-        <SunEditor
-          width="100%"
-          setOptions={{
-            buttonList: buttonList.formatting,
-          }}
-          value={data?.description}
-          height="270"
+
+        <TextEditor
           name="description"
-          onBlur={handleBlur}
-          //   onChange={handleChange}
+          value={data?.description}
+          onChange={handleChange}
         />
       </div>
     </div>
@@ -72,14 +67,28 @@ const FormStep2 = (props) => {
       </FormControl>
       <div>
         {data?.is_video_embed === 1 && (
-          <Input
-            label="Url Video"
-            fullWidth
-            value={data?.video}
-            onChange={handleChange}
-            name="video"
-            placeholder="eg. https://www.youtube.com/watch?v=CNbmVEEW-mA&list=RDfhn3VE7G06g&index=11"
-          />
+          <>
+            <Input
+              label="Url Video"
+              fullWidth
+              value={data?.video}
+              onChange={handleChange}
+              name="video"
+              placeholder="eg. https://www.youtube.com/watch?v=CNbmVEEW-mA&list=RDfhn3VE7G06g&index=11"
+            />
+            <div style={{marginTop : '15px'}} className={data?.video ? "video" : "no-display"}>
+              <iframe
+                width="100%"
+                height="480"
+                src={data?.video}
+                hidden={data?.video ? false : true}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="Embedded youtube"
+              />
+            </div>
+          </>
         )}
         {data?.is_video_embed === 0 && (
           <div className="upload-container">
@@ -135,7 +144,7 @@ const FormAddChapter = (props) => {
             content: (
               <FormStep1
                 handleChange={handleChange}
-                handleBlur={handleBlur}
+                // handleBlur={handleBlur}
                 data={data}
               />
             ),

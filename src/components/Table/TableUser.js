@@ -1,4 +1,4 @@
-import React from "react";
+import { Button } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,8 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import moment from "moment";
-import ButtonCustom from "../Button/Button";
-import { Box } from "@mui/system";
+import React from "react";
 
 export default function TableUser(props) {
   const {
@@ -30,6 +29,16 @@ export default function TableUser(props) {
       align: "center",
     },
     {
+      id: "email",
+      label: "Email",
+      minWidth: 170,
+    },
+    {
+      id: "role",
+      label: "Role",
+      minWidth: 170,
+    },
+    {
       id: "created_at",
       label: "Date Registration",
       minWidth: 80,
@@ -46,13 +55,13 @@ export default function TableUser(props) {
       format: (value) => {
         return (
           <>
-            <ButtonCustom
+            <Button
               onClick={() => onClickDetail(value)}
               size="small"
-              variant="outlined"
+              variant="contained"
             >
               See More
-            </ButtonCustom>
+            </Button>
           </>
         );
       },
@@ -66,7 +75,9 @@ export default function TableUser(props) {
     increment++;
     return {
       no: number,
-      fullname: item.profile.front_name + " " + item.profile.family_name,
+      fullname: item.profile.fullname,
+      email: item.email,
+      role : item.role_id === "2" ? "Teacher" : "Student",
       created_at: item.created_at,
       detail: item.id,
     };

@@ -25,6 +25,7 @@ const InputSelect = (props) => {
     size = "small",
     attrKey,
   } = props;
+
   return (
     <FormControl
       sx={{ width: fullWidth ? "100%" : width }}

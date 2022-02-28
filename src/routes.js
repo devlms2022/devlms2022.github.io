@@ -20,6 +20,7 @@ import ManageUser from "./pages/Users/ManageUser";
 import UserRegister from "./pages/Users/UserRegister";
 
 import Course from "./pages/Landing/Course";
+import MyCourseList from "./pages/MyCourse/MyCourseList";
 // import SignUp from "./"
 
 const routes = [
@@ -44,6 +45,13 @@ const routes = [
     path: "/signup",
     layout: "auth",
     component: Signup,
+  },
+  //routing student
+  {
+    path: "mycourse",
+    layout: "admin",
+    basePath: true,
+    component: MyCourseList,
   },
   {
     path: "/",
@@ -100,7 +108,7 @@ const routes = [
   {
     path: "course/list",
     layout: "admin",
-    basePath : true,
+    basePath: true,
     component: CourseList,
   },
   {

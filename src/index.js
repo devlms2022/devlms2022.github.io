@@ -9,15 +9,15 @@ import GlobalStyle from "./assets/styles/GlobalStyles";
 
 const theme = createTheme({
   palette: {
-    primary:  {
-      main : "#3f51b5"
+    primary: {
+      main: "#3f51b5",
     },
-    secondary : {
-      main : "#4582FF"
+    secondary: {
+      main: "#4582FF",
     },
-    success : {
-      main : "#1EE326"
-    }
+    success: {
+      main: "#1EE326",
+    },
   },
 });
 
