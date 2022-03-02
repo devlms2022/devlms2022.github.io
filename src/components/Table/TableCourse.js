@@ -142,7 +142,7 @@ export default function TableCourse(props) {
   return (
     <>
       {/* </BoxCustom> */}
-      <TableContainer sx={{ maxHeight: 378 }}>
+      <TableContainer sx={{ height : "100%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

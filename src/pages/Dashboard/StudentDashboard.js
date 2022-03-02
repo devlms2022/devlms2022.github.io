@@ -1,9 +1,18 @@
 import { AccountBox, Book, Group } from "@mui/icons-material";
-import { Button, Chip, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  Chip,
+  Divider,
+  Grid,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import CourseCard from "../../components/Card/CourseCard";
 import MyCourseCard from "../../components/Card/MyCourseCard";
+import DetailCourse from "../../components/Courses/DetailCourse";
 import DialogFull from "../../components/Dialog/DialogFull";
 import HeaderContent2 from "../../components/Header/HeaderContent2";
 import Paper from "../../components/Paper";
@@ -26,6 +35,7 @@ export default class StudentDashboard extends Component {
         isLoading: false,
         limit: 4,
       },
+      courseSelected: {},
       isLoading: false,
       shownModalLG: false,
     };
@@ -99,19 +109,64 @@ export default class StudentDashboard extends Component {
     }
   };
 
+  fetchDataCourseById = async (id) => {
+    try {
+      this.setState({ isLoading: true });
+      const course = await Api.post(`/master_coursebyid`, {
+        id,
+      });
+      if (course.data.code === 200) {
+        this.setState({
+          isLoading: false,
+          shownModalLG: !this.state.shownModalLG,
+          idCourseSelected: id,
+          courseSelected: course.data.data,
+        });
+      } else {
+        throw new Error(course.data.message);
+      }
+    } catch (error) {
+      this.setState({ isLoading: false });
+      alert(error.message);
+    }
+  };
+
   handleClickCourse = (id) => {
-    // console.log(this.props);
-    // this.props.history.push(`/course/${id}`);
-    this.setState({
-      shownModalLG: !this.state.shownModalLG,
-      idCourseSelected: id,
-    });
-    // this.handleModalXl();
+    this.fetchDataCourseById(id);
   };
 
   handleCloseDialogLG = () => {
     this.setState({
       shownModalLG: !this.state.shownModalLG,
+    });
+  };
+
+  handleRegisterCourse = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to register this course",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "var(--primary-color)",
+      confirmButtonText: "Yes, register it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const register = await Api.post("/classes/insert", {
+            id_user: this.userSign.id,
+            id_course: this.state.idCourseSelected,
+            id_study: this.state.courseSelected.id_study,
+            status_confirm: "pending",
+          });
+          if (register.data.code === 200) {
+            Swal.fire("Success", register.data.message, "success");
+          } else {
+            throw new Error(register.data.message);
+          }
+        } catch (error) {
+          alert(error.message);
+        }
+      }
     });
   };
 
@@ -121,7 +176,14 @@ export default class StudentDashboard extends Component {
   }
 
   render() {
-    const { courses, myCourses, shownModalLG } = this.state;
+    const {
+      courses,
+      myCourses,
+      shownModalLG,
+      courseSelected,
+      isLoading,
+      idCourseSelected,
+    } = this.state;
 
     const boardData = [
       {
@@ -190,7 +252,7 @@ export default class StudentDashboard extends Component {
                     totalCh={0}
                     totalStudent={0}
                     isLoding={myCourses.isLoading}
-                    idCourse={itm.id}
+                    idCourse={itm.id_course}
                     onClick={this.handleClickCourse}
                   />
                 </Grid>
@@ -238,88 +300,42 @@ export default class StudentDashboard extends Component {
           onClose={this.handleCloseDialogLG}
           maxWidth="lg"
           p="0px"
+          showSaveButton={true}
+          componentBtn={
+            <>
+              <Button
+                onClick={this.handleCloseDialogLG}
+                size="small"
+                variant="outlined"
+              >
+                Close
+              </Button>
+              <Button
+                onClick={this.handleRegisterCourse}
+                size="small"
+                variant="contained"
+              >
+                Register Course
+              </Button>
+            </>
+          }
         >
-          <DialogContent>
-            <div className="cover-wrapper"></div>
-            <div className="content-wrapper">
-              <div className="title-course">
-                <Subtitle>
-                  <span>PHP Intermediete</span>
-                </Subtitle>
-              </div>
-              <Grid container spacing={1} className="info-course">
-                <Grid
-                  item
-                  xl={3}
-                  lg={3}
-                  md={4}
-                  sm={12}
-                  xs={12}
-                  className="chips"
-                >
-                  <Chip
-                    className="chip-item"
-                    label="Software Engineering"
-                    size="small"
-                    color="primary"
-                    variant="contained"
-                  />
-                  <Chip
-                    className="chip-item"
-                    label="Programming"
-                    size="small"
-                    color="primary"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  className="label"
-                  item
-                  xl={3}
-                  lg={3}
-                  md={4}
-                  sm={12}
-                  xs={12}
-                >
-                  <div className="teacher">
-                    <AccountBox size="small" className="icon" />
-                    <span>Bagus Fatwan Alfiat</span>
-                  </div>
-                  <div className="numeric">
-                    <div>
-                      <Group size="small" className="icon" />
-                      <span>0</span>
-                    </div>
-                    <div>
-                      <Book size="small" className="icon" />
-                      <span>0</span>
-                    </div>
-                  </div>
-                </Grid>
-                <Grid item xl={6} lg={6} md={4} sm={0} xs={0} />
-              </Grid>
-              <Typography className="desc-container" component="div">
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged. It was popularised in the 1960s with
-                  the release of Letraset sheets containing Lorem Ipsum
-                  passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </Typography>
-              <div className="section-course">
-                <div className="label-section">
-                  <Subtitle><span>Course</span></Subtitle>
-                </div>
-              </div>
-              <div className="section-assignment"></div>
-            </div>
-          </DialogContent>
+          {idCourseSelected && (
+            <DetailCourse
+              chapterNum={courseSelected?.chapters?.length}
+              chapters={courseSelected.chapters}
+              courseId={courseSelected.id}
+              courseTitle={courseSelected.title_course}
+              description={courseSelected.description}
+              faculty={courseSelected?.master_study.faculty?.name}
+              study={courseSelected?.master_study?.name_study}
+              studentNum={0}
+              teacherName={courseSelected?.created?.profile?.fullname}
+              thumbnail={""}
+              video=""
+              isLoading={isLoading}
+            />
+          )}
         </DialogFull>
       </WrapContent>
     );
@@ -354,67 +370,4 @@ const WrapContent = styled.div`
 
 const ContentMyCourse = styled.div`
   margin-top: 20px;
-`;
-
-const DialogContent = styled.div`
-  .cover-wrapper {
-    width: 100%;
-    height: 237px;
-    background: url(https://support.sharphue.com/wp-content/uploads/2018/07/inner-page-banner-3.png);
-    background-size: cover;
-    background-position: center;
-    position: relative;
-  }
-  .content-wrapper {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    .info-course {
-      margin-top: 5px;
-      .chips {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        .chip-item {
-          margin-right: 5px;
-        }
-      }
-      .label {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        .teacher {
-          display: flex;
-          align-items: center;
-          .icon {
-            margin-right: 5px;
-          }
-        }
-        .numeric {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          div {
-            display: flex;
-            align-items: center;
-            margin-right: 5px;
-            .icon {
-              margin-right: 5px;
-            }
-          }
-        }
-      }
-    }
-    .desc-container {
-      margin-top: 20px;
-      p {
-        font-size: 12px;
-        line-height: 1.5;
-        text-align: justify;
-      }
-    }
-  }
 `;

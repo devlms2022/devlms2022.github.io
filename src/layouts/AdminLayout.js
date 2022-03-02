@@ -5,12 +5,7 @@ import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import {
-  Route,
-  Switch,
-  useLocation,
-  useRouteMatch
-} from "react-router-dom";
+import { Route, Switch, useLocation, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import AppBarAdmin from "../components/Appbar/AppBarAdmin";
 import MenuItem from "../components/Menu/MenuItem";
@@ -20,6 +15,7 @@ import { Api } from "../services/api";
 import TokenService from "../services/token.services";
 
 const drawerWidth = 250;
+const heightContent = window.innerHeight - 120;
 
 function AdminLayout(props) {
   const { window } = props;
@@ -142,7 +138,7 @@ function AdminLayout(props) {
                   <Route
                     path={`${match.url}${item.path}`}
                     component={(props) => (
-                      <Component basePath={item.parent} {...props} />
+                      <Component heightContent={heightContent} basePath={item.parent} {...props} />
                     )}
                     key={key}
                     exact={item.basePath}

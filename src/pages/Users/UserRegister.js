@@ -336,7 +336,7 @@ export default class UserRegister extends Component {
     ];
 
     return (
-      <WrapContent>
+      <WrapContent height={this.props.heightContent + "px"} >
         <Grid className="filter" container spacing={3}>
           <Grid sm={12} md={3} xl={3} lg={3} item>
             <Box>
@@ -462,6 +462,7 @@ export default class UserRegister extends Component {
 }
 
 const WrapContent = styled(Paper)`
+  height:  ${(props) => props.height} ;
   padding: 15px;
   margin-bottom: 15px;
 `;

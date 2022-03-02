@@ -11,7 +11,9 @@ import TableStudies from "../../components/Table/TableStudies";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
 import Swal from "sweetalert2";
-export default class MasterStudies extends Component {
+
+
+class MasterStudies extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -226,7 +228,7 @@ export default class MasterStudies extends Component {
       this.state;
 
     return (
-      <WrapContent>
+      <WrapContent height={this.props.heightContent + "px"}>
         <Grid spacing={2} className="head" container>
           <Grid item md={6} xl={6} xs={12}>
             {this.userSign.role_id === "1" && (
@@ -301,14 +303,20 @@ export default class MasterStudies extends Component {
   }
 }
 
+export default MasterStudies;
+
 const WrapContent = styled(Paper)`
   padding: 17px 15px;
+  height: ${(props) => props.height};
+  position: relative;
+  white-space: nowrap;
 `;
 
 const WrapButton = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   width: 30%;
 
   @media screen and (max-width: 400px) {
@@ -320,8 +328,10 @@ const WrapStudy = styled.div`
   padding: 15px 0;
   margin: 15px 0;
   padding-bottom: 15px;
+  height: 100%;
   /* height: 300px; */
-  max-height: 500px;
   /* background: red; */
   /* max-height: 200px; */
 `;
+
+

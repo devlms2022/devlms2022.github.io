@@ -1,16 +1,13 @@
 import { AddCircle as AddIcon, Close } from "@mui/icons-material";
-import { Button, Grid, IconButton } from "@mui/material";
+import { Button, Grid, IconButton, TablePagination } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
 import BoxCustom from "../../components/Box";
-import ButtonCustom from "../../components/Button/Button";
 import Input from "../../components/Form/Input";
 import Search from "../../components/Form/Search";
-import Modal from "../../components/Modal";
 import Paper from "../../components/Paper";
 import { TableTopic } from "../../components/Table";
 import { Api } from "../../services/api";
-// import { Api as api} from "../../services/api";
 import TokenService from "../../services/token.services";
 
 const FormAddTopic = (props) => {
@@ -32,7 +29,7 @@ const FormAddTopic = (props) => {
         align="center"
         width="35%"
       >
-        <Button onClick={onSave}  variant="contained" size="small">
+        <Button onClick={onSave} variant="contained" size="small">
           Save
         </Button>
         <IconButton onClick={onCancel} size="small">
@@ -65,7 +62,6 @@ export default class MasterFaculty extends Component {
     this.setState({ userSign: userSign.data });
     this.fetchDataFaculty();
   };
-  
 
   fetchDataFaculty = () => {
     const { limit, page, search } = this.state;
@@ -202,7 +198,7 @@ export default class MasterFaculty extends Component {
 
     return (
       <>
-        <ContainContent>
+        <ContainContent height={this.props.heightContent + "px"}>
           <Grid className="head" container spacing={1}>
             <Grid sm={12} md={6} xl={6} item>
               {shownAdd ? (
@@ -238,10 +234,18 @@ export default class MasterFaculty extends Component {
             page={page}
             limit={limit}
             onChangeEdit={this.handleChangeEdit}
-            onChangePage={this.handleChangePage}
-            onChangeRowPerpage={this.handleChangeRowsPerPage}
             edit={edit}
             onSaveEdit={this.handelUpdateFaculty}
+          />
+
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={totalData}
+            rowsPerPage={limit}
+            page={page}
+            onPageChange={this.handleChangePage}
+            onRowsPerPageChange={this.handleChangeRowsPerPage}
           />
         </ContainContent>
       </>
@@ -251,6 +255,8 @@ export default class MasterFaculty extends Component {
 
 const ContainContent = styled(Paper)`
   padding: 15px;
+  position: relative;
+  height: ${(props) => props.height};
   .head {
     margin-bottom: 15px;
   }

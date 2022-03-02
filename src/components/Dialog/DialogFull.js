@@ -1,3 +1,4 @@
+import { Divider } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -24,7 +25,8 @@ export default function DialogFull(props) {
         open={open}
         onClose={onClose}
       >
-        <DialogContent sx={{padding : p}} >{children}</DialogContent>
+        <DialogContent sx={{ padding: p }}>{children}</DialogContent>
+        
         <DialogActions>{showSaveButton && componentBtn}</DialogActions>
       </Dialog>
     </>
@@ -38,5 +40,7 @@ DialogFull.propTypes = {
   onClose: PropTypes.func,
   children: PropTypes.node,
   onSave: PropTypes.func,
-  p : PropTypes.string,
+  p: PropTypes.string,
+  showSaveButton: PropTypes.bool,
+  componentBtn: PropTypes.element,
 };

@@ -1,6 +1,6 @@
 import {
   Delete as DeleteIcon,
-  ModeEdit as EditIcon,
+  ModeEdit as EditIcon
 } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import Table from "@mui/material/Table";
@@ -8,7 +8,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import React from "react";
 import util from "../../utils/utilities";
@@ -18,11 +17,8 @@ import Input from "../Form/Input";
 export default function TableFaculty(props) {
   const {
     data,
-    total,
     limit = 10,
     page,
-    onChangePage,
-    onChangeRowPerpage,
     actionClicked,
     edit,
     onChangeEdit,
@@ -107,7 +103,7 @@ export default function TableFaculty(props) {
 
   return (
     <>
-      <TableContainer sx={{ maxHeight: 378 }}>
+      <TableContainer sx={{ height: "80%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -141,15 +137,6 @@ export default function TableFaculty(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={total}
-        rowsPerPage={limit}
-        page={page}
-        onPageChange={onChangePage}
-        onRowsPerPageChange={onChangeRowPerpage}
-      />
     </>
   );
 }
