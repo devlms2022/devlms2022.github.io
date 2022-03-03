@@ -100,7 +100,7 @@ class CourseDetail extends Component {
           id_course: this.courseId,
         },
       });
-      if(res.data.code === 200 && res.status === 200) {
+      if (res.data.code === 200 && res.status === 200) {
         this.setState({
           courseEnrolled: {
             ...this.state.courseEnrolled,
