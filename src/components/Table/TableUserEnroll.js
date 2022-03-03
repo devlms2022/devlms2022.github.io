@@ -100,7 +100,7 @@ export default function TableUserEnroll(props) {
   return (
     <>
       {/* </BoxCustom> */}
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ height: "75%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

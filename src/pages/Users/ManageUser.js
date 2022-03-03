@@ -1,12 +1,6 @@
-import {
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select
-} from "@mui/material";
-import { Box } from "@mui/system";
 import React, { Component, useEffect, useState } from "react";
+import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box } from "@mui/system";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import DefContainerImg from "../../assets/images/imgcontainer.png";
@@ -22,6 +16,9 @@ import { Label } from "../../components/Text";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
 import util from "../../utils/utilities";
+import TableDataNotFound from "../../components/Label/TableDataNotFound";
+import HeaderContent2 from "../../components/Header/HeaderContent2";
+import HeaderContent from "../../components/Header/HeaderContent";
 
 function CardImageRegister(props) {
   const { role, data, profileid } = props;
@@ -332,8 +329,9 @@ export default class ManageUser extends Component {
     ];
 
     return (
-      <WrapContent>
-        <Grid className="filter" container spacing={3}>
+      <WrapContent height={this.props.heightContent+"px"} >
+        <HeaderContent shownGoBack={false} title="User Active" />
+        <Grid className="filter" container spacing={1}>
           <Grid sm={12} md={3} xl={3} lg={3} item>
             <Box>
               <Navtab
@@ -355,16 +353,21 @@ export default class ManageUser extends Component {
             />
           </Grid>
         </Grid>
-        <TableUser
-          actionClicked={this.handleAction}
-          data={users}
-          total={totalData}
-          page={page}
-          limit={limit}
-          onChangePage={this.handleChangePage}
-          onChangeRowPerpage={this.handleChangeRowsPerPage}
-          onClickDetail={(id) => this.handleDetailClicked(id)}
-        />
+        {users.length > 0 ? (
+          <TableUser
+            actionClicked={this.handleAction}
+            data={users}
+            total={totalData}
+            page={page}
+            limit={limit}
+            onChangePage={this.handleChangePage}
+            onChangeRowPerpage={this.handleChangeRowsPerPage}
+            onClickDetail={(id) => this.handleDetailClicked(id)}
+          />
+        ) : (
+          <TableDataNotFound />
+        )}
+
         <DialogCustome
           maxWidth="lg"
           title="Detail User Register"
@@ -437,6 +440,10 @@ export default class ManageUser extends Component {
 const WrapContent = styled(Paper)`
   padding: 15px;
   margin-bottom: 15px;
+  height : ${(props) => props.height};
+  .filter {
+    margin-top : 5px;
+  }
 `;
 
 const ImgContainer = styled.div`

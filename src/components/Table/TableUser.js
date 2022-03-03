@@ -77,7 +77,7 @@ export default function TableUser(props) {
       no: number,
       fullname: item.profile.fullname,
       email: item.email,
-      role : item.role_id === "2" ? "Teacher" : "Student",
+      role: item.role_id === "2" ? "Teacher" : "Student",
       created_at: item.created_at,
       detail: item.id,
     };
@@ -85,7 +85,7 @@ export default function TableUser(props) {
 
   return (
     <>
-      <TableContainer  sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ height: "75%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -100,7 +100,7 @@ export default function TableUser(props) {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody   >
+          <TableBody>
             {rows.map((row) => {
               return (
                 <TableRow hover tabIndex={-1} key={row.no}>
@@ -112,7 +112,6 @@ export default function TableUser(props) {
                       </TableCell>
                     );
                   })}
-                  
                 </TableRow>
               );
             })}

@@ -103,7 +103,7 @@ export default function TableFaculty(props) {
 
   return (
     <>
-      <TableContainer sx={{ height: "80%" }}>
+      <TableContainer sx={{ height: "75%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

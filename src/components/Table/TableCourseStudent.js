@@ -1,39 +1,21 @@
-import {
-  AppRegistration, Badge
-} from "@mui/icons-material";
+import { Badge, PlayLesson } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import PropsType from "prop-types";
 import React from "react";
 import util from "../../utils/utilities";
 import { default as BoxCustom } from "../Box";
 
-export default function TableClasses(props) {
-  const {
-    data,
-    total,
-    limit = 10,
-    page,
-    onChangePage,
-    onChangeRowPerpage,
-    actionClicked,
-    role_id,
-  } = props;
+export default function TableCourseStudent(props) {
+  const { data, actionClicked, role_id, limit, page } = props;
 
   const columns = [
     { id: "no", label: "No", minWidth: 10 },
-    {
-      id: "study",
-      label: "Study",
-      minWidth: 100,
-      align: "left",
-    },
     {
       id: "faculty",
       label: "Faculty",
@@ -41,26 +23,32 @@ export default function TableClasses(props) {
       align: "left",
     },
     {
-      id: "name",
-      label: "Name",
+      id: "study",
+      label: "Study",
       minWidth: 100,
       align: "left",
     },
     {
-      id: "email",
-      label: "Email Enrollment",
+      id: "course",
+      label: "Course",
       minWidth: 100,
       align: "left",
     },
     {
-      id: "role",
-      label: "Role",
+      id: "teacher",
+      label: "Teacher (Author)",
       minWidth: 100,
       align: "left",
+    },
+    {
+      id: "progress",
+      label: "Progress",
+      minWidth: 100,
+      align: "center",
     },
     {
       id: "created_at",
-      label: "Registered At",
+      label: "Join Date",
       minWidth: 100,
       align: "left",
     },
@@ -69,37 +57,18 @@ export default function TableClasses(props) {
       label: "Action",
       minWidth: 20,
       align: "center",
-      format: ({id, id_study, id_user}) => {
+      format: ({ id_class, id_study, id_course }) => {
         return (
           <BoxCustom direction="row" width="100%" justify="center">
-            {role_id === "1" && (
-              <>
-              
-                <Tooltip placement="top" title="See Profile">
-                  <IconButton
-                    onClick={(e) => actionClicked(e, "detail", id, id_user)}
-                    color="info"
-                  
-                    size="small"
-                  >
-                     <Badge />
-                  </IconButton>
-                </Tooltip>
-              </>
-            )}
-            {role_id === "2" && (
-              <>
-                <Tooltip title="Set Course">
-                  <IconButton
-                    onClick={(e) => actionClicked(e, "setup", id, id_study)}
-                    color="secondary"
-                    size="small"
-                  >
-                    <AppRegistration />
-                  </IconButton>
-                </Tooltip>
-              </>
-            )}
+            <Tooltip placement="top" title="Continue">
+              <IconButton
+                onClick={(e) => actionClicked(e, "detail", id_class, id_course)}
+                color="info"
+                size="small"
+              >
+                <PlayLesson />
+              </IconButton>
+            </Tooltip>
           </BoxCustom>
         );
       },
@@ -114,17 +83,17 @@ export default function TableClasses(props) {
     return {
       id: item.id,
       no: number,
-      study: item.master_study.name_study,
       faculty: item.master_study.faculty.name,
-      name: item.user.profile.fullname || "-",
-      email: item.user.email,
-      role: item.user.role_id === "2" ? "Teacher" : "Student",
+      study: item.master_study.name_study,
+      course: item.master_course.title_course,
+      teacher: item.master_course.created.profile.fullname || "-",
+      progress: "0%",
       created_at: util.moment(item.created_at),
       action: {
-        id: item.id,
+        id_class: item.id,
         id_study: item.id_study,
-        id_user : item.id_user,
-      }
+        id_course: item.id_course,
+      },
     };
   });
 
@@ -133,7 +102,7 @@ export default function TableClasses(props) {
   return (
     <>
       {/* </BoxCustom> */}
-      <TableContainer sx={{ height:"75%" }}>
+      <TableContainer sx={{ height: "75%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -166,28 +135,14 @@ export default function TableClasses(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={total}
-        rowsPerPage={limit}
-        page={page}
-        onPageChange={onChangePage}
-        onRowsPerPageChange={onChangeRowPerpage}
-      />
     </>
   );
 }
 
-TableClasses.propTypes = {
-  data: PropsType.array,
-  total: PropsType.number,
-  limit: PropsType.number,
-  page: PropsType.number,
-  onChangePage: PropsType.func,
-  onChangeRowPerpage: PropsType.func,
+TableCourseStudent.propTypes = {
+  data: PropsType.array.isRequired,
   actionClicked: PropsType.func,
-  edit: PropsType.object,
-  onChangeEdit: PropsType.func,
-  onSaveEdit: PropsType.func,
+  role_id: PropsType.number,
+  limit: PropsType.number.isRequired,
+  page: PropsType.number.isRequired,
 };

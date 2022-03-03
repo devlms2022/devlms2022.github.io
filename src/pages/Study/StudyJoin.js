@@ -1,11 +1,13 @@
-import { Grid, Skeleton } from "@mui/material";
+import { Grid, MenuItem, Skeleton } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import DialogCustome from "../../components/Dialog";
 import Search from "../../components/Form/Search";
+import InputSelect from "../../components/Form/Select";
 import SelectChip from "../../components/Form/Select/SelectChip";
 import HeaderContent2 from "../../components/Header/HeaderContent2";
+import TableDataNotFound from "../../components/Label/TableDataNotFound";
 import Paper from "../../components/Paper";
 import { TableClasses } from "../../components/Table";
 import Profile from "../../components/User/Profile";
@@ -24,6 +26,26 @@ export default class StudyJoin extends Component {
       page: 0,
       totalDataStudies: 0,
       search: "",
+      filter: [
+        {
+          key: "role_id",
+          label: "Role",
+          value: [
+            {
+              value: "2",
+              label: "Teacher",
+            },
+            {
+              value: "3",
+              label: "Student",
+            },
+          ],
+        },
+      ],
+      filterChanged: {
+        key: "",
+        value: "",
+      },
       openDialog: false,
       isLoading: false,
     };
@@ -79,14 +101,18 @@ export default class StudyJoin extends Component {
   };
 
   fetchData = () => {
-    const { limit, page, search } = this.state;
+    const { limit, page, search, filterChanged } = this.state;
+    const filter = {
+      status_confirm: "pending",
+    };
+    if (filterChanged.value !== "") {
+      filter[filterChanged.key] = filterChanged.value;
+    }
     Api.post("/teacher_study", {
       limit,
       page,
       search,
-      filter: {
-        status_confirm: "pending",
-      },
+      filter,
     })
       .then((response) => {
         if (response.data.code === 200 && response.status === 200) {
@@ -118,6 +144,26 @@ export default class StudyJoin extends Component {
     });
   };
 
+  handleFilterChangeKey = (e) => {
+    const { name, value } = e.target;
+    this.setState({
+      filterChanged: {
+        key: value,
+        value: "",
+      },
+    });
+  };
+
+  handleFilterChangeValue = (e) => {
+    const { name, value } = e.target;
+    this.setState({
+      filterChanged: {
+        key: this.state.filterChanged.key,
+        value: value,
+      },
+    });
+  };
+
   handleActionClicked = (e, action, id, id_study) => {
     this.setState({
       openDialog: true,
@@ -142,7 +188,6 @@ export default class StudyJoin extends Component {
     }
   };
 
-
   componentDidMount = () => {
     this.fetchData();
   };
@@ -158,6 +203,9 @@ export default class StudyJoin extends Component {
     ) {
       this.fetchData();
     }
+    if (prevState.filterChanged.value !== this.state.filterChanged.value) {
+      this.fetchData();
+    }
   }
 
   render() {
@@ -167,21 +215,55 @@ export default class StudyJoin extends Component {
       limit,
       openDialog,
       user,
+      filter,
+      filterChanged,
       search,
       page,
       isLoading,
     } = this.state;
 
     return (
-      <WrapContent>
-        <HeaderContent2 subtitle=" Teacher Joining Confirm" shownGoBack={false} title="Study" />
+      <WrapContent height={this.props.heightContent + "px"}>
+        <HeaderContent2
+          subtitle=" Teacher Joining Confirm"
+          shownGoBack={false}
+          title="Study"
+        />
         <Grid sx={{ marginTop: "5px" }} spacing={1} container>
-          <Grid item xs={12} md={6} sm={5} xl={6}>
-            <SelectChip
-              label="Filter"
-              width="30%"
-              defaultValue={["Filter"]}
-              data={[]}
+          <Grid className="filter" item xs={12} md={6} sm={5} xl={6}>
+            <InputSelect
+              className="item-filter"
+              label="Filter By"
+              width="50%"
+              data={filter}
+              defaultValue="Filter By"
+              value={filterChanged.key}
+              onChange={this.handleFilterChangeKey}
+              renderMenuItem={(itm, key) => {
+                return (
+                  <MenuItem key={key} value={itm.key} onClick={() => {}}>
+                    {itm.label}
+                  </MenuItem>
+                );
+              }}
+            />
+
+            <InputSelect
+              className="item-filter"
+              label="Value"
+              width="50%"
+              onChange={this.handleFilterChangeValue}
+              data={
+                filterChanged.key
+                  ? filter.find((itm) => itm.key === filterChanged.key).value
+                  : []
+              }
+              value={filterChanged.value}
+              defaultValue="All"
+              attrKey={{
+                value: "value",
+                label: "label",
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6} sm={7} xl={6}>
@@ -194,16 +276,20 @@ export default class StudyJoin extends Component {
         </Grid>
 
         <WrapClassTable>
-          <TableClasses
-            data={studiesData}
-            page={page}
-            limit={limit}
-            total={totalDataStudies}
-            role_id={this.userSign.role_id}
-            actionClicked={this.handleActionClicked}
-            onChangePage={() => {}}
-            onChangeRowPerpage={() => {}}
-          />
+          {studiesData.length > 0 ? (
+            <TableClasses
+              data={studiesData}
+              page={page}
+              limit={limit}
+              total={totalDataStudies}
+              role_id={this.userSign.role_id}
+              actionClicked={this.handleActionClicked}
+              onChangePage={() => {}}
+              onChangeRowPerpage={() => {}}
+            />
+          ) : (
+            <TableDataNotFound />
+          )}
         </WrapClassTable>
 
         <DialogCustome
@@ -232,6 +318,13 @@ export default class StudyJoin extends Component {
 
 const WrapContent = styled(Paper)`
   padding: 12px;
+  height: ${(props) => props.height};
+  .filter {
+    display: flex;
+    .item-filter {
+      margin-right: 8px;
+    }
+  }
   .list-mystudies {
     margin-top: 15px;
     max-height: 520px;
@@ -249,5 +342,5 @@ const WrapContent = styled(Paper)`
 const WrapClassTable = styled.div`
   margin: 15px 0;
   padding-bottom: 15px;
-  max-height: 500px;
+  height: 100%;
 `;
