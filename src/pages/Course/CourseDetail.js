@@ -526,7 +526,7 @@ class CourseDetail extends Component {
                   >
                     {course.status === "propose" && "Proposed"}
                     {course.status === "accept" && "Published"}
-                    {course.status === "progress" && "Propose My Course"}
+                    {course.status === "draft" && "Propose My Course"}
                   </Button>
                 )}
               </div>

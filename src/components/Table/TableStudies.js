@@ -163,7 +163,7 @@ export default function TableStudies(props) {
   return (
     <>
       {/* </BoxCustom> */}
-      <TableContainer sx={{ height: "80%" }}>
+      <TableContainer sx={{ height: "75%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

@@ -124,11 +124,11 @@ const routes = [
     layout: "admin",
     component: CourseDetail,
   },
-  {
-    path: "course/:id",
-    layout: "admin",
-    component: CourseDetail,
-  },
+  // {
+  //   path: "course/:id",
+  //   layout: "admin",
+  //   component: CourseDetail,
+  // },
   {
     path: "course/setup",
     layout: "admin",

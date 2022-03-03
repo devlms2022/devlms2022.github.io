@@ -4,7 +4,8 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Select
+  Select,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { Component, useEffect, useState } from "react";
@@ -17,6 +18,9 @@ import DialogCustome from "../../components/Dialog";
 import Input from "../../components/Form/Input";
 import Search from "../../components/Form/Search";
 import FormPersonalData from "../../components/Form/Signup/FormPersonalData";
+import HeaderContent from "../../components/Header/HeaderContent";
+import HeaderContent2 from "../../components/Header/HeaderContent2";
+import TableDataNotFound from "../../components/Label/TableDataNotFound";
 import Navtab from "../../components/Navtab";
 import Paper from "../../components/Paper";
 import { TableUser } from "../../components/Table";
@@ -42,7 +46,7 @@ function CardImageRegister(props) {
           },
           { responseType: "blob" }
         );
-  
+
         util.cekFile(proofTeacherGrade.data, (response) => {
           if (response) set_proof_teacher_grade(response);
         });
@@ -72,7 +76,6 @@ function CardImageRegister(props) {
       }
     }
     getData();
-   
   }, [role]);
 
   if (role === "2") {
@@ -246,7 +249,7 @@ export default class UserRegister extends Component {
     Api.post("/activate", {
       id,
       status,
-      id_role : this.state.registerDetail.role_id, 
+      id_role: this.state.registerDetail.role_id,
     })
       .then((res) => {
         if (res.status === 200 && res.data.code === 200) {
@@ -336,8 +339,9 @@ export default class UserRegister extends Component {
     ];
 
     return (
-      <WrapContent height={this.props.heightContent + "px"} >
-        <Grid className="filter" container spacing={3}>
+      <WrapContent height={this.props.heightContent + "px"}>
+        <HeaderContent shownGoBack={false} title="User Register" />
+        <Grid className="filter" container spacing={1}>
           <Grid sm={12} md={3} xl={3} lg={3} item>
             <Box>
               <Navtab
@@ -359,16 +363,21 @@ export default class UserRegister extends Component {
             />
           </Grid>
         </Grid>
-        <TableUser
-          actionClicked={this.handleAction}
-          data={users}
-          total={totalData}
-          page={page}
-          limit={limit}
-          onChangePage={this.handleChangePage}
-          onChangeRowPerpage={this.handleChangeRowsPerPage}
-          onClickDetail={(id) => this.handleDetailClicked(id)}
-        />
+        {users.length > 0 ? (
+          <TableUser
+            actionClicked={this.handleAction}
+            data={users}
+            total={totalData}
+            page={page}
+            limit={limit}
+            onChangePage={this.handleChangePage}
+            onChangeRowPerpage={this.handleChangeRowsPerPage}
+            onClickDetail={(id) => this.handleDetailClicked(id)}
+          />
+        ) : (
+          <TableDataNotFound />
+        )}
+
         <DialogCustome
           maxWidth="lg"
           title="Detail User Register"
@@ -462,9 +471,12 @@ export default class UserRegister extends Component {
 }
 
 const WrapContent = styled(Paper)`
-  height:  ${(props) => props.height} ;
+  height: ${(props) => props.height};
   padding: 15px;
   margin-bottom: 15px;
+  .filter {
+    margin-top : 5px;
+  }
 `;
 
 const ImgContainer = styled.div`
