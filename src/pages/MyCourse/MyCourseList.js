@@ -1,14 +1,14 @@
 import { Grid, MenuItem, TablePagination } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
-import MyCourseCard from "../../components/Card/MyCourseCard";
+import DialogCustome from "../../components/Dialog";
+import Search from "../../components/Form/Search";
+import InputSelect from "../../components/Form/Select";
 import HeaderContent2 from "../../components/Header/HeaderContent2";
 import Paper from "../../components/Paper";
-import TokenService from "../../services/token.services";
-import Search from "../../components/Form/Search";
-import { Api } from "../../services/api";
 import TableCourseStudent from "../../components/Table/TableCourseStudent";
-import InputSelect from "../../components/Form/Select";
+import { Api } from "../../services/api";
+import TokenService from "../../services/token.services";
 
 class MyCourseList extends Component {
   constructor(props) {
@@ -25,6 +25,7 @@ class MyCourseList extends Component {
         key: "",
         value: "",
       },
+      openDialogCourse: false,
     };
     this.userSign = TokenService.getUser().data;
   }
@@ -36,7 +37,7 @@ class MyCourseList extends Component {
       const filter = {
         id_user: this.userSign.id,
       };
-      if(filterChanged.value !== ""){
+      if (filterChanged.value !== "") {
         filter[filterChanged.key] = filterChanged.value;
       }
 
@@ -100,9 +101,6 @@ class MyCourseList extends Component {
     this.fetchDataMyCourses();
   }
 
-  handleClickCourse = (id) => {
-    this.props.history.push(`/mycourse/${id}`);
-  };
 
   handleSearch = (key) => {
     this.setState({
@@ -130,6 +128,12 @@ class MyCourseList extends Component {
     });
   };
 
+  handleActionClicked = (e, action, id_class, id_course) => {
+    if (action === "continue") {
+      this.props.history.push(`/mycourse/${id_course}/1`);
+    }
+  };
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.filterChanged.value !== this.state.filterChanged.value) {
       this.fetchDataMyCourses();
@@ -149,6 +153,7 @@ class MyCourseList extends Component {
       filterChanged,
       filter,
     } = this.state;
+
 
     //filtering duplicate filter values
     let filteredValChanged = [];
@@ -207,32 +212,11 @@ class MyCourseList extends Component {
             </Grid>
           </Grid>
         </div>
-        {/* <Grid className="list" container spacing={1}>
-          {myCourseData.map((itm, index) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                <MyCourseCard
-                  course={itm.master_course.title_course}
-                  idCourse={itm.id}
-                  img={itm.master_course.thumbnail}
-                  faculty={itm.master_study.faculty.name}
-                  study={itm.master_study.name_study}
-                  teacherName={"Bagus Fatwan Alfiat"}
-                  totalCh={0}
-                  totalStudent={0}
-                  progress={0}
-                  isLoding={isLoading}
-                  onClick={this.handleClickCourse}
-                />
-              </Grid>
-            );
-          })}
-        </Grid> */}
         <TableCourseStudent
           data={myCourseData}
           page={page}
           limit={limit}
-          actionClicked={() => {}}
+          actionClicked={this.handleActionClicked}
         />
         <TablePagination
           component="div"
@@ -243,6 +227,10 @@ class MyCourseList extends Component {
           rowsPerPageOptions={[10, 25, 100]}
           onRowsPerPageChange={() => {}}
         />
+        <DialogCustome
+          maxWidth="md"
+          open={this.state.openDialogCourse}
+        ></DialogCustome>
       </ConentWarp>
     );
   }

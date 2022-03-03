@@ -5,11 +5,10 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import SunEditor, { buttonList } from "suneditor-react";
-import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
-import UploadImgDefault from "../../../assets/images/uploadvideo.png";
+import UploadImgDefault from "../../../assets/images/uploadshow.png";
+import UploadVideoDefault from "../../../assets/images/uploadvideo.png";
 import CircularLabel from "../../Progress/CircularLabel";
 import BaseTabs from "../../Tabs";
 import { Label } from "../../Text";
@@ -45,21 +44,21 @@ const FormStep2 = (props) => {
 
   return (
     <div className="form">
-      <div  className="form-control">
-        <Label>Video Introduction</Label>
+      <div className="form-control">
+        <Label>Thumbnail Of Course</Label>
       </div>
       <FormControl fullWidth className="form-control">
-        <InputLabel>Type Video</InputLabel>
+        <InputLabel>Type of Thumbnail</InputLabel>
         <Select
           onChange={handleChange}
           fullWidth
           name="is_embed_video"
-          label="Type Video"
+          label="Type of Thumbnail"
           value={data?.is_embed_video}
-          
         >
-          <MenuItem value={1}>Embed</MenuItem>
-          <MenuItem value={0}>Upload</MenuItem>
+          <MenuItem value={2}>Image</MenuItem>
+          <MenuItem value={1}>Embed Video</MenuItem>
+          <MenuItem value={0}>Upload Video</MenuItem>
         </Select>
 
         <FormHelperText>
@@ -69,12 +68,12 @@ const FormStep2 = (props) => {
       <div>
         {data?.is_embed_video === 1 && (
           <Input
-            label="Url Video"
+            label="Source"
             fullWidth
             value={data?.intro_video}
             onChange={handleChange}
             name="intro_video"
-            placeholder="eg. https://www.youtube.com/watch?v=CNbmVEEW-mA&list=RDfhn3VE7G06g&index=11"
+            placeholder="ex. https://www.youtube.com/watch?v=CNbmVEEW-mA&list=RDfhn3VE7G06g&index=11"
           />
         )}
         {data?.is_embed_video === 0 && (
@@ -106,8 +105,32 @@ const FormStep2 = (props) => {
                   onChange={handleChange}
                 />
                 <label htmlFor={"video"} className="upload">
-                  <img src={UploadImgDefault} alt="intro-video-preview" />
+                  <img src={UploadVideoDefault} alt="intro-video-preview" />
                   <div>Drop Here Video or Click</div>
+                </label>
+              </>
+            )}
+          </div>
+        )}
+        {data?.is_embed_video === 2 && (
+          <div className="upload-container">
+            {data.thumbnailImgBlob && (
+              <div className="preview">
+                <img src={data.thumbnailImgBlob} alt="thumbnail-preview" />
+              </div>
+            )}
+            {!data.thumbnailImgBlob && (
+              <>
+                <input
+                  id={"thumbnail"}
+                  style={{ display: "none" }}
+                  type={"file"}
+                  name="thumbnail"
+                  onChange={handleChange}
+                />
+                <label htmlFor={"thumbnail"} className="upload">
+                  <img src={UploadImgDefault} alt="intro-img-preview" />
+                  <div>Drop Here Image or Click</div>
                 </label>
               </>
             )}
@@ -120,20 +143,15 @@ const FormStep2 = (props) => {
 
 const FormAddCourse = (props) => {
   //   const [field, setField] = useState({});
-  const {  data, handleChange,  persentaseLoading } = props;
+  const { data, handleChange, persentaseLoading } = props;
 
   return (
     <WrapContent>
       <BaseTabs
-        tabLabel={["Course", "Video (optional)"]}
+        tabLabel={["Course", "Thumbnail (optional)"]}
         tabPanel={[
           {
-            content: (
-              <FormStep1
-                handleChange={handleChange}
-                data={data}
-              />
-            ),
+            content: <FormStep1 handleChange={handleChange} data={data} />,
           },
           {
             content: (
@@ -188,7 +206,7 @@ const WrapContent = styled.div`
         /* height: 162px; */
         img {
           width: 100%;
-          height: 100%;
+          max-height: 100%;
           /* object-fit: contain; */
         }
       }
@@ -201,6 +219,10 @@ const WrapContent = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        img {
+          width: 100%;
+        }
 
         .circular-container {
           position: absolute;

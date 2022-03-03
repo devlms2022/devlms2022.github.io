@@ -1,5 +1,5 @@
-import { Badge, PlayLesson, TextSnippet } from "@mui/icons-material";
-import { Button, IconButton, Tooltip } from "@mui/material";
+import { Delete, TextSnippet } from "@mui/icons-material";
+import { IconButton, Tooltip } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,28 +11,19 @@ import React from "react";
 import util from "../../utils/utilities";
 import { default as BoxCustom } from "../Box";
 
-export default function TableCourseStudent(props) {
+export default function TableStudentEnrollCourse(props) {
   const { data, actionClicked, role_id, limit, page } = props;
 
   const columns = [
     { id: "no", label: "No", minWidth: 10 },
-
     {
-      id: "course",
-      label: "Course",
-      minWidth: 100,
+      id: "name",
+      label: "Name",
       align: "left",
     },
     {
-      id: "teacher",
-      label: "Teacher (Author)",
-      minWidth: 100,
-      align: "left",
-    },
-    {
-      id: "status",
-      label: "Status",
-      minWidth: 100,
+      id: "email",
+      label: "Email",
       align: "left",
     },
     {
@@ -49,32 +40,30 @@ export default function TableCourseStudent(props) {
     },
     {
       id: "action",
-      label: "",
+      label: "Action",
       minWidth: 20,
       align: "center",
-      format: ({ id_class, id_study, id_course, status_confirm }) => {
+      format: ({ id_class, id_user }) => {
         return (
           <BoxCustom direction="row" width="100%" justify="center">
-            {status_confirm === "accept" && (
-              <Button
-                onClick={(e) =>
-                  actionClicked(e, "continue", id_class, id_course)
-                }
-                startIcon={<PlayLesson fontSize="small" />}
+            <Tooltip placement="top" title="See More">
+              <IconButton
+                onClick={(e) => actionClicked(e, "detail", id_class, id_user)}
+                color="info"
                 size="small"
               >
-                Continue Learning
-              </Button>
-            )}
-            {(status_confirm === "pending" || status_confirm === "reject") && (
-              <Button
-                onClick={(e) => actionClicked(e, "detail", id_class, id_course)}
-                startIcon={<TextSnippet fontSi9ze="small" />}
+                <TextSnippet />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="top" title="Delete">
+              <IconButton
+                onClick={(e) => actionClicked(e, "delete", id_class, id_user)}
                 size="small"
+                color="error"
               >
-                See More Course
-              </Button>
-            )}
+                <Delete />
+              </IconButton>
+            </Tooltip>
           </BoxCustom>
         );
       },
@@ -89,21 +78,16 @@ export default function TableCourseStudent(props) {
     return {
       id: item.id,
       no: number,
-      course: item.master_course.title_course,
-      teacher: item.master_course.created.profile.fullname || "-",
+      name: item.user.profile.fullname,
+      email: item.user.email,
       progress: "0%",
-      status: item.status_confirm,
       created_at: util.moment(item.created_at),
       action: {
         id_class: item.id,
-        id_study: item.id_study,
-        id_course: item.id_course,
-        status_confirm: item.status_confirm,
+        id_user: item.id_user,
       },
     };
   });
-
-  // console.log("rows",rows);
 
   return (
     <>
@@ -145,7 +129,7 @@ export default function TableCourseStudent(props) {
   );
 }
 
-TableCourseStudent.propTypes = {
+TableStudentEnrollCourse.propTypes = {
   data: PropsType.array.isRequired,
   actionClicked: PropsType.func,
   role_id: PropsType.number,

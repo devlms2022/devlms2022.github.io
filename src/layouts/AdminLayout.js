@@ -172,7 +172,7 @@ const BreadcrumbWrap = styled.div`
 
 const Container = styled(Box)`
   width: 100%;
-  padding: 20px;
+  padding: 8px;
   @media screen and (max-width: 768px) {
     padding: 0px;
   }

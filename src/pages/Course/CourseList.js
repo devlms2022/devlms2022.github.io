@@ -36,6 +36,7 @@ class CourseList extends Component {
           is_embed_video: 1,
           blobVideo: undefined,
           video: undefined,
+          thumbnailImgBlob: undefined,
         },
         persentaseLoading: 0,
       },
@@ -183,11 +184,12 @@ class CourseList extends Component {
             id_study: "",
             title_course: "",
             description: "",
-            thumbnail: "",
+            thumbnail: undefined,
             intro_video: "",
             is_embed_video: 1,
             blobVideo: undefined,
             video: undefined,
+            thumbnailImgBlob: undefined,
           },
           persentaseLoading: 0,
         },
@@ -211,6 +213,9 @@ class CourseList extends Component {
       formdata.append("intro_video", data.video);
     } else if (data.is_embed_video === 1) {
       formdata.append("intro_video", data.intro_video);
+    }
+    if (data.thumbnail) {
+      formdata.append("thumbnail", data.thumbnail);
     }
     formdata.append("is_embed_video", data.is_embed_video);
     formdata.append("created_by", this.userSign.id);
@@ -288,16 +293,25 @@ class CourseList extends Component {
           });
         };
         reader.readAsDataURL(files[0]);
-      } else {
+      }
+    } if (name === "thumbnail") {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        let blobData = e.target.result; //blob data
         this.setState({
           courseAdd: {
+            ...this.state.courseAdd,
             data: {
               ...this.state.courseAdd.data,
-              [name]: value,
+              [name]: 0,
+              blobVideo: blobData,
+              thumbnail: files[0],
+              thumbnailImgBlob: blobData,
             },
           },
         });
-      }
+      };
+      reader.readAsDataURL(files[0]);
     } else {
       this.setState({
         courseAdd: {
@@ -355,7 +369,6 @@ class CourseList extends Component {
       filter,
       filterChanged,
     } = this.state;
-
 
     //filtering duplicate filter values
     let filteredValChanged = [];

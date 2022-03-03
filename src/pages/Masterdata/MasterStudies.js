@@ -12,7 +12,6 @@ import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
 import Swal from "sweetalert2";
 
-
 class MasterStudies extends Component {
   constructor(props) {
     super(props);
@@ -203,6 +202,12 @@ class MasterStudies extends Component {
     });
   };
 
+  handleSearch = (keyword) => {
+    this.setState({
+      search: keyword,
+    });
+  };
+
   componentDidMount = () => {
     this.fetchStudies();
     this.fetchFaculty();
@@ -212,9 +217,7 @@ class MasterStudies extends Component {
     if (prevState.search !== this.state.search) {
       this.fetchStudies();
     }
-    if (prevState.search !== this.state.search) {
-      this.fetchStudies();
-    }
+
     if (
       prevState.page !== this.state.page ||
       prevState.limit !== this.state.limit
@@ -245,7 +248,11 @@ class MasterStudies extends Component {
             )}
           </Grid>
           <Grid item md={6} xl={6} xs={12}>
-            <Search width="100%" placeholder="Enter keyword" />
+            <Search
+              onChange={this.handleSearch}
+              width="100%"
+              placeholder="Enter keyword"
+            />
           </Grid>
         </Grid>
         <WrapStudy>
@@ -333,5 +340,3 @@ const WrapStudy = styled.div`
   /* background: red; */
   /* max-height: 200px; */
 `;
-
-

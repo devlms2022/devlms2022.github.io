@@ -1,6 +1,7 @@
+import React from "react";
+import PropTypes from "prop-types";
 import { SearchRounded } from "@mui/icons-material";
 import { FormControl, InputAdornment, TextField } from "@mui/material";
-import React from "react";
 
 const Search = (props) => {
   const {
@@ -38,3 +39,15 @@ const Search = (props) => {
 };
 
 export default Search;
+
+Search.propTypes = {
+  width: PropTypes.string,
+  onChange: PropTypes.func,
+  name: PropTypes.string,
+  className: PropTypes.string,
+  onBlur: PropTypes.func,
+  placeholder: PropTypes.string,
+  value: PropTypes.string,
+  onKeyDown: PropTypes.func,
+  mt: PropTypes.number,
+};

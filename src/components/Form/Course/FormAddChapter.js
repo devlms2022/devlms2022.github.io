@@ -74,14 +74,14 @@ const FormStep2 = (props) => {
               value={data?.video}
               onChange={handleChange}
               name="video"
-              placeholder="eg. https://www.youtube.com/watch?v=CNbmVEEW-mA&list=RDfhn3VE7G06g&index=11"
+              placeholder="ex. https://www.youtube.com/watch?v=qtN4-ooynsUM"
             />
             <div style={{marginTop : '15px'}} className={data?.video ? "video" : "no-display"}>
               <iframe
                 width="100%"
                 height="480"
-                src={data?.video}
-                hidden={data?.video ? false : true}
+                src={data?.videoUrlEmbed}
+                hidden={data?.videoUrlEmbed ? false : true}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

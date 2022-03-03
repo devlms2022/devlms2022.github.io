@@ -14,6 +14,7 @@ import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
 import utilities from "../../utils/utilities";
 import ChapterList from "./ChapterList";
+import StudentCourseList from "./StudentCourseList";
 
 class CourseDetail extends Component {
   _isMounted = false;
@@ -29,6 +30,7 @@ class CourseDetail extends Component {
         chapter_title: "",
         description: "",
         video: "",
+        videoUrlEmbed: "",
         is_video_embed: 1,
         blobVideo: undefined,
         videoFile: undefined,
@@ -39,6 +41,7 @@ class CourseDetail extends Component {
         limit: 10,
         page: 0,
       },
+      studentChanged : {},
       courseEnrolled: {
         data: [],
         total: 0,
@@ -98,9 +101,10 @@ class CourseDetail extends Component {
         limit,
         filter: {
           id_course: this.courseId,
+          status_confirm : "accept"
         },
       });
-      if(res.data.code === 200 && res.status === 200) {
+      if (res.data.code === 200 && res.status === 200) {
         this.setState({
           courseEnrolled: {
             ...this.state.courseEnrolled,
@@ -117,8 +121,6 @@ class CourseDetail extends Component {
       alert(error.message);
     }
   };
-
-  blobVideo = (data) => {};
 
   fetchChapterById = async (id) => {
     this.setState({ loading: true });
@@ -205,10 +207,13 @@ class CourseDetail extends Component {
         };
         reader.readAsDataURL(files[0]);
       } else {
+        const parseUrl = utilities.ytURLParser(value);
+
         this.setState({
           chapterForm: {
             ...this.state.chapterForm,
             [name]: value,
+            videoUrlEmbed: parseUrl,
           },
         });
       }
@@ -222,15 +227,6 @@ class CourseDetail extends Component {
     }
   };
 
-  handleBlur = (e, text) => {
-    this.setState({
-      chapterForm: {
-        ...this.state.chapterForm,
-        description: text,
-      },
-    });
-  };
-
   handleSaveChapter = async (param) => {
     const { chapterForm, idSelect } = this.state;
     const formdata = new FormData();
@@ -240,7 +236,7 @@ class CourseDetail extends Component {
     if (chapterForm.is_video_embed === 0) {
       formdata.append("video", chapterForm.videoFile);
     } else if (chapterForm.is_video_embed === 1) {
-      formdata.append("video", chapterForm.video);
+      formdata.append("video", chapterForm.videoUrlEmbed);
     }
     formdata.append("is_video_embed", chapterForm.is_video_embed);
     formdata.append("created_by", this.user.id);
@@ -386,6 +382,7 @@ class CourseDetail extends Component {
           description: "",
           thumbnail: "",
           video: "",
+          videoUrlEmbed: "",
           is_video_embed: 1,
           blobVideo: undefined,
           videoFile: undefined,
@@ -540,7 +537,7 @@ class CourseDetail extends Component {
                 ) : (
                   <>
                     <HeaderContent2
-                      subtitle={course?.master_study.name_study}
+                      subtitle={`Study : ${course?.master_study?.name_study}`}
                       title={course?.title_course}
                     />
                     {this.user.role_id === "2" && (
@@ -602,6 +599,27 @@ class CourseDetail extends Component {
                       />
                     ),
                   },
+                  {
+                    content: courseEnrolled.loading ? (
+                      <Skeleton
+                        animation="wave"
+                        sx={{ height: 190 }}
+                        variant="rectangular"
+                      />
+                    ) : (
+                      <StudentCourseList
+                        handleChangePage={() => {}}
+                        onSearch={() => {}}
+                        role_id={this.user.role_id}
+                        handleChangeRowsPerPage={() => {}}
+                        onClickAdd={() => {}}
+                        limit={courseEnrolled.limit}
+                        page={courseEnrolled.page}
+                        total={courseEnrolled.total}
+                        data={courseEnrolled.data}
+                      />
+                    ),
+                  },
                 ]}
               />
             </WrapContent>
@@ -624,7 +642,6 @@ class CourseDetail extends Component {
             data={chapterForm}
             persentaseLoading={persentaseLoading}
             handleChange={this.handleChange}
-            // handleBlur={this.handleBlur}
           />
         </DialogCustome>
       </>
@@ -634,80 +651,8 @@ class CourseDetail extends Component {
 
 export default CourseDetail;
 
-const WrapHeader = styled(Paper)`
-  padding: 5px;
-  .cover-course {
-    width: 100%;
-    border-radius: 4px;
-    height: 130px;
-    background-image: url("https://esqcourse.com/wp-content/uploads/2021/12/background-kurus-bahasa-inggris-anak.png");
-    repeat: no-repeat;
-    background-size: cover;
-    display: flex;
-    justify-content: flex-end;
-    background-position: center;
-    padding: 8px;
-    flex-direction: column;
-    .cover-content-top {
-      width: 100%;
-      height: 50%;
-      flex-direction: row;
-      justify-content: space-between;
-      /* background-color: red; */
-      .cover-content-top-left {
-        width: 28px;
-        .role {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-        }
-      }
-      .cover-content-top-right {
-      }
-    }
-    .cover-content-bottom {
-      width: 100%;
-      height: 50%;
-      /* background-color: yellow; */
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      .cover-content-bottom-left {
-        /* background: green; */
-      }
-      .cover-content-bottom-right {
-        /* background: orange; */
-        display: flex;
-        flex-direction: row;
-        height: 100%;
-        align-items: flex-end;
-        .content {
-          margin-right: 10px;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-          }
-        }
-      }
-    }
-  }
-  .table-container {
-    padding: 15px 0;
-    margin: 15px 0;
-    padding-bottom: 15px;
-  }
-`;
-
 const WrapContent = styled(Paper)`
   padding: 8px;
-
   .container-thumbnail {
     width: 100%;
     img {

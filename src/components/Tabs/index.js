@@ -1,7 +1,8 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import React from "react";
+import propTypes from "prop-types";
 
 export function TabPanel(props) {
   const { value, index, content } = props;
@@ -18,13 +19,15 @@ export function TabPanel(props) {
 }
 
 export default function BaseTabs(props) {
+  const { tabLabel, tabPanel = [], tabActive, onChange } = props;
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
+    if (typeof onChange === "function") {
+      onChange(newValue);
+    }
     setValue(newValue);
   };
-
-  const { tabLabel, tabPanel = [] } = props;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -47,7 +50,7 @@ export default function BaseTabs(props) {
 
         return (
           <TabPanel
-            value={value}
+            value={tabActive ? tabActive : value}
             key={key.toString()}
             index={key}
             content={Component}
@@ -57,3 +60,10 @@ export default function BaseTabs(props) {
     </Box>
   );
 }
+
+BaseTabs.propTypes = {
+  tabLabel: propTypes.array,
+  tabPanel: propTypes.array,
+  tabActive: propTypes.number,
+  onChange: propTypes.func,
+};

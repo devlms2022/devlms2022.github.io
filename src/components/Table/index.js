@@ -4,6 +4,7 @@ import TableStudies from "./TableStudies";
 import TableClasses from "./TableClass";
 import TableCourse from "./TableCourse";
 import TableCourseStudent from "./TableCourseStudent";
+import TableStudentEnrollCourse from "./TableStudentEnrollCourse";
 
 export {
   TableUser,
@@ -12,4 +13,5 @@ export {
   TableClasses,
   TableCourse,
   TableCourseStudent,
+  TableStudentEnrollCourse,
 };

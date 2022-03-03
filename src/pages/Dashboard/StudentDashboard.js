@@ -1,12 +1,4 @@
-import { AccountBox, Book, Group } from "@mui/icons-material";
-import {
-  Button,
-  Chip,
-  Divider,
-  Grid,
-  Skeleton,
-  Typography,
-} from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -16,7 +8,6 @@ import DetailCourse from "../../components/Courses/DetailCourse";
 import DialogFull from "../../components/Dialog/DialogFull";
 import HeaderContent2 from "../../components/Header/HeaderContent2";
 import Paper from "../../components/Paper";
-import { Subtitle } from "../../components/Text";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
 
@@ -50,9 +41,9 @@ export default class StudentDashboard extends Component {
           isLoading: true,
         },
       });
-      const courses = await Api.post("/classes", {
+      const courses = await Api.post("/master_course", {
         filter: {
-          status_confirm: "accept",
+          status: "accept",
         },
       });
       if (courses.data.code === 200) {
@@ -159,12 +150,14 @@ export default class StudentDashboard extends Component {
             status_confirm: "pending",
           });
           if (register.data.code === 200) {
+            this.handleCloseDialogLG();
             Swal.fire("Success", register.data.message, "success");
           } else {
             throw new Error(register.data.message);
           }
         } catch (error) {
-          alert(error.message);
+          this.handleCloseDialogLG();
+          Swal.fire("Sorry", error.message, "error");
         }
       }
     });
@@ -244,15 +237,15 @@ export default class StudentDashboard extends Component {
               return (
                 <Grid key={key} item xl={3} lg={3} md={4} sm={12} xs={12}>
                   <CourseCard
-                    course={itm.master_course.title_course}
-                    img={itm.master_course.thumbnail}
+                    course={itm.title_course}
+                    img={itm.thumbnail}
                     faculty={itm.master_study.faculty.name}
                     study={itm.master_study.name_study}
-                    teacherName={"Bagus Fatwan Alfiat"}
-                    totalCh={0}
+                    teacherName={itm.created.profile.fullname}
+                    totalCh={itm.chapters.length}
                     totalStudent={0}
-                    isLoding={myCourses.isLoading}
-                    idCourse={itm.id_course}
+                    isLoding={courses.isLoading}
+                    idCourse={itm.id}
                     onClick={this.handleClickCourse}
                   />
                 </Grid>

@@ -55,7 +55,7 @@ const routes = [
     component: MyCourseList,
   },
   {
-    path: "mycourse/:id",
+    path: "mycourse/:id/:ch",
     layout: "admin",
     basePath: true,
     component: CourseLearning,

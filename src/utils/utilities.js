@@ -89,6 +89,17 @@ class Utilities {
       }
     });
   }
+
+  ytURLParser(url) {
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    if (match && match[2].length >= 11) {
+      const urlEmbed = `https://www.youtube.com/embed/${match[2]}`;
+      return urlEmbed;
+    } else {
+      return false;
+    }
+  }
 }
 
 export default new Utilities();
