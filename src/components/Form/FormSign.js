@@ -126,7 +126,7 @@ const FormSign = (props) => {
           className="btn"
           text="Sign Up"
           onClick={onOpenSignUp}
-        ></Button>
+        />
       </Box>
     </Wraplogin>
   );

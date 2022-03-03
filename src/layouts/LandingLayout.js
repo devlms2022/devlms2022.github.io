@@ -94,10 +94,6 @@ function App(props) {
     navigate.push("/signup");
   };
 
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
-
   return (
     <>
       {pathname === "/signup" || pathname === "/resetpassword" ? (
