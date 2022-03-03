@@ -166,7 +166,7 @@ const routes = [
     component: Questions,
   },
   {
-    path: "resetpassword",
+    path: "/resetpassword",
     layout: "auth",
     component: ForgotPassword,
   },

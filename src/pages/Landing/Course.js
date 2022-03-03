@@ -16,6 +16,7 @@ import FormSign from "../../components/Form/FormSign";
 import SimpleReactValidator from "simple-react-validator";
 import TokenService from "../../services/token.services";
 import ImageLogin from "../../assets/images/loginimage.png";
+import HeaderLogin from "../../components/Header/HeaderLogin";
 
 const Course = (props) => {
   const [courses, setCourse] = useState([]);
@@ -58,7 +59,6 @@ const Course = (props) => {
           email,
           password,
         });
-        // console.log(response);
         if (response.status === 200) {
           if (response.data.success) {
             TokenService.setUser(response.data.data);
@@ -104,7 +104,6 @@ const Course = (props) => {
       const course = await Api.post(`/master_coursebyid`, {
         id,
       });
-      console.log(course);
       if (course.data.code === 200) {
         setIsLoading(!isLoading);
         setShownModalLG(!shownModalLG);
@@ -133,7 +132,7 @@ const Course = (props) => {
 
   const handleModalHaveAccount = () => {
     Swal.fire({
-      title: "Are you have a Account?",
+      title: "Are you have account?",
       icon: "warning",
       showDenyButton: true,
       confirmButtonColor: "var(--primary-color)",
@@ -166,8 +165,6 @@ const Course = (props) => {
     getCourse();
   }, []);
 
-  console.log(courseSelected);
-
   return (
     <ListStudies>
       <Typography variant="h4" mb={5}>
@@ -177,7 +174,14 @@ const Course = (props) => {
         {courses.map((course) => (
           <Grid item xs={6} md={3} key={course.id}>
             <Paper className="course">
-              <img className="img_course" src={course.thumbnail} />
+              <img
+                className="img_course"
+                src={
+                  course.thumbnail
+                    ? course.thumbnail
+                    : "http://beepeers.com/assets/images/tradeshows/default-image.jpg"
+                }
+              />
               <div className="chip">
                 <Chip
                   label={course.master_study.faculty.name}
@@ -268,7 +272,13 @@ const Course = (props) => {
             />
           )}
         </DialogFull>
-        <DialogFull open={showModalSignIn} maxWidth="md" p="0px">
+        <DialogFull
+          open={showModalSignIn}
+          maxWidth="md"
+          p="0px"
+          onClose={() => setModalShown(modalShown)}
+        >
+          <HeaderLogin onClick={() => setModalShown(!modalShown)} />
           <Grid container spacing={2}>
             <Grid item sm={7}>
               <Box className="warplogo">

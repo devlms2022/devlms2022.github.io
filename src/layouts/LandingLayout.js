@@ -2,7 +2,9 @@ import {
   Box,
   Container,
   Dialog,
-  DialogContent, Grid, Slide
+  DialogContent,
+  Grid,
+  Slide,
 } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
@@ -91,10 +93,6 @@ function App(props) {
     setModalShown(false);
     navigate.push("/signup");
   };
-
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 
   return (
     <>
