@@ -70,6 +70,7 @@ const routes = [
   {
     path: "/profile",
     layout: "admin",
+    basePath: true,
     component: Profile,
   },
   {

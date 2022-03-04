@@ -19,6 +19,7 @@ import ImageLogin from "../../assets/images/loginimage.png";
 import HeaderLogin from "../../components/Header/HeaderLogin";
 
 const Course = (props) => {
+  const { signIn } = props;
   const [courses, setCourse] = useState([]);
   const [shownModalLG, setShownModalLG] = useState(false);
   const [showModalSignIn, setShowModalSignIn] = useState(false);
@@ -26,8 +27,6 @@ const Course = (props) => {
   const [idCourseSelected, setIdCourseSelected] = useState("");
   const [courseSelected, setCourseSelected] = useState({});
   const redirect = useHistory();
-
-  const [modalShown, setModalShown] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertShown, setShownAlert] = useState(false);
@@ -43,16 +42,8 @@ const Course = (props) => {
     }
   };
 
-  const [errors, setErrors] = useState({});
-
-  const SignupHandler = async () => {
-    const history = useHistory();
-    history.push("/signup");
-  };
-
   const submitHandler = async (validation) => {
     if (validation) {
-      const { REACT_APP_API_URL } = process.env;
       setIsLoading(!isLoading);
       try {
         const response = await Api.post(`/auth`, {
@@ -69,7 +60,7 @@ const Course = (props) => {
               icon: "success",
               confirmButtonText: "Ok",
             }).then((confirm) => {});
-            props.signIn(response.data.data);
+            signIn(response.data.data);
           } else if (response.data.code === 100) {
             Swal.fire({
               title: "Login Failed!",
@@ -79,7 +70,7 @@ const Course = (props) => {
             }).then((confirm) => {});
           }
         }
-        setModalShown(!modalShown);
+        setShowModalSignIn(!showModalSignIn);
       } catch (error) {
         setIsLoading(isLoading);
         console.log(error);
@@ -88,11 +79,11 @@ const Course = (props) => {
   };
 
   const onOpenSignUp = () => {
-    setModalShown(!modalShown);
+    setShowModalSignIn(!showModalSignIn);
     redirect.push("/signup");
   };
 
-  const onClick = (study, course) => {
+  const handleToSignUp = (study, course) => {
     redirect.push(`/signup?role_id=3&id_study=${study}&id_course=${course}`);
   };
 
@@ -132,7 +123,7 @@ const Course = (props) => {
 
   const handleModalHaveAccount = () => {
     Swal.fire({
-      title: "Are you have account?",
+      title: "Do you have account?",
       icon: "warning",
       showDenyButton: true,
       confirmButtonColor: "var(--primary-color)",
@@ -141,8 +132,9 @@ const Course = (props) => {
     }).then((res) => {
       if (res.isConfirmed) {
         handleShowSignIn();
+        handleCloseDialogLG();
       } else if (res.isDenied) {
-        onClick(courseSelected.id_study, courseSelected.id);
+        handleToSignUp(courseSelected.id_study, courseSelected.id);
       }
     });
   };
@@ -276,9 +268,9 @@ const Course = (props) => {
           open={showModalSignIn}
           maxWidth="md"
           p="0px"
-          onClose={() => setModalShown(modalShown)}
+          onClose={() => setShowModalSignIn(!showModalSignIn)}
         >
-          <HeaderLogin onClick={() => setModalShown(!modalShown)} />
+          <HeaderLogin onClick={() => setShowModalSignIn(!showModalSignIn)} />
           <Grid container spacing={2}>
             <Grid item sm={7}>
               <Box className="warplogo">
@@ -288,12 +280,14 @@ const Course = (props) => {
             <Grid item sm={5}>
               <FormSign
                 onSignin={(validation) => submitHandler(validation)}
-                onClickForgotPassword={() => setModalShown(!modalShown)}
+                onClickForgotPassword={() =>
+                  setShowModalSignIn(!showModalSignIn)
+                }
                 onChange={changHandler}
                 alertShown={alertShown}
                 validator={validator}
                 data={{ email, password }}
-                onSignup={(param) => setModalShown(!param)}
+                onSignup={(param) => setShowModalSignIn(!param)}
                 onOpenSignUp={onOpenSignUp}
               />
             </Grid>
