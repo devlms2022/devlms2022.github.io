@@ -1,22 +1,20 @@
-import { Button, Chip, Grid, IconButton, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Paper from "../../components/Paper";
-import InfoIcon from "@mui/icons-material/Info";
-import ButtonCustom from "../../components/Button/Button";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { Api } from "../../services/api";
-import QueryString from "query-string";
 import { Book, People, SwitchAccount } from "@mui/icons-material";
-import DialogFull from "../../components/Dialog/DialogFull";
-import DetailCourse from "../../components/Courses/DetailCourse";
-import Swal from "sweetalert2";
+import { Button, Chip, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import FormSign from "../../components/Form/FormSign";
-import SimpleReactValidator from "simple-react-validator";
-import TokenService from "../../services/token.services";
+import QueryString from "query-string";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import styled from "styled-components";
+import Swal from "sweetalert2";
 import ImageLogin from "../../assets/images/loginimage.png";
+import ButtonCustom from "../../components/Button/Button";
+import DetailCourse from "../../components/Courses/DetailCourse";
+import DialogFull from "../../components/Dialog/DialogFull";
+import FormSign from "../../components/Form/FormSign";
 import HeaderLogin from "../../components/Header/HeaderLogin";
+import Paper from "../../components/Paper";
+import { Api } from "../../services/api";
+import TokenService from "../../services/token.services";
 
 const Course = (props) => {
   const { signIn } = props;
@@ -30,7 +28,6 @@ const Course = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertShown, setShownAlert] = useState(false);
-  const validator = new SimpleReactValidator();
 
   const changHandler = (event) => {
     const { name, value } = event.target;
@@ -285,7 +282,6 @@ const Course = (props) => {
                 }
                 onChange={changHandler}
                 alertShown={alertShown}
-                validator={validator}
                 data={{ email, password }}
                 onSignup={(param) => setShowModalSignIn(!param)}
                 onOpenSignUp={onOpenSignUp}

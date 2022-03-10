@@ -1,4 +1,5 @@
-import { Grid } from "@mui/material";
+import { Edit, Image } from "@mui/icons-material";
+import { Box, Button, Grid } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -8,6 +9,7 @@ import ButtonCustom from "../../components/Button/Button";
 import FormAccount from "../../components/Form/Account/FormAccount";
 import InputFIle from "../../components/Form/InputFile";
 import { FormPersonalData } from "../../components/Form/Signup";
+import Paper from "../../components/Paper";
 import { Subtitle } from "../../components/Text";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
@@ -17,6 +19,7 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this._isMounted = false;
+    this.user = TokenService.getUser().data;
     this.state = {
       data: {
         study_master: "",
@@ -244,7 +247,7 @@ class Profile extends Component {
     return (
       <Wrap>
         <Grid container spacing={1}>
-          <Grid className="col wrap-avatar" item sm={3} xs={12}>
+          <Grid className="col wrap-avatar" item lg={2}>
             <div className="imagecontainer">
               <img src={avatar ? avatar : DefaultAvatar} alt="avatar" />
             </div>
@@ -253,49 +256,103 @@ class Profile extends Component {
               onChange={this.changeAvatar}
               name="avatar"
             />
+            <div className="doc-img-user">
+              {this.user.role_id === "2" && (
+                <Button
+                  size="small"
+                  variant="contained"
+                  startIcon={<Image fontSize="small" />}
+                >
+                  Proof Of Teacher Grade
+                </Button>
+              )}
+              {this.user.role_id === "3" && (
+                <>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{ mb: "8px" }}
+                    fullWidth
+                    startIcon={<Image fontSize="small" />}
+                  >
+                    Passport/Identity Card
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    startIcon={<Image fontSize="small" />}
+                    fullWidth
+                  >
+                    Grade(s)
+                  </Button>
+                </>
+              )}
+            </div>
           </Grid>
-          <Grid className="col wrap-profile" item sm={5} xs={12}>
-            <BoxCustom mb={1} direction="row" justify="space-between">
-              <Subtitle>
-                <span>My Profile</span>
-              </Subtitle>
-              <ButtonCustom
-                name="edit_profile"
-                onClick={this.handleSubmit}
-                variant="outlined"
+          <Grid className="col wrap-profile" item lg={5}>
+            <Paper>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  p: "10px",
+                }}
               >
-                EDIT PROFILE
-              </ButtonCustom>
-            </BoxCustom>
-            <FormPersonalData
-              className="form-personal"
-              errors={errors}
-              data={data}
-              disabled={disabled}
-              onChange={(e) => this.handleChange(e)}
-              isProfile={true}
-            />
+                <Subtitle>
+                  <span>My Profile</span>
+                </Subtitle>
+                <Button
+                  onClick={this.handleSubmit}
+                  name="edit_profile"
+                  size="small"
+                  color="primary"
+                  variant="contained"
+                >
+                  Save Changes
+                </Button>
+              </Box>
+
+              <FormPersonalData
+                className="form-personal"
+                errors={errors}
+                data={data}
+                disabled={disabled}
+                onChange={(e) => this.handleChange(e)}
+                isProfile={true}
+              />
+            </Paper>
           </Grid>
-          <Grid item sm={4} xs={12} className="col wrap-profile">
-            <BoxCustom mb={1} direction="row" justify="space-between">
-              <Subtitle>
-                <span>My Account</span>
-              </Subtitle>
-              <ButtonCustom
-                onClick={this.handleSubmit}
-                name="edit_account"
-                variant="outlined"
+          <Grid item lg={5} className="col wrap-profile">
+            <Paper className="paper">
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
               >
-                EDIT ACCOUNT
-              </ButtonCustom>
-            </BoxCustom>
-            <FormAccount
-              className="form-account"
-              errors={errors}
-              disabled={disabled}
-              data={data}
-              onChange={this.handleChange}
-            />
+                <Subtitle>
+                  <span>My Account</span>
+                </Subtitle>
+                <Button
+                  onClick={this.handleSubmit}
+                  name="edit_account"
+                  size="small"
+                  color="primary"
+                  variant="contained"
+                >
+                  Save Changes
+                </Button>
+              </Box>
+              <FormAccount
+                className="form-account"
+                errors={errors}
+                disabled={disabled}
+                data={data}
+                onChange={this.handleChange}
+              />
+            </Paper>
           </Grid>
         </Grid>
       </Wrap>
@@ -313,20 +370,35 @@ const Wrap = styled.div`
     align-items: center;
     text-align: center;
     .imagecontainer {
-      width: 250px;
-      height: 250px;
+      width: 180px;
+      height: 180px;
       background: white;
       overflow: hidden;
+
       border-radius: 100%;
       margin-bottom: 30px;
       img {
         width: 100%;
-        /* height: 100%; */
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .doc-img-user {
+      margin-top: 20px;
+      .btn-prev {
+        margin-bottom: 5px;
       }
     }
   }
   .wrap-profile {
     padding: 30px;
+    .paper {
+      padding: 10px;
+      .form-account {
+        padding: 0 10px;
+        margin-top: 12px;
+      }
+    }
   }
 `;
 

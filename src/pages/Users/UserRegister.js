@@ -1,3 +1,4 @@
+import React, { Component, useEffect, useState } from "react";
 import {
   Button,
   FormControl,
@@ -5,10 +6,8 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { Component, useEffect, useState } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import DefContainerImg from "../../assets/images/imgcontainer.png";
@@ -19,7 +18,6 @@ import Input from "../../components/Form/Input";
 import Search from "../../components/Form/Search";
 import FormPersonalData from "../../components/Form/Signup/FormPersonalData";
 import HeaderContent from "../../components/Header/HeaderContent";
-import HeaderContent2 from "../../components/Header/HeaderContent2";
 import TableDataNotFound from "../../components/Label/TableDataNotFound";
 import Navtab from "../../components/Navtab";
 import Paper from "../../components/Paper";
@@ -28,12 +26,20 @@ import { Label } from "../../components/Text";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
 import util from "../../utils/utilities";
+import Lightbox from "react-awesome-lightbox";
+import "react-awesome-lightbox/build/style.css";
 
 function CardImageRegister(props) {
   const { role, data, profileid } = props;
   const [proof_teacher_grade, set_proof_teacher_grade] = useState(null);
   const [grades, set_grades] = useState(null);
   const [identity_card, set_identity_card] = useState(null);
+  const [loadViewImage, setLoadViewImage] = useState("");
+
+  const onClickImage = (e) => {
+    const { id } = e.target;
+    setLoadViewImage(id);
+  };
 
   useEffect(() => {
     async function getData() {
@@ -93,12 +99,28 @@ function CardImageRegister(props) {
           <BoxCustom width="100%" justify="center" align="center">
             <Label>Proof Of Teacher Grade</Label>
             <ImgContainer>
-              <img
-                src={
-                  proof_teacher_grade ? proof_teacher_grade : DefContainerImg
-                }
-                alt="default-conainer-img"
-              />
+              {loadViewImage === "proof_teacher_grade" ? (
+                <Lightbox
+                  image={
+                    proof_teacher_grade ? proof_teacher_grade : DefContainerImg
+                  }
+                  alt="default-conainer-img"
+                  className="img"
+                  title="Proof Of Teacher Grade"
+                  onClose={() => setLoadViewImage("")}
+                />
+              ) : (
+                <img
+                  src={
+                    proof_teacher_grade ? proof_teacher_grade : DefContainerImg
+                  }
+                  alt="default-conainer-img"
+                  className="img"
+                  id="proof_teacher_grade"
+                  title="Proof Of Teacher Grade"
+                  onClick={onClickImage}
+                />
+              )}
             </ImgContainer>
           </BoxCustom>
         </Grid>
@@ -111,10 +133,24 @@ function CardImageRegister(props) {
           <BoxCustom width="100%" justify="center" align="center">
             <Label>Passport/Identity Card</Label>
             <ImgContainer>
-              <img
-                src={identity_card ? identity_card : DefContainerImg}
-                alt="default-conainer-img"
-              />
+              {loadViewImage === "identity_card" ? (
+                <Lightbox
+                  startIndex={0}
+                  image={identity_card ? identity_card : DefContainerImg}
+                  alt="default-conainer-img"
+                  title="Passport/Identity Card"
+                  className="img"
+                  onClose={() => setLoadViewImage("")}
+                />
+              ) : (
+                <img
+                  src={identity_card ? identity_card : DefContainerImg}
+                  alt="default-conainer-img"
+                  className="img"
+                  id="identity_card"
+                  onClick={onClickImage}
+                />
+              )}
             </ImgContainer>
           </BoxCustom>
         </Grid>
@@ -122,10 +158,23 @@ function CardImageRegister(props) {
           <BoxCustom width="100%" justify="center" align="center">
             <Label variant="bold">Grades</Label>
             <ImgContainer>
-              <img
-                src={grades ? grades : DefContainerImg}
-                alt="default-conainer-img"
-              />
+              {loadViewImage === "grades" ? (
+                <Lightbox
+                  image={grades ? grades : DefContainerImg}
+                  alt="default-conainer-img"
+                  className="img"
+                  title="Grades"
+                  onClose={() => setLoadViewImage("")}
+                />
+              ) : (
+                <img
+                  src={grades ? grades : DefContainerImg}
+                  alt="default-conainer-img"
+                  className="img"
+                  id="grades"
+                  onClick={onClickImage}
+                />
+              )}
             </ImgContainer>
           </BoxCustom>
         </Grid>
@@ -163,8 +212,13 @@ export default class UserRegister extends Component {
         proof_teacher_grade: undefined,
         grades: undefined,
         identity_card: undefined,
+        id_course: "",
+        id_study: "",
+        id_faculty: "",
       },
       listStudies: [],
+      listFaculties: [],
+      listCourses: [],
       navIndexActive: 0,
     };
   }
@@ -172,6 +226,7 @@ export default class UserRegister extends Component {
   componentDidMount = () => {
     this.getUsers();
     this.getStudyMaster();
+    this.getFacultyMaster();
     const userSign = TokenService.getUser();
     this.setState({ userSign: userSign.data });
   };
@@ -193,9 +248,12 @@ export default class UserRegister extends Component {
     });
   };
 
-  getUserById = async (id) => {
-    const response = await Api.post("/userbyid", {
-      id,
+  getUserClassById = async (id) => {
+    const response = await Api.post("/classes", {
+      find: {
+        id_user: id,
+        status_confirm: "pending",
+      },
     });
     const {
       data: { data },
@@ -203,25 +261,76 @@ export default class UserRegister extends Component {
 
     this.setState({
       registerDetail: {
-        id: data.id,
-        role_id: data.role_id,
-        profile_id: data.profile_id,
-        burger_service_nummer: data.profile.burger_service_nummer,
-        family_name: data.profile.family_name,
-        front_name: data.profile.front_name,
-        gender: data.profile.gender,
-        birthday: data.profile.birthday,
-        address: data.profile.address,
-        postal_code: data.profile.postal_code,
-        reg_code_branch: data.profile.reg_code_branch,
-        email: data.email,
+        id: data.id_user,
+        role_id: data.user.role_id,
+        profile_id: data.user.profile_id,
+        burger_service_nummer: data.user.profile.burger_service_nummer,
+        family_name: data.user.profile.family_name,
+        front_name: data.user.profile.front_name,
+        gender: data.user.profile.gender,
+        birthday: data.user.profile.birthday,
+        address: data.user.profile.address,
+        postal_code: data.user.profile.postal_code,
+        reg_code_branch: data.user.profile.reg_code_branch,
+        email: data.user.email,
+        id_course: data.master_course.id,
+        id_study: data.master_study.id,
+        id_faculty: data.master_study.faculty.id,
       },
     });
   };
 
+  getTeacherStudy = async (id) => {
+    try {
+      const response = await Api.post("/teacher_study", {
+        find: {
+          id_user: id,
+          status_confirm: "pending",
+        },
+      });
+      const {
+        data: { data },
+      } = response;
+      if (response.data.code === 200 || response.status === 200) {
+        this.setState({
+          registerDetail: {
+            id: data.id_user,
+            role_id: data.user.role_id,
+            profile_id: data.user.profile_id,
+            burger_service_nummer: data.user.profile.burger_service_nummer,
+            family_name: data.user.profile.family_name,
+            front_name: data.user.profile.front_name,
+            gender: data.user.profile.gender,
+            birthday: data.user.profile.birthday,
+            address: data.user.profile.address,
+            postal_code: data.user.profile.postal_code,
+            reg_code_branch: data.user.profile.reg_code_branch,
+            email: data.user.email,
+            id_study: data.master_study.id,
+            id_faculty: data.master_study.faculty.id,
+          },
+        });
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!" + error.message,
+      });
+    }
+  };
+
   getStudyMaster = async () => {
+    const { registerDetail } = this.state;
+    const filter = {};
+    if (registerDetail.id_faculty) {
+      filter.id_faculty = registerDetail.id_faculty;
+    }
     const response = await Api.post("/master_study", {
       limit: 1000,
+      filter,
     });
     const {
       data: { data },
@@ -230,6 +339,50 @@ export default class UserRegister extends Component {
     this.setState({
       listStudies: data,
     });
+  };
+
+  getFacultyMaster = async () => {
+    try {
+      const response = await Api.post("/faculty", {
+        limit: 1000,
+      });
+      const {
+        data: { data },
+      } = response;
+      this.setState({
+        listFaculties: data,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!" + error.message,
+      });
+    }
+  };
+
+  getCoursesByStudy = async () => {
+    const { registerDetail } = this.state;
+    try {
+      const response = await Api.post("/master_course", {
+        filter: {
+          id_study: registerDetail.id_study,
+        },
+        limit: 1000,
+      });
+      const {
+        data: { data },
+      } = response;
+      this.setState({
+        listCourses: data,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!" + error.message,
+      });
+    }
   };
 
   handleChangePage = (event, newPage) => {
@@ -277,7 +430,8 @@ export default class UserRegister extends Component {
 
   handleDetailClicked = (id) => {
     this.setState({ shownModalDetail: true });
-    this.getUserById(id);
+    if (this.state.role_id === 2) this.getTeacherStudy(id);
+    else if (this.state.role_id === 3) this.getUserClassById(id);
   };
 
   handleActionDetail = (e, id) => {
@@ -313,6 +467,12 @@ export default class UserRegister extends Component {
     ) {
       this.getUsers();
     }
+
+    if (
+      prevState.registerDetail.id_study !== this.state.registerDetail.id_study
+    ) {
+      this.getCoursesByStudy();
+    }
   }
 
   render() {
@@ -324,6 +484,8 @@ export default class UserRegister extends Component {
       shownModalDetail,
       registerDetail,
       listStudies,
+      listCourses,
+      listFaculties,
       navIndexActive,
     } = this.state;
 
@@ -390,7 +552,10 @@ export default class UserRegister extends Component {
               <FormPersonalData
                 forDetail
                 listStudies={listStudies}
+                listCourses={listCourses}
+                listFaculties={listFaculties}
                 data={registerDetail}
+                user={parseInt(registerDetail.role_id)}
               />
             </Grid>
             <Grid item md={7} sm={12}>
@@ -418,14 +583,6 @@ export default class UserRegister extends Component {
                       width="100%"
                       label="Email"
                       value={registerDetail.email}
-                      inputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Input
-                      width="100%"
-                      label="Study"
-                      value="Study"
                       inputProps={{ readOnly: true }}
                     />
                   </Grid>
@@ -475,18 +632,21 @@ const WrapContent = styled(Paper)`
   padding: 15px;
   margin-bottom: 15px;
   .filter {
-    margin-top : 5px;
+    margin-top: 5px;
   }
 `;
 
 const ImgContainer = styled.div`
-  width: 250px;
-  background-color: var(--background-light-color);
+  width: 280px;
+  /* background-color: var(--background-light-color); */
   padding: 12px;
-  height: 195px;
+  height: 230px;
+  position: relative;
   overflow: hidden;
-  img {
+  .img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    cursor: pointer;
   }
 `;

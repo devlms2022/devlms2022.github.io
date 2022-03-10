@@ -1,15 +1,14 @@
-import React from "react";
+import { Close } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
 import { Subtitle } from "../Text";
-import { IconButton } from "@mui/material";
-import { Close } from "@mui/icons-material";
 
 export default function DialogCustome(props) {
   const {
@@ -24,6 +23,7 @@ export default function DialogCustome(props) {
     onSave,
     isLoading = false,
     p = "12px",
+    btnComponent
   } = props;
 
   return (
@@ -34,12 +34,24 @@ export default function DialogCustome(props) {
         open={open}
         onClose={onClose}
       >
-        <DialogHeader>
+        <DialogHeader
+          style={{
+            display: title ? "flex" : "none",
+          }}
+        >
           <Subtitle>{title}</Subtitle>
-          <IconButton disabled={isLoading} onClick={onClose}>
-            <Close />
-          </IconButton>
         </DialogHeader>
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: 6,
+            top: 2,
+          }}
+          disabled={isLoading}
+          onClick={onClose}
+        >
+          <Close />
+        </IconButton>
         <DialogContent>
           <Box
             component="div"
@@ -54,7 +66,7 @@ export default function DialogCustome(props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          {showSaveButton && (
+          {showSaveButton && !btnComponent && (
             <Button
               disabled={isLoading}
               onClick={onSave}
@@ -63,6 +75,9 @@ export default function DialogCustome(props) {
             >
               {btnSaveLabel ? btnSaveLabel : "Save"}
             </Button>
+          )}
+          {btnComponent && !showSaveButton && (
+            btnComponent
           )}
           {/* <Button disabled={isLoading} onClick={onClose}>Close</Button> */}
         </DialogActions>
@@ -83,10 +98,10 @@ DialogCustome.propTypes = {
   onSave: PropTypes.func,
   isLoading: PropTypes.bool,
   p: PropTypes.string,
+  btnComponent : PropTypes.func
 };
 
 const DialogHeader = styled.div`
-  display: flex;
   justify-content: space-between;
   align-items: center;
   /* background: red; */

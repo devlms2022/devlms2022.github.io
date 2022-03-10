@@ -1,8 +1,9 @@
-import { AddCircle } from "@mui/icons-material";
+import { AddCircle, Check, Close, Remove } from "@mui/icons-material";
 import { Button, Grid, MenuItem } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import DialogCustome from "../../components/Dialog";
 import Search from "../../components/Form/Search";
 import InputSelect from "../../components/Form/Select";
 import SelectChip from "../../components/Form/Select/SelectChip";
@@ -11,6 +12,7 @@ import HeaderContent2 from "../../components/Header/HeaderContent2";
 import TableDataNotFound from "../../components/Label/TableDataNotFound";
 import Paper from "../../components/Paper";
 import { TableClasses } from "../../components/Table";
+import UserDetailEnrollment from "../../components/User/UserDetailEnrollment";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
 
@@ -29,6 +31,7 @@ class CourseEnrollment extends Component {
         key: "",
         value: "",
       },
+      openDialog: false,
     };
     this.userSign = TokenService.getUser().data;
   }
@@ -109,8 +112,7 @@ class CourseEnrollment extends Component {
   };
 
   handleActionClicked = (e, action, param) => {
-    console.log(param);
-    // this.props.history.push(`/course/detail/${param}`);
+    this.handleDialog();
   };
 
   handleFilterChangeKey = (e) => {
@@ -139,6 +141,13 @@ class CourseEnrollment extends Component {
     });
   };
 
+  handleDialog = () => {
+    const {openDialog} = this.state;
+    this.setState({
+      openDialog : !openDialog
+    })
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.filterChanged.value !== this.state.filterChanged.value) {
       this.fetchCourseClass();
@@ -149,8 +158,16 @@ class CourseEnrollment extends Component {
   }
 
   render() {
-    const { courseData, isLoading, page, limit, total, filterChanged, filter } =
-      this.state;
+    const {
+      courseData,
+      isLoading,
+      page,
+      limit,
+      total,
+      filterChanged,
+      filter,
+      openDialog,
+    } = this.state;
 
     //filtering duplicate filter values
     let filteredValChanged = [];
@@ -227,6 +244,12 @@ class CourseEnrollment extends Component {
             <TableDataNotFound />
           )}
         </div>
+        <DialogCustome btnComponent={<>
+          <Button size="small" color="primary" startIcon={<Check fontSize="small" />} variant="contained" sx={{mr:"10px"}}  >Accept</Button>
+          <Button size="small" color="error" variant="contained" startIcon={<Close fontSize="small" />}  >Reject</Button>
+        </>}   maxWidth="md" onClose={this.handleDialog} open={openDialog}>
+          <UserDetailEnrollment />
+        </DialogCustome>
       </WrapContent>
     );
   }

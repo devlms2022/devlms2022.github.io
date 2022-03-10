@@ -48,4 +48,6 @@ export default function TextEditor(props) {
 TextEditor.propTypes = {
   onChange: PropTypes.func,
   name: PropTypes.string,
+  value: PropTypes.string,
+  
 };

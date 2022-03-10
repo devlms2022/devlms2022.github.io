@@ -12,6 +12,7 @@ export function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      style={{marginTop : '25px'}}
     >
       {content}
     </div>
@@ -31,7 +32,7 @@ export default function BaseTabs(props) {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ marginBottom: "12px" }}>
+      <Box sx={{ marginBottom: "10px" }}>
         <Tabs value={value} onChange={handleChange}>
           {tabLabel.map((item, key) => {
             return <Tab label={item} key={key.toString()} />;
@@ -50,6 +51,7 @@ export default function BaseTabs(props) {
 
         return (
           <TabPanel
+            
             value={tabActive ? tabActive : value}
             key={key.toString()}
             index={key}

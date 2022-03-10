@@ -12,6 +12,7 @@ import { minWidth } from "@mui/system";
 import React from "react";
 import styled from "styled-components";
 import Input from "../Input";
+import InputSelect from "../Select";
 import { Styling as WrapContent } from "./index";
 
 const FormPersonalData = (props) => {
@@ -27,6 +28,7 @@ const FormPersonalData = (props) => {
     listFaculties,
     user,
   } = props;
+
 
   const theme = useTheme();
 
@@ -73,11 +75,7 @@ const FormPersonalData = (props) => {
                         }}
                       >
                         {listFaculties.map((item) => (
-                          <MenuItem
-                            value={item.id}
-                            key={item.id}
-                            style={theme}
-                          >
+                          <MenuItem value={item.id} key={item.id} style={theme}>
                             {item.name}
                           </MenuItem>
                         ))}
@@ -111,15 +109,18 @@ const FormPersonalData = (props) => {
                             : false,
                         }}
                       >
-                        {listStudies.map((study) => (
-                          <MenuItem
-                            value={study.id}
-                            key={study.id}
-                            style={theme}
-                          >
-                            {study.name_study}
-                          </MenuItem>
-                        ))}
+                        {listStudies.map((study) => {
+                          console.log(study);
+                          return (
+                            <MenuItem
+                              value={study.id}
+                              key={study.id}
+                              style={theme}
+                            >
+                              {study.name_study}
+                            </MenuItem>
+                          );
+                        })}
                       </Select>
 
                       <FormHelperText>
@@ -129,9 +130,41 @@ const FormPersonalData = (props) => {
                   </Grid>
                 </>
               ) : (
-                <React.Fragment>
-                  <Grid className="col" item xs={12} sm={6}>
-                    <FormControl
+                <>
+                  <Grid
+                    className="col"
+                    item
+                    xs={12}
+                    xl={6}
+                    lg={6}
+                    md={6}
+                    sm={12}
+                  >
+                    <InputSelect
+                      label="Select Study"
+                      name="id_study"
+                      size="medium"
+                      value={data.id_study ? data.id_study : "Studies"}
+                      defaultValue={data.id_study ? data.id_study : "Studies"}
+                      onChange={onChange}
+                      fullWidth
+                      data={listStudies}
+                      disabled={
+                        disabled
+                          ? disabled.id_study
+                            ? true
+                            : false
+                          : forDetail
+                          ? true
+                          : false
+                      }
+                      renderMenuItem={(item) => (
+                        <MenuItem value={item.id} key={item.id}>
+                          {item.name_study}
+                        </MenuItem>
+                      )}
+                    />
+                    {/* <FormControl
                       error={errors ? (errors.id_study ? true : false) : false}
                       sx={{ width: "100%" }}
                     >
@@ -153,24 +186,59 @@ const FormPersonalData = (props) => {
                             : false,
                         }}
                       >
-                        {listStudies.map((study) => (
-                          <MenuItem
-                            value={study.id}
-                            key={study.id}
-                            style={theme}
-                          >
-                            {study.name_study}
-                          </MenuItem>
-                        ))}
+                        {listStudies.map((study) => {
+                          console.log(study);
+                          return (
+                            <MenuItem
+                              value={study.id}
+                              key={study.id}
+                              // style={theme}
+                            >
+                              {study.name_study}
+                            </MenuItem>
+                          );
+                        })}
                       </Select>
 
                       <FormHelperText>
                         {errors ? (errors.id_study ? errors.id_study : "") : ""}
                       </FormHelperText>
-                    </FormControl>
+                    </FormControl> */}
                   </Grid>
-                  <Grid className="col" item xs={12} sm={6}>
-                    <FormControl
+                  <Grid
+                    className="col"
+                    item
+                    xs={12}
+                    xl={6}
+                    lg={6}
+                    md={6}
+                    sm={12}
+                  >
+                    <InputSelect
+                      label="Select Course"
+                      name="id_course"
+                      size="medium"
+                      value={data.id_course ? data.id_course : ""}
+                      defaultValue={data.id_course ? data.id_course : ""}
+                      onChange={onChange}
+                      fullWidth
+                      data={listCourses}
+                      disabled={
+                        disabled
+                          ? disabled.id_course
+                            ? true
+                            : false
+                          : forDetail
+                          ? true
+                          : false
+                      }
+                      renderMenuItem={(item) => (
+                        <MenuItem value={item.id} key={item.id} >
+                          {item.title_course}
+                        </MenuItem>
+                      )}
+                    />
+                    {/* <FormControl
                       error={errors ? (errors.clasess ? true : false) : false}
                       sx={{ width: "100%" }}
                     >
@@ -210,11 +278,15 @@ const FormPersonalData = (props) => {
                       </Select>
 
                       <FormHelperText>
-                        {errors ? (errors.id_course ? errors.id_course : "") : ""}
+                        {errors
+                          ? errors.id_course
+                            ? errors.id_course
+                            : ""
+                          : ""}
                       </FormHelperText>
-                    </FormControl>
+                    </FormControl> */}
                   </Grid>
-                </React.Fragment>
+                </>
               )
             ) : null}
             <Grid className="row" item xs={12} sm={12}>

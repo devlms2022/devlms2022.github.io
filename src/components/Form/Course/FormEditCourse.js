@@ -10,8 +10,6 @@ import {
   Select,
 } from "@mui/material";
 import styled from "styled-components";
-import SunEditor, { buttonList } from "suneditor-react";
-import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import UploadImgDefault from "../../../assets/images/uploadvideo.png";
 
 import utilities from "../../../utils/utilities";
@@ -23,6 +21,7 @@ import { Label } from "../../Text";
 import Input from "../Input";
 import { Api } from "../../../services/api";
 import Swal from "sweetalert2";
+import TextEditor from "../TextEditor";
 
 const FormStep1 = ({ handleChange, handleBlur, data }) => {
   return (
@@ -38,18 +37,13 @@ const FormStep1 = ({ handleChange, handleBlur, data }) => {
       />
       <div className="form-control">
         <Label>Description</Label>
-        <SunEditor
-          width="100%"
-          setOptions={{
-            buttonList: buttonList.formatting,
-          }}
-          height="270"
+        <TextEditor
           name="description"
-          onBlur={handleBlur}
-          defaultValue={data?.description}
-          setContents={data?.description}
-          //   onChange={handleChange}
+          value={data?.description}
+          onChange={handleChange}
+        
         />
+       
       </div>
     </form>
   );

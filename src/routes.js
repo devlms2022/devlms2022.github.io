@@ -6,12 +6,13 @@ import CourseList from "./pages/Course/CourseList";
 import CoursePorposeList from "./pages/Course/CoursePorposeList";
 import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/Landing";
+import Course from "./pages/Landing/Course";
 import FormMasterStudies from "./pages/Masterdata/Form/FormMasterStudies";
 import MasterFaculty from "./pages/Masterdata/MasterFaculty";
 import MasterStudies from "./pages/Masterdata/MasterStudies";
+import CourseLearning from "./pages/MyCourse/CourseLearning";
+import MyCourseList from "./pages/MyCourse/MyCourseList";
 import Profile from "./pages/Profile";
-import AddAssignment from "./pages/Study/Assignment/AddAssignment";
-import { Questions } from "./pages/Study/Assignment/Questions";
 import CourseSections from "./pages/Study/Course/CourseSections";
 import SetupCourses from "./pages/Study/Course/SetupCourses";
 import MyStudies from "./pages/Study/MyStudies";
@@ -19,9 +20,6 @@ import StudyJoin from "./pages/Study/StudyJoin";
 import ManageUser from "./pages/Users/ManageUser";
 import UserRegister from "./pages/Users/UserRegister";
 
-import Course from "./pages/Landing/Course";
-import MyCourseList from "./pages/MyCourse/MyCourseList";
-import CourseLearning from "./pages/MyCourse/CourseLearning";
 // import SignUp from "./"
 
 const routes = [
@@ -68,7 +66,7 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: "/profile",
+    path: "profile",
     layout: "admin",
     basePath: true,
     component: Profile,
@@ -153,18 +151,6 @@ const routes = [
     layout: "admin",
     parent: "/mystudies/setup",
     component: SetupCourses,
-  },
-  {
-    path: "mystudies/setup/addassignment/:sectionId",
-    layout: "admin",
-    parent: "/mystudies/setup",
-    component: AddAssignment,
-  },
-  {
-    path: "mystudies/setup/assignment/questions/:assignmentId",
-    layout: "admin",
-    parent: "/mystudies/setup",
-    component: Questions,
   },
   {
     path: "/resetpassword",

@@ -11,12 +11,11 @@ import {
 } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
-import SunEditor, { buttonList } from "suneditor-react";
-import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import UploadImgDefault from "../../../assets/images/uploadshow.png";
 import BoxCustom from "../../../components/Box";
 import Input from "../../../components/Form/Input";
 import InputFIle from "../../../components/Form/InputFile";
+import TextEditor from "../../../components/Form/TextEditor";
 import Paper from "../../../components/Paper";
 import Tabs from "../../../components/Tabs";
 import { Label, Subtitle } from "../../../components/Text";
@@ -179,14 +178,10 @@ export default class FormMasterStudies extends Component {
               </FormControl>
               <div className="form-controll">
                 <Label>Description</Label>
-                <SunEditor
-                  width="100%"
-                  setOptions={{
-                    buttonList: buttonList.formatting,
-                  }}
-                  height="270"
+                <TextEditor
+                  onChange={this.handleBlur}
                   name="description"
-                  onBlur={this.handleBlur}
+                  value={this.state.dataInput.description}
                 />
               </div>
             </Grid>

@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
-import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import UploadImgDefault from "../../../assets/images/uploadvideo.png";
 import CircularLabel from "../../Progress/CircularLabel";
 import BaseTabs from "../../Tabs";

@@ -1,8 +1,7 @@
-import { AddCircle, Book, Group, Send } from "@mui/icons-material";
-import { Alert, Button, Chip, Grid, Skeleton, Typography } from "@mui/material";
+import { AddCircle, Book, Group } from "@mui/icons-material";
+import { Button, Chip, Grid, Skeleton, Typography } from "@mui/material";
 import React, { Component } from "react";
 import styled from "styled-components";
-import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import Swal from "sweetalert2";
 import DialogCustome from "../../components/Dialog";
 import FormAddChapter from "../../components/Form/Course/FormAddChapter";

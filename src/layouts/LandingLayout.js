@@ -1,15 +1,7 @@
-import {
-  Box,
-  Container,
-  Dialog,
-  DialogContent,
-  Grid,
-  Slide,
-} from "@mui/material";
+import { Box, Container, Dialog, DialogContent, Grid } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
-import SimpleReactValidator from "simple-react-validator";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 // import ImageLogin from "../../assets/images/loginimage.png";
@@ -32,8 +24,6 @@ function App(props) {
   const location = useLocation();
   const { pathname } = location;
 
-  const validator = new SimpleReactValidator();
-
   const changHandler = (event) => {
     const { name, value } = event.target;
 
@@ -45,11 +35,6 @@ function App(props) {
   };
 
   const [errors, setErrors] = useState({});
-
-  const SignupHandler = async () => {
-    const history = useHistory();
-    history.push("/signup");
-  };
 
   const submitHandler = async (validation) => {
     if (validation) {
@@ -149,7 +134,6 @@ function App(props) {
                   onClickForgotPassword={() => setModalShown(!modalShown)}
                   onChange={changHandler}
                   alertShown={alertShown}
-                  validator={validator}
                   data={{ email, password }}
                   onSignup={(param) => setModalShown(!param)}
                   onOpenSignUp={onOpenSignUp}
@@ -159,22 +143,6 @@ function App(props) {
           </DialogContent>
         </Dialog>
       </Container>
-      {/* <Modal
-        open={modalShown}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <BoxStyled>
-          <Grid container spacing={2}>
-            <Grid item sm={7}>
-              <Box className="warplogo">
-                <img src={ImageLogin} />
-              </Box>
-            </Grid>
-            <Grid item sm={5}></Grid>
-          </Grid>
-        </BoxStyled>
-      </Modal> */}
     </>
   );
 }

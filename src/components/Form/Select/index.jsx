@@ -37,8 +37,12 @@ const InputSelect = (props) => {
         size={size}
         onChange={onChange}
         value={value}
+        defaultValue={defaultValue}
         name={name}
         label={label}
+        inputProps={{
+          readOnly : disabled ? true : false,
+        }}
       >
         <MenuItem value="">{label}</MenuItem>
         {data &&

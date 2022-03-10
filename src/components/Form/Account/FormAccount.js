@@ -3,10 +3,10 @@ import Input from "../Input";
 import { Styling as WrapContent } from "../Signup/index";
 
 const FormAccount = (props) => {
-  const { onChange, errors, data, disabled } = props;
+  const { onChange, errors, data, disabled, className } = props;
 
   return (
-    <WrapContent>
+    <WrapContent className={className}>
       <Input
         className="form-control"
         label="Email"

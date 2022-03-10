@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState } from "react";
 import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
+import React, { Component, useEffect, useState } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import DefContainerImg from "../../assets/images/imgcontainer.png";
@@ -9,6 +9,8 @@ import DialogCustome from "../../components/Dialog";
 import Input from "../../components/Form/Input";
 import Search from "../../components/Form/Search";
 import FormPersonalData from "../../components/Form/Signup/FormPersonalData";
+import HeaderContent from "../../components/Header/HeaderContent";
+import TableDataNotFound from "../../components/Label/TableDataNotFound";
 import Navtab from "../../components/Navtab";
 import Paper from "../../components/Paper";
 import { TableUser } from "../../components/Table";
@@ -16,9 +18,6 @@ import { Label } from "../../components/Text";
 import { Api } from "../../services/api";
 import TokenService from "../../services/token.services";
 import util from "../../utils/utilities";
-import TableDataNotFound from "../../components/Label/TableDataNotFound";
-import HeaderContent2 from "../../components/Header/HeaderContent2";
-import HeaderContent from "../../components/Header/HeaderContent";
 
 function CardImageRegister(props) {
   const { role, data, profileid } = props;
