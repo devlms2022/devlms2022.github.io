@@ -72,7 +72,7 @@ const HeroSection = () => {
 };
 
 const SectionStyled = styled.section`
-  margin-top: 70px;
+  margin-top: 15vh;
   margin-bottom: 200px;
 
   button {

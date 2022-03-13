@@ -94,8 +94,8 @@ const AppBarLanding = (props) => {
                   </Link>
                 </Typography>
                 <Typography sx={{ my: 2, display: "block" }}>
-                  <Link className="link" to="/course">
-                    Course
+                  <Link className="link" to="/studies">
+                    Studies
                   </Link>
                 </Typography>
                 <Button
@@ -149,7 +149,7 @@ const AppBarLanding = (props) => {
                       </Link>
                     </ListItem>
                     <ListItem button>
-                      <Link className="link" to="/course">
+                      <Link className="link" to="/studies">
                         Studies
                       </Link>
                     </ListItem>
@@ -177,8 +177,6 @@ const AppBarLanding = (props) => {
 };
 
 const Navbar = styled.div`
-  margin-bottom: 10vw;
-
   .navbar {
     background-color: var(--white-color);
   }

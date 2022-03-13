@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const ButtonCustom = (props) => {
-  const { text, to, height, variant } = props;
+  const { text, to, height, variant, width } = props;
 
   return <ButtonStyled {...props}>{text ? text : props.children}</ButtonStyled>;
 };
@@ -24,6 +24,7 @@ const ButtonStyled = styled(Button)`
         : "var(--primary-color)"};
   }
   height: ${(props) => (props.height ? props.height : "42px")};
+  width: ${(props) => (props.width ? props.width : "auto")};
   color: ${(props) =>
     props.variant === "outlined"
       ? `var(--primary-color)`

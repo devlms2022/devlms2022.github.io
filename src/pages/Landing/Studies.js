@@ -295,6 +295,8 @@ const Course = (props) => {
 };
 
 const ListStudies = styled.div`
+  margin-top: 16vh;
+
   .course {
     padding: 20px;
     display: flex;

@@ -6,7 +6,7 @@ import CourseList from "./pages/Course/CourseList";
 import CoursePorposeList from "./pages/Course/CoursePorposeList";
 import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/Landing";
-import Course from "./pages/Landing/Course";
+import Studies from "./pages/Landing/Studies";
 import FormMasterStudies from "./pages/Masterdata/Form/FormMasterStudies";
 import MasterFaculty from "./pages/Masterdata/MasterFaculty";
 import MasterStudies from "./pages/Masterdata/MasterStudies";
@@ -19,6 +19,8 @@ import MyStudies from "./pages/Study/MyStudies";
 import StudyJoin from "./pages/Study/StudyJoin";
 import ManageUser from "./pages/Users/ManageUser";
 import UserRegister from "./pages/Users/UserRegister";
+import Signin from "./pages/Auth/Signin";
+import DetailStudy from "./pages/Landing/DetailStudy";
 
 // import SignUp from "./"
 
@@ -35,9 +37,20 @@ const routes = [
     component: LandingPage,
   },
   {
-    path: "/course",
+    path: "/studies",
     layout: "landing",
-    component: Course,
+    component: Studies,
+    basePath: true,
+  },
+  {
+    path: "/detailstudy",
+    layout: "landing",
+    component: DetailStudy,
+  },
+  {
+    path: "/signin",
+    layout: "auth",
+    component: Signin,
     basePath: true,
   },
   {

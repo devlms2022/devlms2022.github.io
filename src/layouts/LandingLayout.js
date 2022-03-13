@@ -74,19 +74,28 @@ function App(props) {
     }
   };
 
+  const btnHome = () => {
+    navigate.push("/");
+  };
+
   const onOpenSignUp = () => {
     setModalShown(false);
     navigate.push("/signup");
   };
 
+  const handleSignIn = () => {
+    navigate.push("/signin");
+  };
+
   return (
     <>
-      {pathname === "/signup" || pathname === "/resetpassword" ? (
-        <HeaderLogin />
+      {pathname === "/signup" ||
+      pathname === "/resetpassword" ||
+      pathname === "/signin" ? (
+        <HeaderLogin Home={btnHome} />
       ) : (
-        <AppBarLanding signinClicked={() => setModalShown(true)} />
+        <AppBarLanding signinClicked={handleSignIn} />
       )}
-
       <Container>
         <Switch>
           {routes.map((item, key) => {
@@ -114,34 +123,6 @@ function App(props) {
             }
           })}
         </Switch>
-        <Dialog
-          open={modalShown}
-          onClose={() => setModalShown(!modalShown)}
-          aria-describedby="alert-dialog-slide-description"
-          maxWidth="lg"
-        >
-          <HeaderLogin onClick={() => setModalShown(false)} />
-          <DialogContent>
-            <Grid container spacing={2}>
-              <Grid item sm={7}>
-                <Box className="warplogo">
-                  <img src={ImageLogin} />
-                </Box>
-              </Grid>
-              <Grid item sm={5}>
-                <FormSign
-                  onSignin={(validation) => submitHandler(validation)}
-                  onClickForgotPassword={() => setModalShown(!modalShown)}
-                  onChange={changHandler}
-                  alertShown={alertShown}
-                  data={{ email, password }}
-                  onSignup={(param) => setModalShown(!param)}
-                  onOpenSignUp={onOpenSignUp}
-                />
-              </Grid>
-            </Grid>
-          </DialogContent>
-        </Dialog>
       </Container>
     </>
   );

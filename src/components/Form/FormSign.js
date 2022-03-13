@@ -6,6 +6,7 @@ import {
   Alert,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../Button/Button";
 import ButtonLink from "../Button/ButtonLink";
@@ -13,13 +14,13 @@ import Tittle from "../Text/Tittle";
 import Input from "./Input";
 
 const FormSign = (props) => {
-  const {
-    onChange,
-    onSignin,
-    alertShown,
-    onOpenSignUp,
-    onClickForgotPassword,
-  } = props;
+  const { onChange, onSignin, alertShown } = props;
+
+  let navigate = useHistory();
+
+  const onOpenSignUp = () => {
+    navigate.push("/signup");
+  };
 
   const [toSignUp, setToSignUp] = useState(false);
 
@@ -109,11 +110,7 @@ const FormSign = (props) => {
 
         <FormGroup className="form-group">
           <FormControlLabel control={<Checkbox />} label="Stay Logged In" />
-          <ButtonLink
-            to={"/resetpassword"}
-            text={"Forgot Password?"}
-            onClick={onClickForgotPassword}
-          />
+          <ButtonLink to={"/resetpassword"} text={"Forgot Password?"} />
         </FormGroup>
         <Button
           onClick={(e) => handlerSubmit(e)}
@@ -138,6 +135,19 @@ const Wraplogin = styled.div`
   flex-grow: 1;
   justify-content: center;
   padding-bottom: 70px;
+
+  .box {
+    background: white;
+    box-shadow: 0px 25px 50px rgba(129, 129, 129, 0.1);
+    border-radius: 10px;
+    padding: 30px 60px;
+    z-index: 1;
+
+    @media only screen and (max-width: 600px) {
+      padding: 30px;
+    }
+  }
+
   .title {
     margin-bottom: 50px;
     width: 100%;
@@ -150,7 +160,7 @@ const Wraplogin = styled.div`
   }
 
   .form-group {
-    margin-bottom: 45px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

@@ -1,24 +1,24 @@
-import CloseIcon from "@mui/icons-material/Close";
-import { Box, Button, IconButton } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import { IconButton } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
 import ButtonCustom from "../Button/Button";
 
 const HeaderLogin = (props) => {
-  const { onClick } = props;
+  const { Home } = props;
   return (
-    <Back onClick={onClick}>
-      <CloseIcon />
+    <Back>
+      <IconButton size="large" onClick={Home}>
+        <HomeIcon fontSize="inherit" />
+      </IconButton>
     </Back>
   );
 };
 
 const Back = styled.div`
-  margin-top: 10px;
-  padding: 5px;
+  margin: 10px;
   display: flex;
   justify-content: flex-end;
-  cursor: pointer;
 `;
 
 export default HeaderLogin;
